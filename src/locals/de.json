@@ -1,0 +1,12 @@
+{
+  "menu": {
+    "home": "Startseite",
+    "about": "Über uns",
+    "services": "Dienstleistungen",
+    "contact": "Kontakt"
+  },
+  "auth": {
+    "signup": "Registrieren",
+    "login": "Anmelden"
+  }
+}
