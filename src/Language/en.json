@@ -77,5 +77,17 @@
   },
   "footer": {
     "rights": "All rights reserved by MrBot AI"
+  },
+  "faq": {
+    "title": "Frequently Asked Questions (FAQ) about MrBot",
+    "subtitle": "MrBot is a 24/7 intelligent phone assistant that handles calls efficiently, ensures GDPR compliance, and requires no setup.",
+    "q1": "What is MrBot?",
+    "a1": "MrBot is an intelligent phone assistant that automatically answers incoming calls, responds politely, and handles common requests. It can schedule appointments, provide information, or take messages — just like a real human assistant, but available 24/7.",
+    "q2": "Who is MrBot designed for?",
+    "a2": "MrBot is built for medical practices, small businesses, and service providers who receive many routine calls every day. It helps reduce staff workload, improves availability, and ensures that no call is ever missed, even outside office hours.",
+    "q3": "Is MrBot GDPR compliant?",
+    "a3": "Yes. Data protection is a top priority at MrBot. All data is processed exclusively on servers located within the EU, and no call recordings are stored permanently unless you explicitly agree. MrBot fully complies with GDPR regulations, and a Data Processing Agreement (DPA) can be provided upon request.",
+    "q4": "Do I need to install or program anything?",
+    "a4": "No. MrBot is a no-code solution that’s fully set up for you. You don’t need any technical experience — we handle everything, from connecting your phone system to integrating your calendar."
   }
 }

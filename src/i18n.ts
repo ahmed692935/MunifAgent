@@ -14,7 +14,7 @@ i18n
       en: { translation: en },
       de: { translation: de },
     },
-    fallbackLng: "en", // Default language
+    fallbackLng: "de", // Default language
     interpolation: { escapeValue: false },
     returnObjects: true, // Enables array/object return globally
     detection: {
