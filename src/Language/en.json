@@ -1,0 +1,82 @@
+{
+  "menu": {
+    "home": "Home",
+    "about": "About",
+    "services": "Services",
+    "contact": "Contact"
+  },
+  "auth": {
+    "signup": "Sign Up",
+    "login": "Login"
+  },
+  "hero": {
+    "title": "Maximum efficiency for your company"
+  },
+  "about": {
+    "title": "The intelligent phone assistant",
+    "subtitle": "Are you familiar with the stressful daily routine of telephone calls?",
+    "desc": "Ringing phones, missed calls, stressed employees – it doesn't have to be this way. MrBot is your smart phone assistant that automatically answers calls, forwards messages, and coordinates appointments – friendly, reliable, and available 24/7."
+  },
+  "works": {
+    "heading": "How MrBot Works",
+    "items": [
+      {
+        "title": "Customer Calls",
+        "description": "MrBot answers every call politely – even after work hours or when your team is busy."
+      },
+      {
+        "title": "Intelligent Conversation Management",
+        "description": "The AI assistant understands concerns, answers frequently asked questions, and gathers all important information – all in compliance with GDPR."
+      },
+      {
+        "title": "Forwarding & Notification",
+        "description": "Important calls or messages are automatically forwarded to you or your team – via email, SMS, or chat. Appointments are entered and managed in your existing CRM system."
+      }
+    ]
+  },
+   "services": {
+    "title": "Industries We Serve",
+    "items": [
+      {
+        "id": 1,
+        "title": "Education Support",
+        "desc": "Enhance student engagement with real-time inbound call assistance for admissions, course inquiries, and academic support. Ensure smooth communication between students and institutions."
+      },
+      {
+        "id": 2,
+        "title": "Healthcare Assistance",
+        "desc": "Provide instant call-based patient support for appointment scheduling, medical inquiries, and emergency coordination to improve healthcare response efficiency."
+      },
+      {
+        "id": 3,
+        "title": "Sales Inquiries",
+        "desc": "Handle inbound sales calls seamlessly to capture leads, provide product information, and improve customer conversion through prompt communication."
+      },
+      {
+        "id": 4,
+        "title": "Automobile Services",
+        "desc": "Simplify customer experience by managing inbound calls for service bookings, vehicle inquiries, and dealership support efficiently and professionally."
+      }
+    ]
+  },
+  "contact": {
+    "title": "Get in touch with us",
+    "description": "Are you interested in collaborating? Please fill out the form and we will get back to you shortly. We look forward to hearing from you."
+  },
+  "form": {
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "email": "Email",
+    "news": "News",
+    "newsPlaceholder": "News...",
+    "submit": "Send",
+    "validation": {
+      "emailRequired": "Email is required",
+      "invalidEmail": "Invalid email format"
+    }
+  },
+  "footer": {
+    "rights": "All rights reserved by MrBot AI"
+  }
+
+}

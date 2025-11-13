@@ -28,7 +28,7 @@ function Navbar() {
             className={`fixed top-0 left-0 w-full h-16 sm:h-20 z-50 transition-all duration-300 px-4 md:px-8 ${isScrolled ? "bg-[#fffeff] shadow-md" : "bg-[#fffeff] shadow-xl"
                 }`}
         >
-            <div className="max-w-6xl mx-auto w-full h-full flex items-center justify-between">
+            <div className="max-w-7xl mx-auto w-full h-full flex items-center justify-between">
                 {/* Logo */}
                 <a href="/" className="w-20 h-16 sm:h-20">
                     <img
@@ -89,8 +89,8 @@ function Navbar() {
                         value={i18n.language}
                         className="h-9 sm:h-10 px-2 text-base rounded-md bg-white text-[#3d4b52] border border-[#3d4b52] hover:bg-[#3d4b52]/10 font-semibold cursor-pointer outline-0"
                     >
-                        <option value="en">EN</option>
-                        <option value="de">DE</option>
+                        <option value="en">English</option>
+                        <option value="de">German</option>
                     </select>
                 </div>
 
@@ -160,8 +160,8 @@ function Navbar() {
                             value={i18n.language}
                             className="h-10 px-2 text-base rounded-md border border-[#3d4b52] bg-white text-[#3d4b52] outline-0 font-semibold cursor-pointer"
                         >
-                            <option value="en">EN</option>
-                            <option value="de">DE</option>
+                            <option value="en">English</option>
+                            <option value="de">German</option>
                         </select>
                     </div>
                 </div>

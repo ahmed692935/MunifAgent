@@ -1,6 +1,11 @@
 import BgVideo from "../../assets/Images/hero-video.mp4"
+import { useTranslation } from "react-i18next";
 
 function HeroSection() {
+
+    // Add translate
+    const { t } = useTranslation();
+
     return (
         <section id="home" className=" scroll-mt-20 pb-10">
             {/* Bg video */}
@@ -19,7 +24,7 @@ function HeroSection() {
 
                 {/* Content */}
                 <div className="relative container mx-auto h-full min-h-[inherit] px-3 sm:px-4 flex flex-col items-center justify-center z-10">
-                    <h1 className="text-4xl sm:text-5xl text-white font-bold text-center">Maximum efficiency for your company</h1>
+                    <h1 className="text-4xl sm:text-5xl text-white font-bold text-center">{t("hero.title")}</h1>
                 </div>
             </div>
         </section>

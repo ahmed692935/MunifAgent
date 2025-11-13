@@ -1,6 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 import LandingAuth from "./pages/LandingAuth";
-import LandingLayout from "./layout/LandingPageLayout/LandingLayout";
+import LandingPage from "./pages/LandingPage"
 
 const router = createBrowserRouter([
   {
@@ -9,7 +9,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/landing",
-    element: <LandingLayout />,
+    element: <LandingPage />,
   },
 ]);
 

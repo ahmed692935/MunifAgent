@@ -1,0 +1,82 @@
+{
+  "menu": {
+    "home": "Startseite",
+    "about": "Über uns",
+    "services": "Dienstleistungen",
+    "contact": "Kontakt"
+  },
+  "auth": {
+    "signup": "Registrieren",
+    "login": "Anmelden"
+  },
+  "hero": {
+    "title": "Maximale Effizienz für Ihr Unternehmen"
+  },
+  "about": {
+    "title": "Der intelligente Telefonassistent",
+    "subtitle": "Kennen Sie den stressigen Alltag mit ständigen Telefonanrufen?",
+    "desc": "Klingelnde Telefone, verpasste Anrufe, gestresste Mitarbeiter – das muss nicht sein. MrBot ist Ihr intelligenter Telefonassistent, der Anrufe automatisch entgegennimmt, Nachrichten weiterleitet und Termine koordiniert – freundlich, zuverlässig und rund um die Uhr verfügbar."
+  },
+  "works": {
+    "heading": "So funktioniert MrBot",
+    "items": [
+      {
+        "title": "Kundenanrufe",
+        "description": "MrBot beantwortet jeden Anruf höflich – auch nach Feierabend oder wenn Ihr Team beschäftigt ist."
+      },
+      {
+        "title": "Intelligentes Gesprächsmanagement",
+        "description": "Der KI-Assistent versteht Anliegen, beantwortet häufige Fragen und sammelt alle wichtigen Informationen – vollständig DSGVO-konform."
+      },
+      {
+        "title": "Weiterleitung & Benachrichtigung",
+        "description": "Wichtige Anrufe oder Nachrichten werden automatisch an Sie oder Ihr Team weitergeleitet – per E-Mail, SMS oder Chat. Termine werden in Ihrem bestehenden CRM-System eingetragen und verwaltet."
+      }
+    ]
+  },
+   "services": {
+    "title": "Branchen, die wir bedienen",
+    "items": [
+      {
+        "id": 1,
+        "title": "Bildungsunterstützung",
+        "desc": "Steigern Sie das Engagement der Studierenden mit Echtzeit-Unterstützung bei Anrufen für Zulassungen, Kursanfragen und akademische Unterstützung."
+      },
+      {
+        "id": 2,
+        "title": "Gesundheitsunterstützung",
+        "desc": "Bieten Sie sofortige telefonbasierte Patientenunterstützung für Terminvereinbarungen, medizinische Anfragen und Notfallkoordination."
+      },
+      {
+        "id": 3,
+        "title": "Verkaufsanfragen",
+        "desc": "Bearbeiten Sie eingehende Verkaufsgespräche, um Leads zu erfassen, Produktinformationen bereitzustellen und die Kundengewinnung zu verbessern."
+      },
+      {
+        "id": 4,
+        "title": "Automobildienste",
+        "desc": "Vereinfachen Sie das Kundenerlebnis, indem Sie eingehende Anrufe für Servicebuchungen, Fahrzeuganfragen und Händlerunterstützung verwalten."
+      }
+    ]
+  },
+  "contact": {
+    "title": "Kontaktieren Sie uns",
+    "description": "Interessieren Sie sich für eine Zusammenarbeit? Bitte füllen Sie das Formular aus, und wir werden uns in Kürze bei Ihnen melden. Wir freuen uns darauf, von Ihnen zu hören."
+  },
+  "form": {
+    "firstName": "Vorname",
+    "lastName": "Nachname",
+    "email": "E-Mail",
+    "news": "Neuigkeiten",
+    "newsPlaceholder": "Neuigkeiten...",
+    "submit": "Senden",
+    "validation": {
+      "emailRequired": "E-Mail ist erforderlich",
+      "invalidEmail": "Ungültiges E-Mail-Format"
+    }
+  },
+   "footer": {
+    "rights": "Alle Rechte vorbehalten von MrBot AI"
+  }
+
+}
