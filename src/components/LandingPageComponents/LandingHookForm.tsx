@@ -1,7 +1,10 @@
 import { useForm } from "react-hook-form";
 import type { IFormInput } from "../../Interface/LandingPage";
+import { useTranslation } from "react-i18next";
 
 function LandingHookForm() {
+  const { t } = useTranslation();
+
   const {
     register,
     handleSubmit,
@@ -14,50 +17,50 @@ function LandingHookForm() {
 
   return (
     <div className="w-full">
-      <h2 className="text-2xl font-semibold text-center mb-6 text-gray-800">
-        Subscribe to Our News
-      </h2>
-
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        {/* ---------- First & Last Name ---------- */}
         <div className="flex flex-col sm:flex-row items-center gap-4">
           {/* First Name */}
           <div className="w-full relative">
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              First Name
+              {t("form.firstName")}
             </label>
             <input
               {...register("firstName")}
               className="w-full px-3 py-2 border rounded-full border-[#3d4b52] text-[#3d4b52] focus:outline-none focus:border-[#3d4b52]/70"
-              placeholder="First Name"
+              placeholder={t("form.firstName")}
             />
           </div>
 
           {/* Last Name */}
           <div className="w-full relative">
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              Last Name
+              {t("form.lastName")}
             </label>
             <input
               {...register("lastName")}
               className="w-full px-3 py-2 border rounded-full border-[#3d4b52] text-[#3d4b52] focus:outline-none focus:border-[#3d4b52]/70"
-              placeholder="Last Name"
+              placeholder={t("form.lastName")}
             />
           </div>
         </div>
 
-        {/* Email */}
-        <div className=" relative">
+        {/* ---------- Email ---------- */}
+        <div className="relative">
           <label className="block text-sm font-medium text-gray-700 mb-1">
-            Email <span className="text-red-500">*</span>
+            {t("form.email")} <span className="text-red-500">*</span>
           </label>
           <input
             type="email"
             {...register("email", {
-              required: "Email is required",
-              pattern: { value: /^\S+@\S+$/i, message: "Invalid email format" },
+              required: t("form.validation.emailRequired"),
+              pattern: {
+                value: /^\S+@\S+$/i,
+                message: t("form.validation.invalidEmail"),
+              },
             })}
             className="w-full px-3 py-2 border rounded-full border-[#3d4b52] text-[#3d4b52] focus:outline-none focus:border-[#3d4b52]/70"
-            placeholder="Email"
+            placeholder={t("form.email")}
           />
           {errors.email && (
             <p className="text-red-500 text-sm mt-1 absolute -bottom-5 pl-4">
@@ -66,25 +69,25 @@ function LandingHookForm() {
           )}
         </div>
 
-        {/* News */}
-        <div className=" relative">
+        {/* ---------- Message / Message ---------- */}
+        <div className="relative">
           <label className="block text-sm font-medium text-gray-700 mb-1">
-            News
+            {t("form.message")}
           </label>
           <textarea
-            {...register("news")}
+            {...register("message")}
             className="w-full px-3 py-2 border rounded-3xl border-[#3d4b52] text-[#3d4b52] focus:outline-none focus:border-[#3d4b52]/70"
             rows={3}
-            placeholder="News..."
+            placeholder={t("form.meesagePlaceholder")}
           ></textarea>
         </div>
 
-        {/* Submit Button */}
+        {/* ---------- Submit Button ---------- */}
         <button
           type="submit"
           className="w-full bg-[#3d4b52] hover:bg-[#3d4b52]/80 text-white font-medium py-2 mt-4 px-5 rounded-full transition-all cursor-pointer"
         >
-          Send
+          {t("form.submit")}
         </button>
       </form>
     </div>

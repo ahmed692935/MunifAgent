@@ -1,25 +1,28 @@
 import { useTranslation } from "react-i18next";
 
-function Services() {
 
-    // Add Translate
+function Works() {
+
+    // Add translate
     const { t } = useTranslation();
 
     // Get translated array from JSON
-    const servicesData = t("services.items") as unknown as {
-        id: number;
+    const works = t("works.items") as unknown as {
         title: string;
-        desc: string;
+        description: string;
     }[];
 
+
+
     return (
-        <section id="services" className="max-w-7xl mx-auto scroll-mt-20 py-14 px-5">
+        <section className="max-w-6xl mx-auto scroll-mt-20 py-14 px-5">
             <h2 className="md:text-5xl text-4xl text-[#3d4b52] font-bold text-center">
-                {t("services.title")}
+                {t("works.heading")}
             </h2>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-10">
-                {servicesData.map((item, index) => (
+            {/* Cards */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-10">
+                {works.map((item, index) => (
                     <div
                         key={index}
                         className="bg-white rounded-2xl shadow-md hover:shadow-xl border border-gray-200 p-6 transition-all duration-300"
@@ -27,12 +30,14 @@ function Services() {
                         <h3 className="text-xl font-bold text-[#3d4b52] mb-3">
                             {item.title}
                         </h3>
-                        <p className="text-gray-700 leading-relaxed">{item.desc}</p>
+                        <p className="text-gray-700 leading-relaxed">
+                            {item.description}
+                        </p>
                     </div>
                 ))}
             </div>
         </section>
-    )
+    );
 }
 
-export default Services
+export default Works;
