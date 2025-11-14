@@ -24,7 +24,7 @@ const router = createBrowserRouter([
     element: <Signup />,
   },
   {
-    path: "/add-agents",
+    path: "/add-agent",
     element: <AddAgents />,
   },
   {
