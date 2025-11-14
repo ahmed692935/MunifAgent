@@ -4,6 +4,12 @@ import { useTranslation } from "react-i18next";
 import Logo from "../../assets/Images/MrBot_Logo.webp";
 import { Link } from "react-router-dom";
 
+import { useSelector, useDispatch } from "react-redux";
+import type { RootState } from "../../store/store";
+import { logout } from "../../store/slices/authSlice";
+import { FaChevronDown, FaRegUserCircle } from "react-icons/fa";
+
+
 function Navbar() {
     const [isScrolled, setIsScrolled] = useState(false);
     const [menuOpen, setMenuOpen] = useState(false);
@@ -23,6 +29,13 @@ function Navbar() {
     ];
 
     const changeLanguage = (lang: string) => i18n.changeLanguage(lang);
+
+    // Logged In user
+    const dispatch = useDispatch();
+    const { user } = useSelector((state: RootState) => state.auth);
+
+    const [openDropdown, setOpenDropdown] = useState(false);
+
 
     return (
         <header
@@ -65,34 +78,87 @@ function Navbar() {
 
                 {/* Desktop Auth Buttons + Language Switcher */}
                 <div className="hidden md:flex items-center space-x-3">
-                    <Link to="#"
-                        className={`h-9 sm:h-10 px-3 sm:px-5 text-sm sm:text-base rounded-md font-semibold flex items-center justify-center transition-all duration-300 ${isScrolled
-                            ? "bg-white text-[#3d4b52] border border-[#3d4b52] hover:bg-[#3d4b52]/10"
-                            : "bg-white text-[#3d4b52]  border border-[#3d4b52] hover:bg-[#3d4b52]/10"
-                            }`}
-                    >
-                        {t("auth.signup")}
-                    </Link>
-                    <Link
-                        to="#"
-                        className={`h-9 sm:h-10 px-3 sm:px-5 text-sm sm:text-base rounded-md font-semibold flex items-center justify-center transition-all duration-300 ${isScrolled
-                            ? "bg-white text-[#3d4b52] border border-[#3d4b52] hover:bg-[#3d4b52]/10"
-                            : "bg-white text-[#3d4b52]  border border-[#3d4b52] hover:bg-[#3d4b52]/10"
-                            }`}
-                    >
-                        {t("auth.login")}
-                    </Link>
+
+                    {/* IF USER IS LOGGED IN */}
+                    {user ? (
+                        <div className="relative">
+                            <button
+                                onClick={() => setOpenDropdown(!openDropdown)}
+                                className="flex items-center gap-2 px-3 py-2 rounded-md cursor-pointer"
+                            >
+
+                                {/* 5 Characters + ... */}
+                                <span className="font-semibold text-[#3d4b52]">
+                                    {user.email.slice(0, 5)}...
+                                </span>
+
+                                <FaRegUserCircle />
+                                <FaChevronDown className="text-[#3d4b52]" size={12} />
+                            </button>
+
+
+                            {/* DROPDOWN */}
+                            {openDropdown && (
+                                <div className="absolute right-0 mt-2 bg-white border border-gray-200 rounded-md shadow-lg">
+
+                                    {/* FULL EMAIL SHOW */}
+                                    <div className="px-4 py-2 border-b border-gray-200 text-[#3d4b52]/70">
+                                        {user.email}
+                                    </div>
+
+                                    <Link
+                                        to="/dashboard"
+                                        className="block px-4 py-2 hover:bg-gray-100 text-[#3d4b52]"
+                                    >
+                                        Dashboard
+                                    </Link>
+
+                                    <button
+                                        onClick={() => dispatch(logout())}
+                                        className="w-full text-left px-4 py-2 hover:bg-gray-100 text-[#3d4b52]"
+                                    >
+                                        Logout
+                                    </button>
+                                </div>
+                            )}
+
+                        </div>
+                    ) : (
+                        <>
+                            {/* IF USER IS NOT LOGGED IN → SHOW SIGNUP + LOGIN */}
+                            <Link
+                                to="/signup"
+                                className={`h-9 sm:h-10 px-3 sm:px-5 text-sm sm:text-base rounded-md font-semibold flex items-center justify-center transition-all duration-300 ${isScrolled
+                                    ? "bg-white text-[#3d4b52] border border-[#3d4b52]"
+                                    : "bg-white text-[#3d4b52] border border-[#3d4b52]"
+                                    }`}
+                            >
+                                {t("auth.signup")}
+                            </Link>
+
+                            <Link
+                                to="/signin"
+                                className={`h-9 sm:h-10 px-3 sm:px-5 text-sm sm:text-base rounded-md font-semibold flex items-center justify-center transition-all duration-300 ${isScrolled
+                                    ? "bg-white text-[#3d4b52] border border-[#3d4b52]"
+                                    : "bg-white text-[#3d4b52] border border-[#3d4b52]"
+                                    }`}
+                            >
+                                {t("auth.login")}
+                            </Link>
+                        </>
+                    )}
 
                     {/* Language Switcher */}
                     <select
                         onChange={(e) => changeLanguage(e.target.value)}
                         value={i18n.language}
-                        className="h-9 sm:h-10 px-2 text-base rounded-md bg-white text-[#3d4b52] border border-[#3d4b52] hover:bg-[#3d4b52]/10 font-semibold cursor-pointer outline-0"
+                        className="h-9 sm:h-10 px-2 text-base rounded-md bg-white text-[#3d4b52] border border-[#3d4b52] font-semibold cursor-pointer"
                     >
                         <option value="en">English</option>
                         <option value="de">German</option>
                     </select>
                 </div>
+
 
                 {/* Mobile Hamburger */}
                 <button
@@ -137,20 +203,53 @@ function Navbar() {
 
 
                     <div className="flex flex-col space-y-3 w-[80%] mt-7">
-                        <Link
-                            to="#"
-                            onClick={() => setMenuOpen(false)}
-                            className="bg-[#3d4b52] text-white py-2 rounded-md font-semibold text-center transition-all"
-                        >
-                            {t("auth.signup")}
-                        </Link>
-                        <Link
-                            to="#"
-                            onClick={() => setMenuOpen(false)}
-                            className="bg-white border border-[#3d4b52] text-[#3d4b52] py-2 rounded-md font-semibold text-center transition-all"
-                        >
-                            {t("auth.login")}
-                        </Link>
+
+                        {user ? (
+                            <>
+                                <div className="flex items-center gap-3 bg-white border border-[#3d4b52] p-3 rounded-md">
+                                    <FaRegUserCircle />
+                                    <span className="font-semibold text-[#3d4b52]">
+                                        {user.email}
+                                    </span>
+                                </div>
+
+                                <Link
+                                    to="/dashboard"
+                                    onClick={() => setMenuOpen(false)}
+                                    className="bg-[#3d4b52] text-white py-2 rounded-md font-semibold text-center"
+                                >
+                                    Dashboard
+                                </Link>
+
+                                <button
+                                    onClick={() => {
+                                        dispatch(logout());
+                                        setMenuOpen(false);
+                                    }}
+                                    className="bg-white border border-[#3d4b52] text-[#3d4b52] py-2 rounded-md font-semibold"
+                                >
+                                    Logout
+                                </button>
+                            </>
+                        ) : (
+                            <>
+                                <Link
+                                    to="/signup"
+                                    onClick={() => setMenuOpen(false)}
+                                    className="bg-[#3d4b52] text-white py-2 rounded-md font-semibold text-center"
+                                >
+                                    {t("auth.signup")}
+                                </Link>
+
+                                <Link
+                                    to="/signin"
+                                    onClick={() => setMenuOpen(false)}
+                                    className="bg-white border border-[#3d4b52] text-[#3d4b52] py-2 rounded-md font-semibold text-center"
+                                >
+                                    {t("auth.login")}
+                                </Link>
+                            </>
+                        )}
 
                         <select
                             onChange={(e) => {
@@ -158,12 +257,15 @@ function Navbar() {
                                 setMenuOpen(false);
                             }}
                             value={i18n.language}
-                            className="h-10 px-2 text-base rounded-md border border-[#3d4b52] bg-white text-[#3d4b52] outline-0 font-semibold cursor-pointer"
+                            className="h-10 px-2 text-base rounded-md border border-[#3d4b52] bg-white text-[#3d4b52] font-semibold cursor-pointer"
                         >
                             <option value="en">English</option>
                             <option value="de">German</option>
                         </select>
                     </div>
+
+
+
                 </div>
             </div>
 
