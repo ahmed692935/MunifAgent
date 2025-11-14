@@ -6,7 +6,7 @@ function Footer() {
     const { t } = useTranslation();
 
     return (
-        <footer className="bg-[#3d4b52] py-8 px-5 mt-10">
+        <footer className="bg-[#3d4b52] py-8 px-5">
             <p className="text-center text-sm text-white">
                 ©{new Date().getFullYear()} | {t("footer.rights")}
             </p>

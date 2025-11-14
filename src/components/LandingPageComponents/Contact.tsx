@@ -11,7 +11,7 @@ function Contact() {
             <div className="flex flex-col md:flex-row w-full gap-10 justify-between">
 
                 {/* Left Content */}
-                <div className="md:w-[50%] md:max-w-2xs w-full">
+                <div className="md:w-[50%] md:max-w-[40%] w-full">
                     <h2 className="md:text-5xl text-4xl text-[#3d4b52] font-bold mb-10">
                         {t("contact.title")}
                     </h2>
