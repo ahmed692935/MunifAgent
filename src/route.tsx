@@ -1,5 +1,7 @@
+// route.tsx
 import { createBrowserRouter } from "react-router-dom";
-import LandingAuth from "./pages/LandingAuth";
+
+// Pages
 import LandingPage from "./pages/LandingPage";
 import SignIn from "./pages/Auth/SignIn";
 import Signup from "./pages/Auth/Signup";
@@ -7,34 +9,59 @@ import AddAgents from "./pages/AddAgents";
 import Dashboard from "./pages/Dashboard";
 import AgentDetails from "./pages/AgentDetails";
 
+// Route Guards
+import Private from "./routes/Private";
+import Public from "./routes/Public";
+
 const router = createBrowserRouter([
+  // PUBLIC ROUTES
   {
     path: "/",
-    element: <LandingAuth />,
-  },
-  {
-    path: "/landing",
-    element: <LandingPage />,
+    element: (
+      <LandingPage />
+    ),
   },
   {
     path: "/signin",
-    element: <SignIn />,
+    element: (
+      <Public>
+        <SignIn />
+      </Public>
+    ),
   },
   {
     path: "/signup",
-    element: <Signup />,
+    element: (
+      <Public>
+        <Signup />
+      </Public>
+    ),
   },
+
+  // PRIVATE ROUTES
   {
     path: "/add-agent",
-    element: <AddAgents />,
+    element: (
+      <Private>
+        <AddAgents />
+      </Private>
+    ),
   },
   {
     path: "/dashboard",
-    element: <Dashboard />,
+    element: (
+      <Private>
+        <Dashboard />
+      </Private>
+    ),
   },
   {
     path: "/agent/:id",
-    element: <AgentDetails />,
+    element: (
+      <Private>
+        <AgentDetails />
+      </Private>
+    ),
   },
 ]);
 
