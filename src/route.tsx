@@ -5,6 +5,7 @@ import SignIn from "./pages/Auth/SignIn";
 import Signup from "./pages/Auth/Signup";
 import AddAgents from "./pages/AddAgents";
 import Dashboard from "./pages/Dashboard";
+import AgentDetails from "./pages/AgentDetails";
 
 const router = createBrowserRouter([
   {
@@ -30,6 +31,10 @@ const router = createBrowserRouter([
   {
     path: "/dashboard",
     element: <Dashboard />,
+  },
+  {
+    path: "/agent/:id",
+    element: <AgentDetails />,
   },
 ]);
 

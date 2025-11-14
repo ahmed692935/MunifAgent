@@ -15,8 +15,8 @@ const Navbar = () => {
 
   const menuItems = [
     { key: "home", label: "Home", to: "/" },
+    { key: "dashbaord", label: "Dashboard", to: "/dashboard" },
     { key: "add-agent", label: "Add Agent", to: "/add-agent" },
-    { key: "view-agent", label: "View Agent", to: "/view-agent" },
   ];
 
   return (
