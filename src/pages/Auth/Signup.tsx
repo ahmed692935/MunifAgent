@@ -3,24 +3,26 @@ import type { SignUpFormData } from "../../Interface/Auth";
 import Bot from "../../assets/Images/MrBot_Logo.webp";
 
 import { useNavigate } from "react-router-dom";
-import { signupStart, signupFailure, signupSuccess } from "../../store/slices/authSlice"
-import { signupUser } from "../../api/api"
+import {
+  signupStart,
+  signupFailure,
+  signupSuccess,
+} from "../../store/slices/authSlice";
+import { signupUser } from "../../api/api";
 import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "../../store/store";
 import type { AxiosError } from "axios";
 import toast from "react-hot-toast";
 
 const SignUp = () => {
-
   const navigate = useNavigate();
   const handleNavigate = () => {
-    navigate("/");
+    navigate("/signin");
   };
 
   const dispatch = useDispatch();
   const { user, signupLoading } = useSelector((state: RootState) => state.auth);
   console.log(user, "user");
-
 
   const {
     register,
@@ -47,8 +49,8 @@ const SignUp = () => {
 
       // console.log("Form data:", data);
       // Handle sign up logic here
-    };
-  }
+    }
+  };
 
   return (
     <div className="min-h-screen bg-[#3d4b52] flex items-center justify-center px-4">
@@ -182,7 +184,9 @@ const SignUp = () => {
                 Signin
               </Link> */}
               <button
-                onClick={handleNavigate} className="text-[#3d4b52] hover:underline">
+                onClick={handleNavigate}
+                className="text-[#3d4b52] hover:underline cursor-pointer"
+              >
                 Signin
               </button>
             </p>
