@@ -175,7 +175,7 @@ const AgentDetails = () => {
         {/* Recording Modal */}
         {openRecording && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-            <div className="bg-white p-6 rounded-xl w-96 shadow-xl">
+            <div className="bg-white p-6 rounded-xl w-96 shadow-xl ">
               <h3 className="text-lg font-semibold mb-2">Recording</h3>
               <audio controls className="w-full">
                 <source src={openRecording} type="audio/mpeg" />
