@@ -79,7 +79,7 @@ const AgentDetails = () => {
       {/* Agent Info Card */}
       <div className="bg-white shadow-lg rounded-xl p-6 mb-8">
         <h2 className="text-xl font-semibold mb-4 text-gray-700">Agent Info</h2>
-        <div className="grid sm:grid-cols-2 gap-4 text-gray-700">
+        <div className="grid sm:grid-cols-2 gap-4 text-gray-700 ">
           <p>
             <strong>Name:</strong> {agent.agent_name}
           </p>
