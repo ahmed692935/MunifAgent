@@ -1,29 +1,7 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
-
-interface Agent {
-  id: number;
-  phone_number: string;
-  agent_name: string;
-  system_prompt: string;
-  voice_type: string;
-  language: string;
-  industry: string;
-  is_active: boolean;
-  owner_name: string;
-  total_calls: number;
-  completed_calls: number;
-  unanswered_calls: number;
-  avg_duration: number;
-}
-
-interface CallLog {
-  id: number;
-  created_at: string;
-  ended_at: string | null;
-  transcript: string;
-  recording_url: string;
-}
+import Navbar from "../components/Navbar";
+import type { Agent, CallLog } from "../Interface/AgentDetails";
 
 const AgentDetails = () => {
   const { id } = useParams();
@@ -70,145 +48,149 @@ const AgentDetails = () => {
   const [openRecording, setOpenRecording] = useState<string | null>(null);
 
   return (
-    <div className="p-6 max-w-5xl mx-auto">
-      {/* Agent Header */}
-      <h1 className="text-3xl font-bold text-[#3d4b52] mb-6">
-        Agent Details — {agent.agent_name}
-      </h1>
+    <>
+      <Navbar />
+      <div className="p-6 max-w-5xl mx-auto">
+        {/* Agent Header */}
+        <h1 className="text-3xl font-semibold text-[#3d4b52] mb-6 mt-24">
+          Agent Details —{" "}
+          <span className="font-normal text-2xl">{agent.agent_name}</span>
+        </h1>
 
-      {/* Agent Info Card */}
-      <div className="bg-white shadow-lg rounded-xl p-6 mb-8">
-        <h2 className="text-xl font-semibold mb-4 text-gray-700">Agent Info</h2>
-        <div className="grid sm:grid-cols-2 gap-4 text-gray-700 ">
-          <p>
-            <strong>Name:</strong> {agent.agent_name}
-          </p>
-          <p>
-            <strong>Phone:</strong> {agent.phone_number}
-          </p>
-          <p>
-            <strong>Language:</strong> {agent.language}
-          </p>
-          <p>
-            <strong>Voice Type:</strong> {agent.voice_type}
-          </p>
-          <p>
-            <strong>Industry:</strong> {agent.industry}
-          </p>
-          <p>
-            <strong>Owner:</strong> {agent.owner_name}
-          </p>
-        </div>
-        <div className="mt-4">
-          <strong>System Prompt:</strong>
-          <p className="mt-1 text-gray-600 whitespace-pre-line">
-            {agent.system_prompt}
-          </p>
-        </div>
-      </div>
-
-      {/* Stats */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-        <div className="bg-white p-4 rounded-lg shadow text-center">
-          <p className="text-2xl font-bold">{agent.total_calls}</p>
-          <p className="text-gray-600 text-sm">Total Calls</p>
-        </div>
-        <div className="bg-white p-4 rounded-lg shadow text-center">
-          <p className="text-2xl font-bold">{agent.completed_calls}</p>
-          <p className="text-gray-600 text-sm">Completed</p>
-        </div>
-        <div className="bg-white p-4 rounded-lg shadow text-center">
-          <p className="text-2xl font-bold">{agent.unanswered_calls}</p>
-          <p className="text-gray-600 text-sm">Unanswered</p>
-        </div>
-        <div className="bg-white p-4 rounded-lg shadow text-center">
-          <p className="text-2xl font-bold">{agent.avg_duration}s</p>
-          <p className="text-gray-600 text-sm">Avg Duration</p>
-        </div>
-      </div>
-
-      {/* Calls Table */}
-      {/* Calls Table */}
-      <div className="bg-white shadow-lg rounded-xl p-6">
-        <h2 className="text-xl font-semibold mb-4 text-gray-700">
-          Call History
-        </h2>
-
-        {/* Scrollable wrapper */}
-        <div className="overflow-x-auto">
-          <table className="min-w-full border-collapse">
-            <thead>
-              <tr className="bg-gray-100 text-gray-700 text-left">
-                <th className="p-3">Date</th>
-                <th className="p-3">Ended At</th>
-                <th className="p-3">Transcript</th>
-                <th className="p-3">Recording</th>
-              </tr>
-            </thead>
-            <tbody>
-              {calls.map((call) => (
-                <tr key={call.id} className="border-b">
-                  <td className="p-3">{call.created_at}</td>
-                  <td className="p-3">{call.ended_at || "N/A"}</td>
-                  <td className="p-3">
-                    <button
-                      onClick={() => setOpenTranscript(call.transcript)}
-                      className="text-blue-600 underline"
-                    >
-                      View
-                    </button>
-                  </td>
-                  <td className="p-3">
-                    <button
-                      onClick={() => setOpenRecording(call.recording_url)}
-                      className="text-blue-600 underline"
-                    >
-                      Play
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      {/* Transcript Modal */}
-      {openTranscript && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-          <div className="bg-white p-6 rounded-xl w-96 shadow-xl">
-            <h3 className="text-lg font-semibold mb-2">Transcript</h3>
-            <p className="text-gray-700 whitespace-pre-line">
-              {openTranscript}
+        {/* Agent Info Card */}
+        <div className="bg-white shadow-lg rounded-xl p-6 mb-8 hover:shadow-xl">
+          <h2 className="text-lg font-bold mb-4 text-[#3d4b52]">Agent Info</h2>
+          <div className="grid sm:grid-cols-2 gap-4 text-[#3d4b52]">
+            <p>
+              <strong>Name:</strong> {agent.agent_name}
             </p>
-            <button
-              onClick={() => setOpenTranscript(null)}
-              className="mt-4 w-full bg-[#3d4b52] text-white py-2 rounded-lg"
-            >
-              Close
-            </button>
+            <p>
+              <strong>Phone:</strong> {agent.phone_number}
+            </p>
+            <p>
+              <strong>Language:</strong> {agent.language}
+            </p>
+            <p>
+              <strong>Voice Type:</strong> {agent.voice_type}
+            </p>
+            <p>
+              <strong>Industry:</strong> {agent.industry}
+            </p>
+            <p>
+              <strong>Owner:</strong> {agent.owner_name}
+            </p>
+          </div>
+          <div className="mt-4">
+            <strong className="text-[#3d4b52] text-lg">System Prompt:</strong>
+            <p className="mt-1 text-gray-600 whitespace-pre-line">
+              {agent.system_prompt}
+            </p>
           </div>
         </div>
-      )}
 
-      {/* Recording Modal */}
-      {openRecording && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-          <div className="bg-white p-6 rounded-xl w-96 shadow-xl">
-            <h3 className="text-lg font-semibold mb-2">Recording</h3>
-            <audio controls className="w-full">
-              <source src={openRecording} type="audio/mpeg" />
-            </audio>
-            <button
-              onClick={() => setOpenRecording(null)}
-              className="mt-4 w-full bg-[#3d4b52] text-white py-2 rounded-lg"
-            >
-              Close
-            </button>
+        {/* Stats */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+          <div className="bg-white p-4 rounded-lg shadow text-center hover:shadow-xl border hover:scale-102">
+            <p className="text-2xl font-bold">{agent.total_calls}</p>
+            <p className="text-gray-600 text-sm">Total Calls</p>
+          </div>
+          <div className="bg-white p-4 rounded-lg shadow text-center hover:shadow-xl border hover:scale-102">
+            <p className="text-2xl font-bold">{agent.completed_calls}</p>
+            <p className="text-gray-600 text-sm">Completed</p>
+          </div>
+          <div className="bg-white p-4 rounded-lg shadow text-center hover:shadow-xl border hover:scale-102">
+            <p className="text-2xl font-bold">{agent.unanswered_calls}</p>
+            <p className="text-gray-600 text-sm">Unanswered</p>
+          </div>
+          <div className="bg-white p-4 rounded-lg shadow text-center hover:shadow-xl border hover:scale-102">
+            <p className="text-2xl font-bold">{agent.avg_duration}s</p>
+            <p className="text-gray-600 text-sm">Avg Duration</p>
           </div>
         </div>
-      )}
-    </div>
+
+        {/* Calls Table */}
+        {/* Calls Table */}
+        <div className="bg-white shadow-lg rounded-xl p-6 hover:shadow-xl">
+          <h2 className="text-xl font-semibold mb-4 text-gray-700">
+            Call History
+          </h2>
+
+          {/* Scrollable wrapper */}
+          <div className="overflow-x-auto rounded-t-xl">
+            <table className="min-w-full">
+              <thead>
+                <tr className="bg-[#3d4b52] text-white text-left">
+                  <th className="p-3">Date</th>
+                  <th className="p-3">Ended At</th>
+                  <th className="p-3">Transcript</th>
+                  <th className="p-3">Recording</th>
+                </tr>
+              </thead>
+              <tbody>
+                {calls.map((call) => (
+                  <tr key={call.id} className="border-b border-gray-300">
+                    <td className="p-3">{call.created_at}</td>
+                    <td className="p-3">{call.ended_at || "N/A"}</td>
+                    <td className="p-3">
+                      <button
+                        onClick={() => setOpenTranscript(call.transcript)}
+                        className="text-white bg-[#3d4b52] px-5 py-1 rounded-lg cursor-pointer"
+                      >
+                        View
+                      </button>
+                    </td>
+                    <td className="p-3">
+                      <button
+                        onClick={() => setOpenRecording(call.recording_url)}
+                        className="text-white bg-[#3d4b52] px-5 py-1 rounded-lg cursor-pointer"
+                      >
+                        Play
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        {/* Transcript Modal */}
+        {openTranscript && (
+          <div className="fixed inset-0 bg-[#3d4b52] bg-opacity-50 flex items-center justify-center">
+            <div className="bg-white p-6 rounded-xl w-96 shadow-xl">
+              <h3 className="text-lg font-semibold mb-2">Transcript</h3>
+              <p className="text-gray-700 whitespace-pre-line">
+                {openTranscript}
+              </p>
+              <button
+                onClick={() => setOpenTranscript(null)}
+                className="mt-4 w-full bg-[#3d4b52] text-white py-2 rounded-lg cursor-pointer"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* Recording Modal */}
+        {openRecording && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+            <div className="bg-white p-6 rounded-xl w-96 shadow-xl">
+              <h3 className="text-lg font-semibold mb-2">Recording</h3>
+              <audio controls className="w-full">
+                <source src={openRecording} type="audio/mpeg" />
+              </audio>
+              <button
+                onClick={() => setOpenRecording(null)}
+                className="mt-4 w-full bg-[#3d4b52] text-white py-2 rounded-lg cursor-pointer"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+    </>
   );
 };
 
