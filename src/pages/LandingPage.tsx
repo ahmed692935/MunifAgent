@@ -11,7 +11,7 @@ const Footer = lazy(() => import("../components/LandingPageComponents/Footer"))
 
 function LandingPage() {
     return (
-
+        //
         <>
             <Navbar />
             <HeroSection />
