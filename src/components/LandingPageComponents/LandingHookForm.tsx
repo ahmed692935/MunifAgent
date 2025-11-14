@@ -78,7 +78,7 @@ function LandingHookForm() {
             {...register("message")}
             className="w-full px-3 py-2 border rounded-3xl border-[#3d4b52] text-[#3d4b52] focus:outline-none focus:border-[#3d4b52]/70"
             rows={3}
-            placeholder={t("form.meesagePlaceholder")}
+            placeholder={t("form.messagePlaceholder")}
           ></textarea>
         </div>
 
