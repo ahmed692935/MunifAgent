@@ -33,7 +33,7 @@ const AddAgents = () => {
             </h1>
           </div>
 
-          <p className="text-gray-600">Create and configure your AI agent</p>
+          <p className="text-gray-600">Create and configure your AI agent </p>
         </div>
 
         {/* Form Card */}
