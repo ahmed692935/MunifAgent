@@ -1,21 +1,54 @@
 import { useForm } from "react-hook-form";
 import type { SignUpFormData } from "../../Interface/Auth";
-import { Link } from "react-router-dom";
 import Bot from "../../assets/Images/MrBot_Logo.webp";
 
+import { useNavigate } from "react-router-dom";
+import { signupStart, signupFailure, signupSuccess } from "../../store/slices/authSlice"
+import { signupUser } from "../../api/api"
+import { useDispatch, useSelector } from "react-redux";
+import type { RootState } from "../../store/store";
+import type { AxiosError } from "axios";
+import toast from "react-hot-toast";
+
 const SignUp = () => {
+
+  const navigate = useNavigate();
+  const handleNavigate = () => {
+    navigate("/");
+  };
+
+  const dispatch = useDispatch();
+  const { user, signupLoading } = useSelector((state: RootState) => state.auth);
+  console.log(user, "user");
+
+
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors, isSubmitting },
   } = useForm<SignUpFormData>();
 
   const onSubmit = async (data: SignUpFormData) => {
     // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    console.log("Form data:", data);
-    // Handle sign up logic here
-  };
+    // await new Promise((resolve) => setTimeout(resolve, 1000));
+    try {
+      dispatch(signupStart());
+      const response = await signupUser(data);
+      // console.log(response, "RESPONSE");
+      dispatch(signupSuccess(response));
+      toast.success("Sign-up successful! Please Sign in");
+      reset();
+      navigate("/signin");
+    } catch (err: unknown) {
+      const error = err as AxiosError<{ error: string }>;
+      toast.error(error?.response?.data?.error || "Oops an error occurred");
+      dispatch(signupFailure(error.message));
+
+      // console.log("Form data:", data);
+      // Handle sign up logic here
+    };
+  }
 
   return (
     <div className="min-h-screen bg-[#3d4b52] flex items-center justify-center px-4">
@@ -134,7 +167,7 @@ const SignUp = () => {
             <button
               type="button"
               onClick={handleSubmit(onSubmit)}
-              disabled={isSubmitting}
+              disabled={signupLoading}
               className="w-full bg-[#3d4b52] text-white py-3 rounded-lg font-semibold hover:bg-[#2d3b42] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isSubmitting ? "Creating Account..." : "Sign Up"}
@@ -145,9 +178,13 @@ const SignUp = () => {
           <div className="mt-6 text-center">
             <p className="text-sm text-gray-600">
               Already have an account?{" "}
-              <Link to="/signin" className="text-[#3d4b52] hover:underline">
+              {/* <Link to="/signin" onClick={handleNavigate} className="text-[#3d4b52] hover:underline">
                 Signin
-              </Link>
+              </Link> */}
+              <button
+                onClick={handleNavigate} className="text-[#3d4b52] hover:underline">
+                Signin
+              </button>
             </p>
           </div>
         </div>
