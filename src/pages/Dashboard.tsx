@@ -51,7 +51,6 @@ const Dashboard = () => {
   const [analytics, setAnalytics] = useState<any>(null);
   // const [loading, setLoading] = useState(true);
 
-
   const [apiAgents, setApiAgents] = useState<any[]>([]);
   const [agentLoading, setAgentLoading] = useState(true);
 
@@ -59,7 +58,6 @@ const Dashboard = () => {
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(5);
   const [totalPages, setTotalPages] = useState(1);
-
 
   // useEffect(() => {
   //   const fetchAnalytics = async () => {
@@ -82,7 +80,6 @@ const Dashboard = () => {
   // if (loading) {
   //   return <p className="text-center mt-40">Loading Dashboard...</p>;
   // }
-
 
   // useEffect(() => {
   //   const fetchAgents = async () => {
@@ -130,7 +127,6 @@ const Dashboard = () => {
         setPage(agentsRes?.data?.page || 1);
         setPageSize(agentsRes?.data?.page_size || 5);
         setTotalPages(agentsRes?.data?.total_pages || 1);
-
       } catch (err) {
         console.error("Dashboard Error:", err);
       } finally {
@@ -142,7 +138,6 @@ const Dashboard = () => {
     fetchData();
   }, [page, pageSize]);
 
-
   const handlePrevPage = () => {
     if (page > 1) setPage((prev) => prev - 1);
   };
@@ -150,8 +145,6 @@ const Dashboard = () => {
   const handleNextPage = () => {
     if (page < totalPages) setPage((prev) => prev + 1);
   };
-
-
 
   // if (loading) {
   //   return <p className="text-center mt-40">Loading Dashboard...</p>;
@@ -165,7 +158,9 @@ const Dashboard = () => {
         <div className="grid md:grid-cols-2 gap-4 mb-8 px-2 lg:px-20">
           <div className="bg-white border-1 text-[#3d4b52] rounded-xl p-6 shadow-md text-center transition-all duration-300 hover:shadow-2xl hover:border-2 hover:-translate-y-1">
             <h3 className="text-xl font-semibold">Total Calls Received</h3>
-            <p className="text-3xl font-bold mt-2">{analytics?.total_calls ?? 0}</p>
+            <p className="text-3xl font-bold mt-2">
+              {analytics?.total_calls ?? 0}
+            </p>
           </div>
 
           <div className="bg-white border-1 text-[#3d4b52] rounded-xl p-6 shadow-md text-center transition-all duration-300 hover:shadow-2xl hover:border-2 hover:-translate-y-1">
@@ -183,68 +178,71 @@ const Dashboard = () => {
             <div className="flex justify-center col-span-3 mt-10">
               <div className="w-12 h-12 border-4 border-t-[#3d4b52] border-gray-200 rounded-full animate-spin"></div>
             </div>
-          ) :
-            apiAgents.length === 0 ? (
-              <p className="text-center col-span-3 mt-10">No agents found</p>
-            ) : (
-
-              apiAgents.map((agent) => (
-                <div
-                  key={agent.id}
-                  className="bg-white shadow-lg rounded-2xl p-5 border-1 hover:border-2 hover:shadow-2xl transition cursor-pointer text-[#3d4b52]"
-                >
-                  {/* Top Row: Image + Name/Phone */}
-                  <div className="flex justify-between">
-                    <div className="flex items-center gap-4">
-                      <img
-                        src={agent.avatar_url || Agent}
-                        alt={agent.name}
-                        className="w-16 h-16 rounded-full object-cover border-2 border-white"
-                      />
-                      <div>
-                        <h3 className="text-lg font-semibold">{agent.agent_name}</h3>
-                        <p className="text-sm text-[#3d4b52]">{agent.phone_number}</p>
-                      </div>
-                    </div>
-                    <div className="flex gap-1">
-                      {/* <MdOutlineModeEdit className="hover:text-[#3d4b52] hover:underline" />
-                   */}
-                      <MdOutlineModeEdit
-                        className="hover:text-[#3d4b52] hover:underline cursor-pointer"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setSelectedAgent(agent);
-                          setEditOpen(true);
-                        }}
-                      />
-
-                      <MdDeleteOutline className="hover:text-red-600" />
+          ) : apiAgents.length === 0 ? (
+            <p className="text-center col-span-3 mt-10">No agents found</p>
+          ) : (
+            apiAgents.map((agent) => (
+              <div
+                key={agent.id}
+                className="bg-white shadow-lg rounded-2xl p-5 border-1 hover:border-2 hover:shadow-2xl transition cursor-pointer text-[#3d4b52]"
+              >
+                {/* Top Row: Image + Name/Phone */}
+                <div className="flex justify-between">
+                  <div className="flex items-center gap-4">
+                    <img
+                      src={agent.avatar_url || Agent}
+                      alt={agent.name}
+                      className="w-16 h-16 rounded-full object-cover border-2 border-white"
+                    />
+                    <div>
+                      <h3 className="text-lg font-semibold">
+                        {agent.agent_name}
+                      </h3>
+                      <p className="text-sm text-[#3d4b52]">
+                        {agent.phone_number}
+                      </p>
                     </div>
                   </div>
+                  <div className="flex gap-1">
+                    {/* <MdOutlineModeEdit className="hover:text-[#3d4b52] hover:underline" />
+                     */}
+                    <MdOutlineModeEdit
+                      className="hover:text-[#3d4b52] hover:underline cursor-pointer"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setSelectedAgent(agent);
+                        setEditOpen(true);
+                      }}
+                    />
 
-                  {/* Business Name */}
-                  <p className="mt-3 text-[#3d4b52] font-medium">
-                    {agent.owner_name}
-                  </p>
-
-                  {/* Prompt (truncate to 2 lines) */}
-                  <p className="mt-2 text-sm text-[#3d4b52] line-clamp-2">
-                    {agent.system_prompt ||
-                      "This agent is highly experienced and dedicated to providing the best service possible."}
-                  </p>
-
-                  {/* See More Button */}
-                  <button
-                    className="mt-5 w-full bg-[#3d4b52] text-white font-semibold py-2 rounded-lg hover:bg-[#2d3b42] cursor-pointer transition"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      navigate(`/agent/${agent.id}`);
-                    }}
-                  >
-                    See More
-                  </button>
+                    <MdDeleteOutline className="hover:text-red-600" />
+                  </div>
                 </div>
-              )))}
+
+                {/* Business Name */}
+                <p className="mt-3 text-[#3d4b52] font-medium">
+                  {agent.owner_name}
+                </p>
+
+                {/* Prompt (truncate to 2 lines) */}
+                <p className="mt-2 text-sm text-[#3d4b52] line-clamp-2">
+                  {agent.system_prompt ||
+                    "This agent is highly experienced and dedicated to providing the best service possible."}
+                </p>
+
+                {/* See More Button */}
+                <button
+                  className="mt-5 w-full bg-[#3d4b52] text-white font-semibold py-2 rounded-lg hover:bg-[#2d3b42] cursor-pointer transition"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    navigate(`/agent/${agent.id}`);
+                  }}
+                >
+                  See More
+                </button>
+              </div>
+            ))
+          )}
         </div>
 
         <div className="flex justify-center mt-8 gap-4">
@@ -266,8 +264,6 @@ const Dashboard = () => {
             Next
           </button>
         </div>
-
-
       </div>
       <EditAgentModal
         open={editOpen}
