@@ -174,20 +174,37 @@ const EditAgentModal = ({ open, onClose, data, onSave }: Props) => {
     formState: { errors },
   } = useForm<AgentFormData>();
 
+  // useEffect(() => {
+  //   if (data) {
+  //     reset({
+  //       agent_name: data.name,
+  //       phone_number: data.phone,
+  //       business_name: data.business,
+  //       industry: "",
+  //       language: "",
+  //       voice_type: "male",
+  //       system_prompt: data.prompt,
+  //       agent_image: data.image,
+  //     });
+
+  //     setPreview(data.image || null);
+  //   }
+  // }, [data, reset]);
+
   useEffect(() => {
     if (data) {
       reset({
-        agent_name: data.name,
-        phone_number: data.phone,
-        business_name: data.business,
-        industry: "",
-        language: "",
-        voice_type: "male",
-        system_prompt: data.prompt,
-        agent_image: data.image,
+        agent_name: data.agent_name || "",
+        phone_number: data.phone_number || "",
+        business_name: data.owner_name || "",
+        industry: data.industry || "",
+        language: data.language || "",
+        voice_type: data.voice_type || "",
+        system_prompt: data.system_prompt || "",
+        agent_image: data.avatar_url || "",
       });
 
-      setPreview(data.image || null);
+      setPreview(data.avatar_url || null);
     }
   }, [data, reset]);
 

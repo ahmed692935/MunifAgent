@@ -4,9 +4,15 @@ import type { AgentFormData } from "../Interface/AddAgent";
 import { RiUserAddFill } from "react-icons/ri";
 import Navbar from "../components/Navbar";
 
+import { useNavigate } from "react-router-dom";
+import { postAddAgent } from "../api/api"
+import toast from "react-hot-toast";
+
 const AddAgents = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [preview, setPreview] = useState<string | null>(null);
+
+  const navigate = useNavigate();
 
   const {
     register,
@@ -15,14 +21,61 @@ const AddAgents = () => {
     reset,
   } = useForm<AgentFormData>();
 
+  // const onSubmit = async (data: AgentFormData) => {
+  //   setIsSubmitting(true);
+  //   // Simulate API call
+  //   await new Promise((resolve) => setTimeout(resolve, 1000));
+  //   console.log("Form Data:", data);
+  //   setIsSubmitting(false);
+  //   reset();
+  // };
+
   const onSubmit = async (data: AgentFormData) => {
     setIsSubmitting(true);
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    console.log("Form Data:", data);
-    setIsSubmitting(false);
-    reset();
+
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        toast.error("User token missing!");
+        return;
+      }
+
+      // Create formData for API
+      const formData = new FormData();
+      formData.append("agent_name", data.agent_name);
+      formData.append("phone_number", data.phone_number);
+      formData.append("owner_name", data.business_name || "");
+      formData.append("industry", data.industry || "");
+      formData.append("language", data.language || "");
+      formData.append("voice_type", data.voice_type);
+      formData.append("system_prompt", data.system_prompt);
+
+      // image (file)
+      if (data.agent_image && data.agent_image[0]) {
+        formData.append("avatar", data.agent_image[0]);
+      }
+
+      const res = await postAddAgent(token, formData);
+
+      console.log("API Response:", res);
+      toast.success("Agent Created Successfully!");
+
+      reset();
+      setPreview(null);
+
+      // Redirect to Dashboard after success
+      setTimeout(() => {
+        navigate("/dashboard");
+      }, 700);
+
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      toast.error("Error creating agent!");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
+
 
   return (
     <>
@@ -263,7 +316,7 @@ const AddAgents = () => {
                     type="submit"
                     disabled={isSubmitting}
                     className="w-full py-4 px-6 text-white font-semibold rounded-lg shadow-lg bg-[#3d4b52] hover:shadow-xl hover:bg-[#2d3b42] transform cursor-pointer transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
-                    //   style={{ backgroundColor: "#3d4b52" }}
+                  //   style={{ backgroundColor: "#3d4b52" }}
                   >
                     {isSubmitting ? (
                       <span className="flex items-center justify-center">
