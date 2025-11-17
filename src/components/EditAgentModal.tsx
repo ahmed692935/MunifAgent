@@ -183,7 +183,7 @@ const EditAgentModal = ({ open, onClose, data, onSave }: Props) => {
   //       industry: "",
   //       language: "",
   //       voice_type: "male",
-  //       system_prompt: data.prompt,
+  //       system_prompt: data.prompt ,
   //       agent_image: data.image,
   //     });
 
