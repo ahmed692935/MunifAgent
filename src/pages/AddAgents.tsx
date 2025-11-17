@@ -5,7 +5,7 @@ import { RiUserAddFill } from "react-icons/ri";
 import Navbar from "../components/Navbar";
 
 import { useNavigate } from "react-router-dom";
-import { postAddAgent } from "../api/api"
+import { postAddAgent } from "../api/api";
 import toast from "react-hot-toast";
 
 const AddAgents = () => {
@@ -51,14 +51,15 @@ const AddAgents = () => {
       formData.append("system_prompt", data.system_prompt);
 
       // image (file)
-      if (data.agent_image && data.agent_image[0]) {
+      if (data.agent_image && data.agent_image[0] instanceof File) {
         formData.append("avatar", data.agent_image[0]);
       }
 
       const res = await postAddAgent(token, formData);
 
       console.log("API Response:", res);
-      toast.success("Agent Created Successfully!");
+      // toast.success("Agent Created Successfully!");
+      toast.success(res?.data?.message || "Agent Created Successfully!");
 
       reset();
       setPreview(null);
@@ -67,15 +68,21 @@ const AddAgents = () => {
       setTimeout(() => {
         navigate("/dashboard");
       }, 700);
-
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error submitting form:", error);
-      toast.error("Error creating agent!");
+
+      // Backend se aaya detailed error show karo
+      const apiMessage =
+        error?.response?.data?.error || // should catch your backend message
+        error?.response?.data?.message ||
+        error?.message ||
+        "Error creating agent!";
+
+      toast.error(apiMessage);
     } finally {
       setIsSubmitting(false);
     }
   };
-
 
   return (
     <>
@@ -316,7 +323,7 @@ const AddAgents = () => {
                     type="submit"
                     disabled={isSubmitting}
                     className="w-full py-4 px-6 text-white font-semibold rounded-lg shadow-lg bg-[#3d4b52] hover:shadow-xl hover:bg-[#2d3b42] transform cursor-pointer transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
-                  //   style={{ backgroundColor: "#3d4b52" }}
+                    //   style={{ backgroundColor: "#3d4b52" }}
                   >
                     {isSubmitting ? (
                       <span className="flex items-center justify-center">

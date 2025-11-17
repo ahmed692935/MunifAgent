@@ -65,3 +65,26 @@ export const getAgentById = (token: string, id: string) =>
   axios.get(`${API_URL}/agents/${id}`, {
     headers: { Authorization: `Bearer ${token}` },
   });
+
+export const deleteAgent = async (token: string, id: number) => {
+  const response = await axios.delete(`${API_URL}/agents/${id}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return response.data;
+};
+
+export const updateAgent = async (
+  token: string,
+  id: number,
+  data: FormData
+) => {
+  const response = await axios.put(`${API_URL}/agents/${id}`, data, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      Accept: "application/json",
+      "Content-Type": "multipart/form-data", // since we might upload image
+    },
+  });
+
+  return response.data;
+};

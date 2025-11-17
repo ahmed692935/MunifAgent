@@ -7,7 +7,8 @@ import { useEffect, useState } from "react";
 import EditAgentModal from "../components/EditAgentModal";
 import type { AgentType } from "../Interface/AddAgent";
 
-import { getAnalyticsDashboard, getAllAgents } from "../api/api"; // your API function
+import { getAnalyticsDashboard, getAllAgents, deleteAgent } from "../api/api"; // your API function
+import toast from "react-hot-toast";
 
 const Dashboard = () => {
   const [editOpen, setEditOpen] = useState(false);
@@ -100,6 +101,25 @@ const Dashboard = () => {
 
   //   fetchAgents();
   // }, [getAllAgents]);
+
+  const handleDeleteAgent = async (id: number) => {
+    const token = localStorage.getItem("token");
+    if (!token) return;
+
+    try {
+      const response = await deleteAgent(token, id); // call API
+      // Remove agent from state after deletion
+      setApiAgents((prev) => prev.filter((a) => a.id !== id));
+
+      // Show toast/message from API response
+      toast.success(response?.message || "Agent deleted successfully");
+    } catch (err: any) {
+      console.error("Delete Agent Error:", err);
+
+      // Show API error message if available
+      toast.error(err?.response?.data?.message || "Failed to delete agent");
+    }
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -215,7 +235,13 @@ const Dashboard = () => {
                       }}
                     />
 
-                    <MdDeleteOutline className="hover:text-red-600" />
+                    <MdDeleteOutline
+                      className="hover:text-red-600"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleDeleteAgent(agent.id);
+                      }}
+                    />
                   </div>
                 </div>
 

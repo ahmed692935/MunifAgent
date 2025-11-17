@@ -13,6 +13,8 @@ export interface Agent {
   completed_calls: number;
   unanswered_calls: number;
   avg_duration: number;
+  avatar_url: string;
+  call_stats: CallStats;
 }
 
 export interface CallLog {
@@ -21,4 +23,14 @@ export interface CallLog {
   ended_at: string | null;
   transcript: string;
   recording_url: string;
+}
+
+export interface CallStats {
+  total_calls: number;
+  completed_calls: number;
+  unanswered_calls: number;
+  avg_duration: number;
+  total_duration?: number;
+  first_call_at?: string | null;
+  last_call_at?: string | null;
 }

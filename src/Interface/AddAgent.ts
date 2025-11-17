@@ -1,5 +1,6 @@
 export interface AgentFormData {
-  agent_image: string;
+  // agent_image?: string | File;
+  agent_image?: FileList | string;
   agent_name: string;
   phone_number: string;
   system_prompt: string;
@@ -27,5 +28,5 @@ export interface AgentType {
   system_prompt: string;
   language: string;
   industry: string;
-  voice_type: "male" | "female" | "non-binary"
+  voice_type: "male" | "female" | "non-binary";
 }

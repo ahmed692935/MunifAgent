@@ -156,6 +156,7 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import type { AgentFormData, AgentType } from "../Interface/AddAgent";
 import { RiUserAddFill } from "react-icons/ri";
+import { updateAgent } from "../api/api";
 
 interface Props {
   open: boolean;
@@ -173,23 +174,6 @@ const EditAgentModal = ({ open, onClose, data, onSave }: Props) => {
     reset,
     formState: { errors },
   } = useForm<AgentFormData>();
-
-  // useEffect(() => {
-  //   if (data) {
-  //     reset({
-  //       agent_name: data.name,
-  //       phone_number: data.phone,
-  //       business_name: data.business,
-  //       industry: "",
-  //       language: "",
-  //       voice_type: "male",
-  //       system_prompt: data.prompt ,
-  //       agent_image: data.image,
-  //     });
-
-  //     setPreview(data.image || null);
-  //   }
-  // }, [data, reset]);
 
   useEffect(() => {
     if (data) {
@@ -210,12 +194,51 @@ const EditAgentModal = ({ open, onClose, data, onSave }: Props) => {
 
   if (!open) return null;
 
-  const submitHandler = (form: AgentFormData) => {
-    onSave({
-      ...form,
-      agent_image: preview || form.agent_image,
-    });
-    onClose();
+  // const submitHandler = (form: AgentFormData) => {
+  //   onSave({
+  //     ...form,
+  //     agent_image: preview || form.agent_image,
+  //   });
+  //   onClose();
+  // };
+
+  const submitHandler = async (form: AgentFormData) => {
+    const token = localStorage.getItem("token");
+    if (!token || !data) return;
+
+    try {
+      // Prepare FormData for image upload
+      const formData = new FormData();
+      formData.append("agent_name", form.agent_name);
+      formData.append("phone_number", form.phone_number);
+      formData.append("business_name", form.business_name);
+      formData.append("industry", form.industry);
+      formData.append("language", form.language);
+      formData.append("voice_type", form.voice_type);
+      formData.append("system_prompt", form.system_prompt);
+
+      // Only append image if a new one is selected
+      // if (form.agent_image && form.agent_image instanceof File) {
+      //   formData.append("agent_image", form.agent_image);
+      // }
+      if (form.agent_image && typeof form.agent_image !== "string" && form.agent_image[0]) {
+  formData.append("agent_image", form.agent_image[0]);
+}
+
+      // Call API
+      const res = await updateAgent(token, data.id, formData);
+
+      // Notify user
+      alert(res?.message || "Agent updated successfully");
+
+      // Pass updated data back to parent
+      onSave(res?.data || form);
+
+      onClose();
+    } catch (err: any) {
+      console.error("Update Agent Error:", err);
+      alert(err?.response?.data?.message || "Failed to update agent");
+    }
   };
 
   return (
