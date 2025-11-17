@@ -181,7 +181,7 @@ const AddAgents = () => {
                     <label className="block text-sm font-semibold text-gray-700 mb-2">
                       Voice Type
                     </label>
-                    <div className="grid grid-cols-3 gap-3">
+                    <div className="sm:grid grid-cols-3 gap-3">
                       {(["male", "female", "non-binary"] as const).map(
                         (type) => (
                           <label

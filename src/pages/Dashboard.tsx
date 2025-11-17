@@ -2,8 +2,14 @@
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Agent from "../assets/Images/Agent.png";
+import { MdDeleteOutline, MdOutlineModeEdit } from "react-icons/md";
+import { useState } from "react";
+import EditAgentModal from "../components/EditAgentModal";
+import type { AgentType } from "../Interface/AddAgent";
 
 const Dashboard = () => {
+  const [editOpen, setEditOpen] = useState(false);
+  const [selectedAgent, setSelectedAgent] = useState<AgentType | null>(null);
   const navigate = useNavigate();
 
   // Dummy data — replace with API call later
@@ -64,18 +70,33 @@ const Dashboard = () => {
             <div
               key={agent.id}
               className="bg-white shadow-lg rounded-2xl p-5 border-1 hover:border-2 hover:shadow-2xl transition cursor-pointer text-[#3d4b52]"
-              onClick={() => navigate(`/agent/${agent.id}`)}
             >
               {/* Top Row: Image + Name/Phone */}
-              <div className="flex items-center gap-4">
-                <img
-                  src={agent.image || Agent}
-                  alt={agent.name}
-                  className="w-16 h-16 rounded-full object-cover border-2 border-white"
-                />
-                <div>
-                  <h3 className="text-lg font-semibold">{agent.name}</h3>
-                  <p className="text-sm text-[#3d4b52]">{agent.phone}</p>
+              <div className="flex justify-between">
+                <div className="flex items-center gap-4">
+                  <img
+                    src={agent.image || Agent}
+                    alt={agent.name}
+                    className="w-16 h-16 rounded-full object-cover border-2 border-white"
+                  />
+                  <div>
+                    <h3 className="text-lg font-semibold">{agent.name}</h3>
+                    <p className="text-sm text-[#3d4b52]">{agent.phone}</p>
+                  </div>
+                </div>
+                <div className="flex gap-1">
+                  {/* <MdOutlineModeEdit className="hover:text-[#3d4b52] hover:underline" />
+                   */}
+                  <MdOutlineModeEdit
+                    className="hover:text-[#3d4b52] hover:underline cursor-pointer"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setSelectedAgent(agent);
+                      setEditOpen(true);
+                    }}
+                  />
+
+                  <MdDeleteOutline className="hover:text-red-600" />
                 </div>
               </div>
 
@@ -104,6 +125,14 @@ const Dashboard = () => {
           ))}
         </div>
       </div>
+      <EditAgentModal
+        open={editOpen}
+        onClose={() => setEditOpen(false)}
+        data={selectedAgent}
+        onSave={(updatedData) => {
+          console.log("Updated:", updatedData);
+        }}
+      />
     </>
   );
 };

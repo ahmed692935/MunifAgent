@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useParams } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import type { Agent, CallLog } from "../Interface/AgentDetails";
+import AgentImg from "../assets/Images/Agent.png";
 
 const AgentDetails = () => {
   const { id } = useParams();
@@ -51,11 +52,16 @@ const AgentDetails = () => {
     <>
       <Navbar />
       <div className="p-6 max-w-5xl mx-auto">
-        {/* Agent Header */}
-        <h1 className="text-3xl font-semibold text-[#3d4b52] mb-6 mt-24">
-          Agent Details —{" "}
-          <span className="font-normal text-2xl">{agent.agent_name}</span>
-        </h1>
+        <div className="md:flex justify-between items-end">
+          {/* Agent Header */}
+          <h1 className="text-3xl font-semibold text-[#3d4b52] mb-6 mt-24">
+            Agent Details —{" "}
+            <span className="font-normal text-2xl">{agent.agent_name}</span>
+          </h1>
+          <div>
+            <img src={AgentImg} alt="Agent Image" className="h-20 w-20 rounded-full" />
+          </div>
+        </div>
 
         {/* Agent Info Card */}
         <div className="bg-white shadow-lg rounded-xl p-6 mb-8 hover:shadow-xl">

@@ -3,7 +3,8 @@ export interface Agent {
   phone_number: string;
   agent_name: string;
   system_prompt: string;
-  voice_type: string;
+  //   voice_type: string;
+  voice_type: "male" | "female" | "non-binary";
   language: string;
   industry: string;
   is_active: boolean;

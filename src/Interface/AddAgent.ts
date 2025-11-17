@@ -6,5 +6,14 @@ export interface AgentFormData {
   industry: string;
   language: string;
   business_name: string;
-  voice_type: "male" | "female" | "binary";
+  voice_type: "male" | "female" | "non-binary";
+}
+
+export interface AgentType {
+  id: number;
+  image: string;
+  name: string;
+  phone: string;
+  business: string;
+  prompt: string;
 }
