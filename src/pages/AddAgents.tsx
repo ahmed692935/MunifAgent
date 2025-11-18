@@ -7,6 +7,7 @@ import Navbar from "../components/Navbar";
 import { useNavigate } from "react-router-dom";
 import { postAddAgent } from "../api/api";
 import toast from "react-hot-toast";
+import type { AxiosError } from "axios";
 
 const AddAgents = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -20,15 +21,6 @@ const AddAgents = () => {
     formState: { errors },
     reset,
   } = useForm<AgentFormData>();
-
-  // const onSubmit = async (data: AgentFormData) => {
-  //   setIsSubmitting(true);
-  //   // Simulate API call
-  //   await new Promise((resolve) => setTimeout(resolve, 1000));
-  //   console.log("Form Data:", data);
-  //   setIsSubmitting(false);
-  //   reset();
-  // };
 
   const onSubmit = async (data: AgentFormData) => {
     setIsSubmitting(true);
@@ -64,18 +56,14 @@ const AddAgents = () => {
       reset();
       setPreview(null);
 
-      // Redirect to Dashboard after success
       setTimeout(() => {
         navigate("/dashboard");
       }, 700);
-    } catch (error: any) {
-      console.error("Error submitting form:", error);
-
-      // Backend se aaya detailed error show karo
+    } catch (error: unknown) {
+      const axiosError = error as AxiosError<{ error: string }>;
       const apiMessage =
-        error?.response?.data?.error || // should catch your backend message
-        error?.response?.data?.message ||
-        error?.message ||
+        axiosError?.response?.data?.error ||
+        axiosError?.message ||
         "Error creating agent!";
 
       toast.error(apiMessage);
@@ -222,19 +210,26 @@ const AddAgents = () => {
                     />
                   </div>
                 </div>
-                {/* Language & Voice Type Row */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-2">
                       Language
                     </label>
-                    <input
-                      type="text"
+
+                    <select
+                      defaultValue="de"
                       {...register("language", {})}
                       className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg 
-           focus:border-[#3d4b52] focus:ring-0 outline-none transition-colors"
-                      placeholder="e.g., English, German"
-                    />
+      focus:border-[#3d4b52] focus:ring-0 outline-none transition-colors bg-white"
+                    >
+                      <option value="de">German</option>
+                      <option value="en">English</option>
+                      <option value="fr">French</option>
+                      <option value="it">Italian</option>
+                      <option value="pt">Portuguese</option>
+                      <option value="pl">Polish</option>
+                      <option value="nl">Dutch</option>
+                    </select>
                   </div>
 
                   <div>
@@ -295,7 +290,6 @@ const AddAgents = () => {
                       </p>
                     )}
                   </div>
-                  {/* <div></div> */}
                 </div>
                 {/* System Prompt */}
                 <div>

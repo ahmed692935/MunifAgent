@@ -10,15 +10,6 @@ export interface AgentFormData {
   voice_type: "male" | "female" | "non-binary";
 }
 
-// export interface AgentType {
-//   id: number;
-//   image: string;
-//   name: string;
-//   phone: string;
-//   business: string;
-//   prompt: string;
-// }
-
 export interface AgentType {
   id: number;
   avatar_url: string;
@@ -29,4 +20,9 @@ export interface AgentType {
   language: string;
   industry: string;
   voice_type: "male" | "female" | "non-binary";
+}
+
+export interface AnalyticsData {
+  total_calls: number;
+  total_agents: number;
 }

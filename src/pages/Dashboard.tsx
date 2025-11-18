@@ -5,54 +5,24 @@ import Agent from "../assets/Images/Agent.png";
 import { MdDeleteOutline, MdOutlineModeEdit } from "react-icons/md";
 import { useEffect, useState } from "react";
 import EditAgentModal from "../components/EditAgentModal";
-import type { AgentType } from "../Interface/AddAgent";
+import type { AgentType, AnalyticsData } from "../Interface/AddAgent";
 
-import { getAnalyticsDashboard, getAllAgents, deleteAgent } from "../api/api"; // your API function
+import { getAnalyticsDashboard, getAllAgents, deleteAgent } from "../api/api";
 import toast from "react-hot-toast";
+import type { AxiosError } from "axios";
 
 const Dashboard = () => {
   const [editOpen, setEditOpen] = useState(false);
   const [selectedAgent, setSelectedAgent] = useState<AgentType | null>(null);
   const navigate = useNavigate();
+  const [deletingId, setDeletingId] = useState<number | null>(null);
 
-  // Dummy data — replace with API call later
-  // const agents = [
-  //   {
-  //     id: 1,
-  //     image: "",
-  //     name: "John Doe",
-  //     phone: "+1 234 567 890",
-  //     business: "Tech Solutions",
-  //     prompt:
-  //       "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-  //   },
-  //   {
-  //     id: 2,
-  //     image: "",
-  //     name: "Sarah Khan",
-  //     phone: "+92 300 1234567",
-  //     business: "SkyLine Marketing",
-  //     prompt:
-  //       "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-  //   },
-  //   {
-  //     id: 3,
-  //     image: "",
-  //     name: "Ali Raza",
-  //     phone: "+92 333 9876543",
-  //     business: "Alpha Connect",
-  //     prompt:
-  //       "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-  //   },
-  // ];
+  // const [analytics, setAnalytics] = useState<any>(null);
+  const [analytics, setAnalytics] = useState<AnalyticsData | null>(null);
 
-  // const totalCalls = 120;
-  // const totalAgents = agents.length;
+  // const [apiAgents, setApiAgents] = useState<any[]>([]);
+  const [apiAgents, setApiAgents] = useState<AgentType[]>([]);
 
-  const [analytics, setAnalytics] = useState<any>(null);
-  // const [loading, setLoading] = useState(true);
-
-  const [apiAgents, setApiAgents] = useState<any[]>([]);
   const [agentLoading, setAgentLoading] = useState(true);
 
   // Dynamic pagination
@@ -60,64 +30,21 @@ const Dashboard = () => {
   const [pageSize, setPageSize] = useState(5);
   const [totalPages, setTotalPages] = useState(1);
 
-  // useEffect(() => {
-  //   const fetchAnalytics = async () => {
-  //     try {
-  //       const token = localStorage.getItem("token"); // or wherever stored
-  //       if (!token) return;
-
-  //       const res = await getAnalyticsDashboard(token);
-  //       setAnalytics(res.data);
-  //     } catch (err) {
-  //       console.error("Analytics Error:", err);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
-
-  //   fetchAnalytics();
-  // }, [getAnalyticsDashboard]);
-
-  // if (loading) {
-  //   return <p className="text-center mt-40">Loading Dashboard...</p>;
-  // }
-
-  // useEffect(() => {
-  //   const fetchAgents = async () => {
-  //     try {
-  //       const token = localStorage.getItem("token");
-  //       if (!token) return;
-
-  //       const res = await getAllAgents(token);
-
-  //       console.log("Agents:", res?.data?.agents);
-  //       setApiAgents(res?.data?.agents || []);
-  //     } catch (err) {
-  //       console.error("Agents Error:", err);
-  //     } finally {
-  //       setAgentLoading(false);
-  //     }
-  //   };
-
-  //   fetchAgents();
-  // }, [getAllAgents]);
-
   const handleDeleteAgent = async (id: number) => {
     const token = localStorage.getItem("token");
     if (!token) return;
+    setDeletingId(id);
 
     try {
       const response = await deleteAgent(token, id); // call API
-      // Remove agent from state after deletion
       setApiAgents((prev) => prev.filter((a) => a.id !== id));
-
-      // Show toast/message from API response
       toast.success(response?.message || "Agent deleted successfully");
-    } catch (err: any) {
-      console.error("Delete Agent Error:", err);
-
-      // Show API error message if available
-      toast.error(err?.response?.data?.message || "Failed to delete agent");
+      await reloadAgents();
+    } catch (err: unknown) {
+      const error = err as AxiosError<{ error: string }>;
+      toast.error(error?.response?.data?.error || "Failed to delete agent");
+    } finally {
+      setDeletingId(null);
     }
   };
 
@@ -143,7 +70,6 @@ const Dashboard = () => {
         const agentsData = agentsRes?.data?.agents || [];
         setApiAgents(agentsData);
 
-        // Set dynamic pagination from API response
         setPage(agentsRes?.data?.page || 1);
         setPageSize(agentsRes?.data?.page_size || 5);
         setTotalPages(agentsRes?.data?.total_pages || 1);
@@ -166,9 +92,17 @@ const Dashboard = () => {
     if (page < totalPages) setPage((prev) => prev + 1);
   };
 
-  // if (loading) {
-  //   return <p className="text-center mt-40">Loading Dashboard...</p>;
-  // }
+  const reloadAgents = async () => {
+    const token = localStorage.getItem("token");
+    if (!token) return;
+
+    try {
+      const agentsRes = await getAllAgents(token, page, pageSize);
+      setApiAgents(agentsRes?.data?.agents || []);
+    } catch (error) {
+      console.error("Reload Agents Error", error);
+    }
+  };
 
   return (
     <>
@@ -211,7 +145,7 @@ const Dashboard = () => {
                   <div className="flex items-center gap-4">
                     <img
                       src={agent.avatar_url || Agent}
-                      alt={agent.name}
+                      alt="Agent Image"
                       className="w-16 h-16 rounded-full object-cover border-2 border-white"
                     />
                     <div>
@@ -235,13 +169,17 @@ const Dashboard = () => {
                       }}
                     />
 
-                    <MdDeleteOutline
-                      className="hover:text-red-600"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleDeleteAgent(agent.id);
-                      }}
-                    />
+                    {deletingId === agent.id ? (
+                      <div className="w-5 h-5 border-2 border-t-red-600 border-gray-300 rounded-full animate-spin"></div>
+                    ) : (
+                      <MdDeleteOutline
+                        className="hover:text-red-600 cursor-pointer"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleDeleteAgent(agent.id);
+                        }}
+                      />
+                    )}
                   </div>
                 </div>
 
@@ -295,8 +233,11 @@ const Dashboard = () => {
         open={editOpen}
         onClose={() => setEditOpen(false)}
         data={selectedAgent}
-        onSave={(updatedData) => {
-          console.log("Updated:", updatedData);
+        // onSave={(updatedData) => {
+        //   console.log("Updated:", updatedData);
+        // }}
+        onSave={() => {
+          reloadAgents();
         }}
       />
     </>

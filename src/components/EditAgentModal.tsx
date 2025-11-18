@@ -157,6 +157,8 @@ import { useForm } from "react-hook-form";
 import type { AgentFormData, AgentType } from "../Interface/AddAgent";
 import { RiUserAddFill } from "react-icons/ri";
 import { updateAgent } from "../api/api";
+import toast from "react-hot-toast";
+import type { AxiosError } from "axios";
 
 interface Props {
   open: boolean;
@@ -167,6 +169,7 @@ interface Props {
 
 const EditAgentModal = ({ open, onClose, data, onSave }: Props) => {
   const [preview, setPreview] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const {
     register,
@@ -205,39 +208,40 @@ const EditAgentModal = ({ open, onClose, data, onSave }: Props) => {
   const submitHandler = async (form: AgentFormData) => {
     const token = localStorage.getItem("token");
     if (!token || !data) return;
+    setIsLoading(true);
 
     try {
       // Prepare FormData for image upload
       const formData = new FormData();
       formData.append("agent_name", form.agent_name);
       formData.append("phone_number", form.phone_number);
-      formData.append("business_name", form.business_name);
+      formData.append("owner_name", form.business_name);
       formData.append("industry", form.industry);
       formData.append("language", form.language);
       formData.append("voice_type", form.voice_type);
       formData.append("system_prompt", form.system_prompt);
 
-      // Only append image if a new one is selected
-      // if (form.agent_image && form.agent_image instanceof File) {
-      //   formData.append("agent_image", form.agent_image);
-      // }
-      if (form.agent_image && typeof form.agent_image !== "string" && form.agent_image[0]) {
-  formData.append("agent_image", form.agent_image[0]);
-}
+      if (
+        form.agent_image &&
+        typeof form.agent_image !== "string" &&
+        form.agent_image[0]
+      ) {
+        formData.append("avatar", form.agent_image[0]);
+      }
 
       // Call API
       const res = await updateAgent(token, data.id, formData);
 
       // Notify user
-      alert(res?.message || "Agent updated successfully");
+      toast.success(res?.message || "Agent updated successfully");
 
-      // Pass updated data back to parent
       onSave(res?.data || form);
-
       onClose();
-    } catch (err: any) {
-      console.error("Update Agent Error:", err);
-      alert(err?.response?.data?.message || "Failed to update agent");
+    } catch (err: unknown) {
+      const error = err as AxiosError<{ error: string }>;
+      toast.error(error?.response?.data?.error || "Failed to update agent");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -355,7 +359,7 @@ const EditAgentModal = ({ open, onClose, data, onSave }: Props) => {
 
           {/* Language & Voice Type */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
+            {/* <div>
               <label className="text-sm font-semibold text-[#3d4b52]">
                 Language
               </label>
@@ -363,6 +367,26 @@ const EditAgentModal = ({ open, onClose, data, onSave }: Props) => {
                 {...register("language")}
                 className="w-full border-2 mt-1 px-3 py-2 rounded-lg border-gray-300 focus:outline-none focus:border-[#3d4b52]"
               />
+            </div> */}
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                Language
+              </label>
+
+              <select
+                {...register("language", {})}
+                className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg 
+      focus:border-[#3d4b52] focus:ring-0 outline-none transition-colors bg-white"
+              >
+                <option value="">Select Language</option>
+                <option value="en">English</option>
+                <option value="de">German</option>
+                <option value="fr">French</option>
+                <option value="it">Italian</option>
+                <option value="pt">Portuguese</option>
+                <option value="pl">Polish</option>
+                <option value="nl">Dutch</option>
+              </select>
             </div>
 
             <div>
@@ -397,10 +421,50 @@ const EditAgentModal = ({ open, onClose, data, onSave }: Props) => {
           {/* Save */}
           <button
             type="submit"
+            disabled={isLoading}
+            className={`w-full py-3 rounded-lg transition cursor-pointer text-white
+    ${
+      isLoading
+        ? "bg-gray-400 cursor-not-allowed"
+        : "bg-[#3d4b52] hover:bg-[#2d3b42]"
+    }
+  `}
+          >
+            {isLoading ? (
+              <span className="flex items-center justify-center gap-2">
+                <svg
+                  className="animate-spin h-5 w-5 text-white"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  ></circle>
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+                  ></path>
+                </svg>
+                Updating...
+              </span>
+            ) : (
+              "Save Changes"
+            )}
+          </button>
+
+          {/* <button
+            type="submit"
             className="w-full bg-[#3d4b52] text-white py-3 rounded-lg hover:bg-[#2d3b42] transition cursor-pointer"
           >
             Save Changes
-          </button>
+          </button> */}
         </form>
       </div>
     </div>
