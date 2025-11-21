@@ -381,7 +381,7 @@ const AgentDetails = () => {
                       </td> */}
                       <td className="p-3">
                         <button
-                          className="text-white bg-[#3d4b52] px-5 py-1 rounded-lg cursor-pointer"
+                          className="text-white bg-[#3d4b52] hover:bg-[#2d3b42] px-5 py-1 rounded-lg cursor-pointer"
                           onClick={() => {
                             if (!call.transcript || !call.transcript.items)
                               return;
@@ -411,7 +411,7 @@ const AgentDetails = () => {
                           onClick={() =>
                             setOpenRecording(call.recording_presigned_url)
                           }
-                          className="text-white bg-[#3d4b52] px-5 py-1 rounded-lg cursor-pointer"
+                          className="text-white bg-[#3d4b52] hover:bg-[#2d3b42] px-5 py-1 rounded-lg cursor-pointer"
                         >
                           Play
                         </button>
@@ -437,7 +437,7 @@ const AgentDetails = () => {
               <h3 className="text-lg font-bold mb-4 text-center">Transcript</h3>
               <pre className="whitespace-pre-wrap">{transcriptData}</pre>
               <button
-                className="mt-4 w-full mt-10 bg-[#3d4b52] text-white py-2 rounded-lg cursor-pointer"
+                className="mt-4 w-full mt-10 bg-[#3d4b52] hover:bg-[#2d3b42] text-white py-2 rounded-lg cursor-pointer"
                 onClick={() => setOpenTranscript(null)}
               >
                 Close
@@ -482,7 +482,7 @@ const AgentDetails = () => {
               </audio>
               <button
                 onClick={() => setOpenRecording(null)}
-                className="mt-4 w-full bg-[#3d4b52] text-white py-2 rounded-lg cursor-pointer"
+                className="mt-4 w-full bg-[#3d4b52] hover:bg-[#2d3b42] text-white py-2 rounded-lg cursor-pointer"
               >
                 Close
               </button>

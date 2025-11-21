@@ -108,7 +108,7 @@ const SignIn = () => {
                   required: "Password is required",
                   minLength: {
                     value: 8,
-                    message: "Password must be at least 6 characters",
+                    message: "Password must be at least 8 characters",
                   },
                 })}
                 className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-[#3d4b52] transition-colors"
