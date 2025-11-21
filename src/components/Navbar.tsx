@@ -11,9 +11,7 @@ import { useNavigate } from "react-router-dom";
 import { FaRegUserCircle, FaChevronDown } from "react-icons/fa";
 
 const Navbar = () => {
-
   const navigate = useNavigate();
-
 
   const [isScrolled, setIsScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -36,14 +34,19 @@ const Navbar = () => {
 
   return (
     <header
-      className={`fixed top-0 left-0 w-full h-16 sm:h-20 z-50 transition-all duration-300 px-4 md:px-8 ${isScrolled ? "bg-white shadow-md" : "bg-white shadow-lg"
-        }`}
+      className={`fixed top-0 left-0 w-full h-16 sm:h-20 z-50 transition-all duration-300 px-4 md:px-8 ${
+        isScrolled ? "bg-white shadow-md" : "bg-white shadow-lg"
+      }`}
     >
       <div className="max-w-7xl mx-auto w-full h-full flex items-center justify-between">
-
         {/* Logo */}
         <Link to="/" className="w-20 h-16 sm:h-20">
-          <img src={Logo} alt="Logo" loading="lazy" className="w-full h-full object-cover" />
+          <img
+            src={Logo}
+            alt="Logo"
+            loading="lazy"
+            className="w-full h-full object-cover"
+          />
         </Link>
 
         {/* Desktop Menu */}
@@ -57,7 +60,6 @@ const Navbar = () => {
               {item.label}
             </Link>
           ))}
-
         </nav>
 
         <div>
@@ -76,7 +78,7 @@ const Navbar = () => {
               </button>
 
               {openDropdown && (
-                <div className="absolute right-0 mt-2 bg-white border border-gray-200 rounded-md shadow-lg w-40">
+                <div className="absolute right-0 mt-2 bg-white border border-gray-200 rounded-md shadow-lg w-60">
                   <div className="px-4 py-2 border-b border-gray-200 text-[#3d4b52]/70">
                     {user.email}
                   </div>
@@ -99,9 +101,7 @@ const Navbar = () => {
               Login
             </button>
           )}
-
         </div>
-
 
         {/* Mobile Hamburger */}
         <button
@@ -114,8 +114,9 @@ const Navbar = () => {
 
       {/* Mobile Slide Menu */}
       <div
-        className={`fixed top-0 right-0 h-full w-3/4 sm:w-2/3 bg-white shadow-lg z-50 transform transition-transform duration-500 ${menuOpen ? "translate-x-0" : "translate-x-full"
-          }`}
+        className={`fixed top-0 right-0 h-full w-3/4 sm:w-2/3 bg-white shadow-lg z-50 transform transition-transform duration-500 ${
+          menuOpen ? "translate-x-0" : "translate-x-full"
+        }`}
       >
         <button
           onClick={() => setMenuOpen(false)}
@@ -141,7 +142,6 @@ const Navbar = () => {
 
           {/* Mobile Auth */}
           <div className="flex flex-col space-y-3 w-[80%] mt-7">
-
             {user ? (
               <>
                 <div className="flex items-center gap-3 bg-white border border-[#3d4b52] p-3 rounded-md">

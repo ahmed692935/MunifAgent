@@ -209,7 +209,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Navbar from "../components/Navbar";
-import type { Agent, CallLog } from "../Interface/AgentDetails";
+import type { Agent, CallLog, TranscriptItem } from "../Interface/AgentDetails";
 import AgentImg from "../assets/Images/Agent.png";
 import { getAgentById } from "../api/api";
 
@@ -217,11 +217,12 @@ const AgentDetails = () => {
   const { id } = useParams();
 
   const [agent, setAgent] = useState<Agent | null>(null);
-  console.log(agent, "AAAAAAAAAKKKK");
   const [calls, setCalls] = useState<CallLog[]>([]);
   const [loading, setLoading] = useState(true);
 
   const [openTranscript, setOpenTranscript] = useState<string | null>(null);
+  const [transcriptData, setTranscriptData] = useState<string | null>(null);
+
   const [openRecording, setOpenRecording] = useState<string | null>(null);
 
   useEffect(() => {
@@ -236,7 +237,8 @@ const AgentDetails = () => {
         const agentData = agentRes.data.data;
         setAgent(agentData);
 
-        const callData: CallLog[] = agentData.calls?.data || [];
+        // const callData: CallLog[] = agentData.calls?.data || []; //old
+        const callData = agentData.calls?.data ?? []; //new
         setCalls(callData);
       } catch (err) {
         console.error("Agent Details Error:", err);
@@ -249,7 +251,14 @@ const AgentDetails = () => {
   }, [id]);
 
   if (loading) {
-    return <p className="text-center mt-40">Loading Agent Details...</p>;
+    return (
+      <div className="flex flex-col items-center justify-center mt-40">
+        <div className="w-10 h-10 border-4 border-gray-300 border-t-[#3d4b52] rounded-full animate-spin"></div>
+        <p className="text-center mt-4 text-[#3d4b52] font-medium">
+          Loading Agent Details...
+        </p>
+      </div>
+    );
   }
 
   if (!agent) {
@@ -329,7 +338,7 @@ const AgentDetails = () => {
           </div>
           <div className="bg-white p-4 rounded-lg shadow text-center hover:shadow-xl border hover:scale-102">
             <p className="text-2xl font-bold">
-              {agent?.call_stats?.avg_duration}s
+              {agent?.call_stats?.avg_duration}
             </p>
             <p className="text-gray-600 text-sm">Avg Duration</p>
           </div>
@@ -353,47 +362,55 @@ const AgentDetails = () => {
                   <th className="p-3">Recording</th>
                 </tr>
               </thead>
-              {/* <tbody>
-                {calls.map((call) => (
-                  <tr key={call.id} className="border-b border-gray-300">
-                    <td className="p-3">{call.created_at}</td>
-                    <td className="p-3">{call.ended_at || "N/A"}</td>
-                    <td className="p-3">
-                      <button
-                        onClick={() => setOpenTranscript(call.transcript)}
-                        className="text-white bg-[#3d4b52] px-5 py-1 rounded-lg cursor-pointer"
-                      >
-                        View
-                      </button>
-                    </td>
-                    <td className="p-3">
-                      <button
-                        onClick={() => setOpenRecording(call.recording_url)}
-                        className="text-white bg-[#3d4b52] px-5 py-1 rounded-lg cursor-pointer"
-                      >
-                        Play
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody> */}
               <tbody>
                 {calls.length > 0 ? (
                   calls.map((call) => (
                     <tr key={call.id} className="border-b border-gray-300">
                       <td className="p-3">{call.created_at}</td>
                       <td className="p-3">{call.ended_at || "N/A"}</td>
-                      <td className="p-3">
+                      {/* <td className="p-3">
                         <button
-                          onClick={() => setOpenTranscript(call.transcript)}
+                          // onClick={() => setOpenTranscript(call.transcript)}
+                          onClick={() =>
+                            fetchTranscript(call.transcript_presigned_url)
+                          }
                           className="text-white bg-[#3d4b52] px-5 py-1 rounded-lg cursor-pointer"
                         >
                           View
                         </button>
-                      </td>
+                      </td> */}
                       <td className="p-3">
                         <button
-                          onClick={() => setOpenRecording(call.recording_url)}
+                          className="text-white bg-[#3d4b52] px-5 py-1 rounded-lg cursor-pointer"
+                          onClick={() => {
+                            if (!call.transcript || !call.transcript.items)
+                              return;
+                            // Format transcript from local data
+                            const formatted = call.transcript.items
+                              .map((i: TranscriptItem) => {
+                                if (i.type === "message") {
+                                  const role =
+                                    i.role === "assistant" ? "Agent" : "User";
+                                  return `${role}: ${i.content.join(" ")}`;
+                                }
+                                return "";
+                              })
+                              .filter((line: string) => line.trim() !== "")
+                              .join("\n\n");
+                            setTranscriptData(formatted);
+                            setOpenTranscript(call.id.toString());
+                          }}
+                        >
+                          View Transcript
+                        </button>
+                      </td>
+
+                      <td className="p-3">
+                        <button
+                          // onClick={() => setOpenRecording(call.recording_url)}
+                          onClick={() =>
+                            setOpenRecording(call.recording_presigned_url)
+                          }
                           className="text-white bg-[#3d4b52] px-5 py-1 rounded-lg cursor-pointer"
                         >
                           Play
@@ -414,16 +431,14 @@ const AgentDetails = () => {
         </div>
 
         {/* Transcript Modal */}
-        {openTranscript && (
-          <div className="fixed inset-0 bg-[#3d4b52] bg-opacity-50 flex items-center justify-center">
-            <div className="bg-white p-6 rounded-xl w-96 shadow-xl">
-              <h3 className="text-lg font-semibold mb-2">Transcript</h3>
-              <p className="text-gray-700 whitespace-pre-line">
-                {openTranscript}
-              </p>
+        {openTranscript && transcriptData && (
+          <div className="fixed inset-0 bg-[#3d4b52] bg-opacity-50 flex items-center justify-center top-20 p-4">
+            <div className="bg-white p-6 rounded-lg max-w-3xl w-full max-h-[80vh] overflow-y-auto">
+              <h3 className="text-lg font-bold mb-4 text-center">Transcript</h3>
+              <pre className="whitespace-pre-wrap">{transcriptData}</pre>
               <button
+                className="mt-4 w-full mt-10 bg-[#3d4b52] text-white py-2 rounded-lg cursor-pointer"
                 onClick={() => setOpenTranscript(null)}
-                className="mt-4 w-full bg-[#3d4b52] text-white py-2 rounded-lg cursor-pointer"
               >
                 Close
               </button>
@@ -431,13 +446,39 @@ const AgentDetails = () => {
           </div>
         )}
 
+        {/* {openTranscript && (
+          <div className="fixed inset-0 bg-[#3d4b52] bg-opacity-50 flex items-center justify-center">
+            <div className="bg-white p-6 rounded-xl w-96 shadow-xl">
+              <h3 className="text-lg font-semibold mb-2">Transcript</h3>
+
+              {openTranscript === "loading" ? (
+                <p className="text-gray-600">Loading transcript...</p>
+              ) : (
+                <pre className="text-gray-700 whitespace-pre-wrap">
+                  {transcriptData}
+                </pre>
+              )}
+
+              <button
+                onClick={() => {
+                  setOpenTranscript(null);
+                  setTranscriptData(null);
+                }}
+                className="mt-4 w-full bg-[#3d4b52] text-white py-2 rounded-lg cursor-pointer"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        )} */}
+
         {/* Recording Modal */}
         {openRecording && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+          <div className="fixed inset-0 bg-[#3d4b52] bg-opacity-50 flex items-center justify-center">
             <div className="bg-white p-6 rounded-xl w-96 shadow-xl ">
               <h3 className="text-lg font-semibold mb-2">Recording</h3>
-              <audio controls className="w-full">
-                <source src={openRecording} type="audio/mpeg" />
+              <audio controls autoPlay className="w-full">
+                <source src={openRecording} type="audio/ogg" />
               </audio>
               <button
                 onClick={() => setOpenRecording(null)}
