@@ -269,7 +269,7 @@ const AgentDetails = () => {
           <div>
             <img
               // src={AgentImg}
-              src={agent?.avatar_url || AgentImg}
+              src={agent?.avatar_presigned_url || AgentImg}
               alt="Agent Image"
               className="h-20 w-20 rounded-full"
             />

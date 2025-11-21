@@ -7,7 +7,12 @@ import { useEffect, useState } from "react";
 import EditAgentModal from "../components/EditAgentModal";
 import type { AgentType, AnalyticsData } from "../Interface/AddAgent";
 
-import { getAnalyticsDashboard, getAllAgents, deleteAgent } from "../api/api";
+import {
+  getAnalyticsDashboard,
+  getAllAgents,
+  deleteAgent,
+  searchAgentsByOwner,
+} from "../api/api";
 import toast from "react-hot-toast";
 import type { AxiosError } from "axios";
 
@@ -16,6 +21,30 @@ const Dashboard = () => {
   const [selectedAgent, setSelectedAgent] = useState<AgentType | null>(null);
   const navigate = useNavigate();
   const [deletingId, setDeletingId] = useState<number | null>(null);
+
+  const [searchText, setSearchText] = useState("");
+  const [searchResults, setSearchResults] = useState<AgentType[]>([]);
+  // const searchRef = useRef<HTMLDivElement | null>(null);
+
+  const handleSearch = async () => {
+    const token = localStorage.getItem("token");
+    if (!token || !searchText.trim()) return;
+
+    try {
+      const res = await searchAgentsByOwner(token, searchText.trim());
+      setSearchResults(res?.agents || []);
+    } catch (err) {
+      console.log("Search error:", err);
+      setSearchResults([]);
+    }
+  };
+
+  const scrollToCard = (id: number) => {
+    const element = document.getElementById(`agent-card-${id}`);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+  };
 
   // const [analytics, setAnalytics] = useState<any>(null);
   const [analytics, setAnalytics] = useState<AnalyticsData | null>(null);
@@ -125,6 +154,71 @@ const Dashboard = () => {
           </div>
         </div>
 
+        {/* Search Bar */}
+        <div className="px-2 lg:px-20 mb-6">
+          <input
+            type="text"
+            placeholder="Search by owner name..."
+            className="w-full border px-4 py-3 rounded-xl shadow-sm focus:ring-2 focus:ring-[#3d4b52]"
+            value={searchText}
+            onChange={(e) => setSearchText(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && handleSearch()}
+          />
+
+          {/* Search Results Dropdown */}
+          {searchResults.length > 0 && (
+            <div className="mt-2 bg-white shadow-lg rounded-xl border max-h-64 overflow-y-auto">
+              {searchResults.map((agent) => (
+                <div
+                  key={agent.id}
+                  className="p-3 hover:bg-gray-100 cursor-pointer flex justify-between items-center"
+                  // onClick={() => {
+                  //   scrollToCard(agent.id);
+                  //   setSearchResults([]);
+                  // }}
+                  onClick={async () => {
+                    setSearchResults([]);
+
+                    // 1. Find which page has this agent
+                    const token = localStorage.getItem("token");
+                    if (!token) return;
+
+                    try {
+                      let foundPage = null;
+
+                      // Loop through all pages to find where this agent exists
+                      for (let p = 1; p <= totalPages; p++) {
+                        const res = await getAllAgents(token, p, pageSize);
+                        const agents = res?.data?.agents || [];
+
+                        if (agents.some((a: AgentType) => a.id === agent.id)) {
+                          foundPage = p;
+                          break;
+                        }
+                      }
+
+                      if (foundPage) {
+                        setPage(foundPage);
+
+                        setTimeout(() => {
+                          scrollToCard(agent.id);
+                        }, 500);
+                      }
+                    } catch (error) {
+                      console.log("Could not locate agent:", error);
+                    }
+                  }}
+                >
+                  <span>{agent.owner_name}</span>
+                  <span className="text-sm text-gray-500">
+                    {agent.agent_name}
+                  </span>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
         {/* ---------- Agent Cards ---------- */}
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-2 lg:px-20 mt-12">
@@ -138,13 +232,14 @@ const Dashboard = () => {
             apiAgents.map((agent) => (
               <div
                 key={agent.id}
+                id={`agent-card-${agent.id}`}
                 className="bg-white shadow-lg rounded-2xl p-5 border-1 hover:border-2 hover:shadow-2xl transition cursor-pointer text-[#3d4b52]"
               >
                 {/* Top Row: Image + Name/Phone */}
                 <div className="flex justify-between">
                   <div className="flex items-center gap-4">
                     <img
-                      src={agent.avatar_url || Agent}
+                      src={agent.avatar_presigned_url || Agent}
                       alt="Agent Image"
                       className="w-16 h-16 rounded-full object-cover border-2 border-white"
                     />

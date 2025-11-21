@@ -12,14 +12,22 @@ import AgentDetails from "./pages/AgentDetails";
 // Route Guards
 import Private from "./routes/Private";
 import Public from "./routes/Public";
+import ForgotPassword from "./pages/Auth/ForgotPassword";
+import ResetPassword from "./pages/Auth/ResetPassword";
 
 const router = createBrowserRouter([
   // PUBLIC ROUTES
   {
     path: "/",
-    element: (
-      <LandingPage />
-    ),
+    element: <LandingPage />,
+  },
+  {
+    path: "/forgot-password",
+    element: <ForgotPassword />,
+  },
+   {
+    path: "/reset-password",
+    element: <ResetPassword />,
   },
   {
     path: "/signin",

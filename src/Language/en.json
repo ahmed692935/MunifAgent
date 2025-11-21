@@ -2,7 +2,7 @@
   "menu": {
     "home": "Home",
     "about": "About",
-    "services": "Services",
+    "services": "Privacy Policy",
     "contact": "Contact"
   },
   "auth": {
@@ -34,30 +34,29 @@
       }
     ]
   },
-  "services": {
-    "title": "Industries We Serve",
-    "items": [
-      {
-        "id": 1,
-        "title": "Education Support",
-        "desc": "Enhance student engagement with real-time inbound call assistance for admissions, course inquiries, and academic support. Ensure smooth communication between students and institutions."
-      },
-      {
-        "id": 2,
-        "title": "Healthcare Assistance",
-        "desc": "Provide instant call-based patient support for appointment scheduling, medical inquiries, and emergency coordination to improve healthcare response efficiency."
-      },
-      {
-        "id": 3,
-        "title": "Sales Inquiries",
-        "desc": "Handle inbound sales calls seamlessly to capture leads, provide product information, and improve customer conversion through prompt communication."
-      },
-      {
-        "id": 4,
-        "title": "Automobile Services",
-        "desc": "Simplify customer experience by managing inbound calls for service bookings, vehicle inquiries, and dealership support efficiently and professionally."
-      }
-    ]
+
+  "legal": {
+    "title": "Legal Requirements",
+    "impressum": {
+      "title": "Impressum Requirement",
+      "desc": "Any commercial website must provide a legally required Impressum. It must be easily visible, immediately accessible, and permanently available."
+    },
+    "privacy": {
+      "title": "GDPR Privacy Policy",
+      "desc": "A Privacy Policy is required whenever a website stores logs, uses cookies, analytics, or collects emails. It must be clearly visible and accessible at all times."
+    },
+    "notEnough": {
+      "title": "What Is Not Enough",
+      "desc": "A copyright notice alone does not fulfill Impressum or Privacy Policy obligations."
+    },
+    "risks": {
+      "title": "Risks of Missing Compliance",
+      "desc": "Missing legal requirements may lead to legal warnings, fines, and loss of credibility."
+    },
+    "recommendation": {
+      "title": "Practical Recommendation",
+      "desc": "Include Impressum, Privacy Policy, optional Terms & Conditions, contact link, and copyright in the footer."
+    }
   },
   "contact": {
     "title": "Get in touch with us",

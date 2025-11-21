@@ -188,10 +188,10 @@ const EditAgentModal = ({ open, onClose, data, onSave }: Props) => {
         language: data.language || "",
         voice_type: data.voice_type || "",
         system_prompt: data.system_prompt || "",
-        agent_image: data.avatar_url || "",
+        agent_image: data.avatar_presigned_url || "",
       });
 
-      setPreview(data.avatar_url || null);
+      setPreview(data.avatar_presigned_url || null);
     }
   }, [data, reset]);
 

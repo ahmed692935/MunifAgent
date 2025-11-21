@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import type { AppDispatch, RootState } from "../../store/store";
 import { useDispatch, useSelector } from "react-redux";
 import { loginStart, loginSuccess } from "../../store/slices/authSlice";
-import { loginUser } from "../../api/api"
+import { loginUser } from "../../api/api";
 import toast from "react-hot-toast";
 import type { AxiosError } from "axios";
 
@@ -17,7 +17,6 @@ const SignIn = () => {
     reset,
     formState: { errors, isSubmitting },
   } = useForm<SignInFormData>();
-
 
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
@@ -139,10 +138,20 @@ const SignIn = () => {
               className="text-sm text-[#3d4b52]">
               Not have account? <span className=" hover:underline">Signup</span>
             </Link> */}
+            <button onClick={handleNavigate} className="text-sm text-[#3d4b52]">
+              Not have account?{" "}
+              <span className=" hover:underline cursor-pointer">Signup</span>
+            </button>
+          </div>
+
+          <div className="mt-1 text-center">
             <button
-              onClick={handleNavigate}
-              className="text-sm text-[#3d4b52]">
-              Not have account? <span className=" hover:underline">Signup</span>
+              onClick={() => navigate("/forgot-password")}
+              className="text-sm text-[#3d4b52]"
+            >
+              <span className=" hover:underline cursor-pointer">
+                Forgot password
+              </span>
             </button>
           </div>
         </div>

@@ -34,30 +34,28 @@
       }
     ]
   },
-   "services": {
-    "title": "Branchen, die wir bedienen",
-    "items": [
-      {
-        "id": 1,
-        "title": "Bildungsunterstützung",
-        "desc": "Steigern Sie das Engagement der Studierenden mit Echtzeit-Unterstützung bei Anrufen für Zulassungen, Kursanfragen und akademische Unterstützung."
-      },
-      {
-        "id": 2,
-        "title": "Gesundheitsunterstützung",
-        "desc": "Bieten Sie sofortige telefonbasierte Patientenunterstützung für Terminvereinbarungen, medizinische Anfragen und Notfallkoordination."
-      },
-      {
-        "id": 3,
-        "title": "Verkaufsanfragen",
-        "desc": "Bearbeiten Sie eingehende Verkaufsgespräche, um Leads zu erfassen, Produktinformationen bereitzustellen und die Kundengewinnung zu verbessern."
-      },
-      {
-        "id": 4,
-        "title": "Automobildienste",
-        "desc": "Vereinfachen Sie das Kundenerlebnis, indem Sie eingehende Anrufe für Servicebuchungen, Fahrzeuganfragen und Händlerunterstützung verwalten."
-      }
-    ]
+  "legal": {
+    "title": "Rechtliche Anforderungen",
+    "impressum": {
+      "title": "Impressumspflicht",
+      "desc": "Jede kommerzielle Website muss ein rechtlich vorgeschriebenes Impressum bereitstellen. Es muss gut sichtbar, sofort zugänglich und dauerhaft verfügbar sein."
+    },
+    "privacy": {
+      "title": "Datenschutzerklärung (DSGVO)",
+      "desc": "Eine Datenschutzerklärung ist erforderlich, sobald eine Website Protokolle speichert, Cookies oder Analysen verwendet oder E-Mails sammelt. Sie muss klar sichtbar und jederzeit zugänglich sein."
+    },
+    "notEnough": {
+      "title": "Nicht ausreichend",
+      "desc": "Ein Copyright-Hinweis allein erfüllt weder die Impressumspflicht noch die Datenschutzerklärungspflicht."
+    },
+    "risks": {
+      "title": "Risiken bei fehlender Compliance",
+      "desc": "Fehlende rechtliche Anforderungen können zu Abmahnungen, Bußgeldern und Vertrauensverlust führen."
+    },
+    "recommendation": {
+      "title": "Praktische Empfehlung",
+      "desc": "Fügen Sie Impressum, Datenschutzerklärung, optional AGB, Kontaktlink und Copyright in die Fußzeile ein."
+    }
   },
   "contact": {
     "title": "Kontaktieren Sie uns",
@@ -75,7 +73,7 @@
       "invalidEmail": "Ungültiges E-Mail-Format"
     }
   },
-   "footer": {
+  "footer": {
     "rights": "Alle Rechte vorbehalten von MrBot AI"
   },
   "faq": {
@@ -90,5 +88,4 @@
     "q4": "Muss ich etwas installieren oder programmieren?",
     "a4": "Nein. MrBot ist eine No-Code-Lösung, die vollständig für Sie eingerichtet ist. Sie benötigen keine technischen Kenntnisse – wir kümmern uns um alles, von der Anbindung Ihres Telefonsystems bis zur Integration Ihres Kalenders."
   }
-
 }

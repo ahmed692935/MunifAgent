@@ -14,6 +14,7 @@ export interface Agent {
   unanswered_calls: number;
   avg_duration: number;
   avatar_url: string;
+  avatar_presigned_url: string;
   call_stats: CallStats;
 }
 

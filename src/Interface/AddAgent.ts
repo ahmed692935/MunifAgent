@@ -12,7 +12,8 @@ export interface AgentFormData {
 
 export interface AgentType {
   id: number;
-  avatar_url: string;
+  // avatar_url: string;
+  avatar_presigned_url: string;
   agent_name: string;
   phone_number: string;
   owner_name: string;

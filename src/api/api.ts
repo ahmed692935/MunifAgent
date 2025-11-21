@@ -74,7 +74,10 @@ export const getAllAgents = async (
 
 export const getAgentById = (token: string, id: string) =>
   api.get(`${API_URL}/agents/${id}`, {
-    headers: { Authorization: `Bearer ${token}` },
+    headers: {
+      "ngrok-skip-browser-warning": "true",
+      Authorization: `Bearer ${token}`,
+    },
   });
 
 export const deleteAgent = async (token: string, id: number) => {
@@ -97,5 +100,30 @@ export const updateAgent = async (
     },
   });
 
+  return response.data;
+};
+
+export const searchAgentsByOwner = async (token: string, ownerName: string) => {
+  const response = await api.get(`${API_URL}/agents/by-owner/${ownerName}`, {
+    headers: {
+      "ngrok-skip-browser-warning": "true",
+      Authorization: `Bearer ${token}`,
+      Accept: "application/json",
+    },
+  });
+
+  return response.data;
+};
+
+export const sendResetLink = async (email: string) => {
+  const response = await api.post("/forgot-password", { email });
+  return response.data;
+};
+
+export const resetPasswordAPI = async (data: {
+  new_password: string;
+  token: string;
+}) => {
+  const response = await api.post("/reset-password", data);
   return response.data;
 };
