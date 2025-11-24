@@ -127,3 +127,20 @@ export const resetPasswordAPI = async (data: {
   const response = await api.post("/reset-password", data);
   return response.data;
 };
+
+export const getLanguage = async ({
+  language,
+  token,
+}: {
+  language: string;
+  token: string;
+}) => {
+  const response = await api.get(`/voice-samples`, {
+    params: { language },
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return response.data;
+};

@@ -5,13 +5,24 @@ import { RiUserAddFill } from "react-icons/ri";
 import Navbar from "../components/Navbar";
 
 import { useNavigate } from "react-router-dom";
-import { postAddAgent } from "../api/api";
+import { getLanguage, postAddAgent } from "../api/api";
 import toast from "react-hot-toast";
 import type { AxiosError } from "axios";
+
+import Uk from "../assets/Images/uk.png";
+import German from "../assets/Images/germany.png";
+import Itlaian from "../assets/Images/italy.png";
+import Netherlands from "../assets/Images/netherlands.png";
+import Spainsh from "../assets/Images/spanish.png";
+import France from "../assets/Images/france.png";
 
 const AddAgents = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [preview, setPreview] = useState<string | null>(null);
+  const [openVoicePopup, setOpenVoicePopup] = useState(false);
+  const [voiceSamples, setVoiceSamples] = useState<any[]>([]);
+  const [selectedVoice, setSelectedVoice] = useState<any>(null);
+  const [loadingVoiceSamples, setLoadingVoiceSamples] = useState(false);
 
   const navigate = useNavigate();
 
@@ -20,6 +31,7 @@ const AddAgents = () => {
     handleSubmit,
     formState: { errors },
     reset,
+    watch,
   } = useForm<AgentFormData>();
 
   const onSubmit = async (data: AgentFormData) => {
@@ -39,7 +51,8 @@ const AddAgents = () => {
       formData.append("owner_name", data.business_name || "");
       formData.append("industry", data.industry || "");
       formData.append("language", data.language || "");
-      formData.append("voice_type", data.voice_type);
+      // formData.append("voice_type", data.voice_type);
+      formData.append("voice_type", selectedVoice?.voice_name || "");
       formData.append("system_prompt", data.system_prompt);
 
       // image (file)
@@ -70,6 +83,15 @@ const AddAgents = () => {
     } finally {
       setIsSubmitting(false);
     }
+  };
+
+  const languageFlags: Record<string, string> = {
+    en: Uk, // English
+    de: German, // German
+    es: Spainsh, // Spanish
+    fr: France, // French
+    it: Itlaian, // Italian
+    nl: Netherlands, // Dutch
   };
 
   return (
@@ -226,13 +248,26 @@ const AddAgents = () => {
                       <option value="en">English</option>
                       <option value="fr">French</option>
                       <option value="it">Italian</option>
-                      <option value="pt">Portuguese</option>
-                      <option value="pl">Polish</option>
+                      <option value="es">Spanish</option>
                       <option value="nl">Dutch</option>
                     </select>
+                    <div className="flex items-center gap-2 mt-2">
+                      {watch("language") && (
+                        <img
+                          src={languageFlags[watch("language")]}
+                          alt={watch("language")}
+                          className="w-6 h-4 object-cover rounded-sm"
+                        />
+                      )}
+                      <span className="text-gray-700 font-medium">
+                        {watch("language")
+                          ? watch("language").toUpperCase()
+                          : "Select language"}
+                      </span>
+                    </div>
                   </div>
 
-                  <div>
+                  {/* <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-2">
                       Voice Type
                     </label>
@@ -289,6 +324,54 @@ const AddAgents = () => {
                         {errors.voice_type.message}
                       </p>
                     )}
+                  </div> */}
+
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">
+                      Select Voice Sample
+                    </label>
+
+                    <input
+                      type="text"
+                      readOnly
+                      value={selectedVoice?.voice_name || ""}
+                      placeholder="Click to choose a voice"
+                      onFocus={async () => {
+                        const lang = watch("language");
+
+                        if (!lang) {
+                          toast.error("Please select a language first!");
+                          return;
+                        }
+
+                        setOpenVoicePopup(true);
+                        setLoadingVoiceSamples(true);
+
+                        try {
+                          const token = localStorage.getItem("token");
+                          if (!token) {
+                            toast.error("Token missing!");
+                            return;
+                          }
+
+                          const response = await getLanguage({
+                            language: lang,
+                            token: token,
+                          });
+
+                          setVoiceSamples(
+                            response.grouped_by_language?.[lang] || []
+                          );
+                        } catch (error) {
+                          console.error(error);
+                          toast.error("Error fetching voice samples");
+                        } finally {
+                          setLoadingVoiceSamples(false);
+                        }
+                      }}
+                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg 
+       focus:border-[#3d4b52] focus:ring-0 outline-none transition-colors bg-white cursor-pointer"
+                    />
                   </div>
                 </div>
                 {/* System Prompt */}
@@ -376,6 +459,111 @@ const AddAgents = () => {
           </div>
         </div>
       </div>
+      {openVoicePopup && (
+        <div className="fixed inset-0 bg-[#3d4b52] bg-opacity-40 flex justify-center items-center z-50">
+          <div className="bg-white w-full flex flex-col max-w-full mx-2 lg:mx-30 p-6 rounded-xl shadow-xl">
+            <h2 className="text-xl font-bold text-[#3d4b52] mb-4">
+              Select Voice Sample
+            </h2>
+
+            {/* <div className="max-h-90 overflow-y-auto space-y-4"> */}
+            {/* <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 max-h-90 overflow-y-auto">
+              {voiceSamples.map((voice) => (
+                <div
+                  key={voice.id}
+                  className="border border-[#3d4b52] hover:border-2 p-4 rounded-lg flex items-center justify-between hover:bg-gray-50 cursor-pointer"
+                  onClick={() => {
+                    setSelectedVoice(voice);
+                    setOpenVoicePopup(false);
+                  }}
+                >
+                  <div>
+                    <p className="font-semibold text-[#3d4b52]">
+                      {voice.voice_name}
+                    </p>
+                    <p className="text-sm text-gray-500">
+                      {voice.gender} • {voice.language.toUpperCase()}
+                    </p>
+                  </div>
+
+                  <audio
+                    controls
+                    src={voice.audio_url}
+                    className="h-10"
+                  ></audio>
+                </div>
+              ))}
+            </div> */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 max-h-90 overflow-y-auto">
+              {loadingVoiceSamples ? (
+                <div className="col-span-full flex justify-center items-center py-20">
+                  <svg
+                    className="animate-spin h-10 w-10 text-[#3d4b52]"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    ></circle>
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+                    ></path>
+                  </svg>
+                </div>
+              ) : (
+                voiceSamples.map((voice) => (
+                  <div
+                    key={voice.id}
+                    className="border border-[#3d4b52] hover:border-2 p-4 rounded-lg flex items-center justify-between hover:bg-gray-50 cursor-pointer"
+                    onClick={() => {
+                      setSelectedVoice(voice);
+                      setOpenVoicePopup(false);
+                    }}
+                  >
+                    <div className="flex items-center gap-3">
+                      {languageFlags[voice.language] && (
+                        <img
+                          src={languageFlags[voice.language]}
+                          alt={voice.language}
+                          className="w-6 h-4 object-cover rounded-sm"
+                        />
+                      )}
+                      <div>
+                        <p className="font-semibold text-[#3d4b52]">
+                          {voice.voice_name}
+                        </p>
+                        <p className="text-sm text-gray-500">
+                          {voice.gender} • {voice.language.toUpperCase()}
+                        </p>
+                      </div>
+                    </div>
+                    <audio
+                      controls
+                      src={voice.audio_url}
+                      className="h-10"
+                    ></audio>
+                  </div>
+                ))
+              )}
+            </div>
+
+            <button
+              className="mt-8 w-72 mx-auto text-white py-3 bg-[#3d4b52] hover:bg-[#2d3b42] rounded-lg"
+              onClick={() => setOpenVoicePopup(false)}
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
     </>
   );
 };
