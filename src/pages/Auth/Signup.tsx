@@ -170,7 +170,7 @@ const SignUp = () => {
               type="button"
               onClick={handleSubmit(onSubmit)}
               disabled={signupLoading}
-              className="w-full bg-[#3d4b52] text-white py-3 rounded-lg font-semibold hover:bg-[#2d3b42] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full bg-[#3d4b52] cursor-pointer text-white py-3 rounded-lg font-semibold hover:bg-[#2d3b42] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isSubmitting ? "Creating Account..." : "Sign Up"}
             </button>

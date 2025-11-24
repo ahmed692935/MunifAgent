@@ -613,7 +613,7 @@ const Dashboard = () => {
                     </p>
 
                     <button
-                      className="mt-5 w-full bg-[#3d4b52] text-white font-semibold py-2 rounded-lg hover:bg-[#2d3b42]"
+                      className="mt-5 w-full bg-[#3d4b52] text-white font-semibold py-2 rounded-lg hover:bg-[#2d3b42] cursor-pointer"
                       onClick={(e) => {
                         e.stopPropagation();
                         navigate(`/agent/${agent.id}`);

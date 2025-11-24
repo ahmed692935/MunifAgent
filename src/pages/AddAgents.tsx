@@ -556,7 +556,7 @@ const AddAgents = () => {
             </div>
 
             <button
-              className="mt-8 w-72 mx-auto text-white py-3 bg-[#3d4b52] hover:bg-[#2d3b42] rounded-lg"
+              className="mt-8 w-72 mx-auto text-white py-3 bg-[#3d4b52] cursor-pointer hover:bg-[#2d3b42] rounded-lg"
               onClick={() => setOpenVoicePopup(false)}
             >
               Close
