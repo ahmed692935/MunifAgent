@@ -2,8 +2,9 @@
   "menu": {
     "home": "Startseite",
     "about": "Über uns",
-    "services": "Dienstleistungen",
-    "contact": "Kontakt"
+    "services": "Gesetzliche Anforderungen",
+    "contact": "Kontakt",
+    "imprint": "Impréssum"
   },
   "auth": {
     "signup": "Registrieren",
@@ -37,8 +38,23 @@
   "legal": {
     "title": "Rechtliche Anforderungen",
     "impressum": {
-      "title": "Impressumspflicht",
-      "desc": "Jede kommerzielle Website muss ein rechtlich vorgeschriebenes Impressum bereitstellen. Es muss gut sichtbar, sofort zugänglich und dauerhaft verfügbar sein."
+      "title": "Impressum",
+      "desc": "Jede kommerzielle Website muss ein rechtlich vorgeschriebenes Impressum bereitstellen. Es muss gut sichtbar, sofort zugänglich und dauerhaft verfügbar sein.",
+      "labels": {
+        "owner": "Inhaber:",
+        "address": "Adresse:",
+        "contact": "Kontakt:",
+        "email": "E-Mail:",
+        "phone": "Telefon:",
+        "responsible": "Verantwortlich für den Inhalt:"
+      },
+      "data": {
+        "owner": "Munif Rahman",
+        "address": "Geschwister-Scholl-Str. 10, 86156 Augsburg",
+        "email": "info@mrbot-ki.de",
+        "phone": "0162 6352418",
+        "responsible": "Munif Rahman (Anschrift wie oben)"
+      }
     },
     "privacy": {
       "title": "Datenschutzerklärung (DSGVO)",
@@ -55,6 +71,46 @@
     "recommendation": {
       "title": "Praktische Empfehlung",
       "desc": "Fügen Sie Impressum, Datenschutzerklärung, optional AGB, Kontaktlink und Copyright in die Fußzeile ein."
+    },
+    "privacyPolicy": {
+      "button": "Datenschutzerklärung",
+      "title": "Datenschutzerklärung (DSGVO-konform)",
+      "sections": {
+        "responsibleTitle": "1. Verantwortlicher",
+        "responsibleContent": "Verantwortlich für die Datenverarbeitung auf dieser Website ist:\nMunif Rahman\nGeschwister-Scholl-Str. 10\n86156 Augsburg\nE-Mail: info@mrbot-ki.de\nTelefon: 0162 6352418",
+
+        "generalTitle": "2. Allgemeines zur Datenverarbeitung",
+        "generalContent": "Wir nehmen den Schutz Ihrer persönlichen Daten sehr ernst. Ihre Daten werden vertraulich und entsprechend der gesetzlichen Datenschutzvorschriften behandelt.\nDie Nutzung unserer Website ist in der Regel ohne Angabe personenbezogener Daten möglich. Wenn personenbezogene Daten (z. B. Name, E-Mail, Telefon) erhoben werden, erfolgt dies stets freiwillig.",
+
+        "contactTitle": "3. Kontaktaufnahme",
+        "contactContent": "Wenn Sie uns per E-Mail oder Formular kontaktieren, werden Ihre Daten zur Bearbeitung gespeichert. Ohne Ihre Einwilligung werden solche Daten nicht weitergegeben. Rechtsgrundlage: Art. 6 Abs. 1 lit. b DSGVO.",
+
+        "cookiesTitle": "4. Verwendung von Cookies und Analysediensten",
+        "cookiesContent": "Unsere Website kann Cookies verwenden. Sie können die Speicherung jederzeit im Browser deaktivieren. Falls Analysefunktionen aktiviert sind, erfolgt die Verarbeitung gemäß Art. 6 Abs. 1 lit. f DSGVO.",
+
+        "embeddedTitle": "5. Eingebettete Inhalte und externe Dienste",
+        "embeddedContent": "Unsere Website kann Inhalte von Drittanbietern einbinden. Beim Laden solcher Inhalte kann Ihre IP-Adresse an den jeweiligen Anbieter übermittelt werden.",
+
+        "rightsTitle": "6. Ihre Rechte",
+        "rightsList": [
+          "Auskunft (Art. 15 DSGVO)",
+          "Berichtigung (Art. 16 DSGVO)",
+          "Löschung (Art. 17 DSGVO)",
+          "Einschränkung der Verarbeitung (Art. 18 DSGVO)",
+          "Datenübertragbarkeit (Art. 20 DSGVO)",
+          "Widerspruch (Art. 21 DSGVO)"
+        ],
+        "rightsContact": "Zur Ausübung Ihrer Rechte: info@mrbot-ki.de",
+
+        "complaintTitle": "7. Beschwerderecht",
+        "complaintContent": "Bei Verstößen haben Sie das Recht, eine Beschwerde bei der zuständigen Datenschutzbehörde einzureichen.",
+
+        "securityTitle": "8. Datensicherheit",
+        "securityContent": "Wir setzen technische und organisatorische Maßnahmen ein, um Ihre Daten zu schützen.",
+
+        "changesTitle": "9. Änderungen",
+        "changesContent": "Wir behalten uns vor, diese Datenschutzerklärung bei Bedarf zu aktualisieren.\nStand: November 2025"
+      }
     }
   },
   "contact": {

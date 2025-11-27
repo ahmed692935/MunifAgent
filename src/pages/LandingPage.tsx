@@ -1,6 +1,8 @@
 // import { lazy, useState, useEffect } from "react"
 import { lazy } from "react";
 import Navbar from "../components/LandingPageComponents/Navbar";
+import Impressum from "../components/LandingPageComponents/Impressum";
+import PrivaryPolicy from "../components/LandingPageComponents/PrivaryPolicy";
 
 const HeroSection = lazy(
   () => import("../components/LandingPageComponents/HeroSection")
@@ -96,6 +98,10 @@ function LandingPage() {
       <About />
       <Works />
       <Services />
+      <Impressum />
+      <div className="flex justify-center">
+        <PrivaryPolicy />
+      </div>
       <Contact />
       <Accordion />
       <Footer />
