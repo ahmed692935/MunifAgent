@@ -1,17 +1,17 @@
 // import { lazy, useState, useEffect } from "react"
 import { lazy } from "react";
 import Navbar from "../components/LandingPageComponents/Navbar";
-import Impressum from "../components/LandingPageComponents/Impressum";
-import PrivaryPolicy from "../components/LandingPageComponents/PrivaryPolicy";
+// import Impressum from "../components/LandingPageComponents/Impressum";
+// import PrivaryPolicy from "../components/LandingPageComponents/PrivaryPolicy";
 
 const HeroSection = lazy(
   () => import("../components/LandingPageComponents/HeroSection")
 );
 const About = lazy(() => import("../components/LandingPageComponents/About"));
 const Works = lazy(() => import("../components/LandingPageComponents/Works"));
-const Services = lazy(
-  () => import("../components/LandingPageComponents/Services")
-);
+// const Services = lazy(
+//   () => import("../components/LandingPageComponents/Services")
+// );
 const Contact = lazy(
   () => import("../components/LandingPageComponents/Contact")
 );
@@ -97,11 +97,11 @@ function LandingPage() {
       <HeroSection />
       <About />
       <Works />
-      <Services />
-      <Impressum />
+      {/* <Services /> */}
+      {/* <Impressum />
       <div className="flex justify-center">
         <PrivaryPolicy />
-      </div>
+      </div> */}
       <Contact />
       <Accordion />
       <Footer />

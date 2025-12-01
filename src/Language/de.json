@@ -3,8 +3,7 @@
     "home": "Startseite",
     "about": "Über uns",
     "services": "Gesetzliche Anforderungen",
-    "contact": "Kontakt",
-    "imprint": "Impréssum"
+    "contact": "Kontakt"
   },
   "auth": {
     "signup": "Registrieren",
@@ -38,14 +37,15 @@
   "legal": {
     "title": "Rechtliche Anforderungen",
     "impressum": {
+      "button": "Impréssum",
       "title": "Impressum",
       "desc": "Jede kommerzielle Website muss ein rechtlich vorgeschriebenes Impressum bereitstellen. Es muss gut sichtbar, sofort zugänglich und dauerhaft verfügbar sein.",
       "labels": {
         "owner": "Inhaber:",
         "address": "Adresse:",
         "contact": "Kontakt:",
-        "email": "E-Mail:",
-        "phone": "Telefon:",
+        "email": "E-Mail",
+        "phone": "Telefon",
         "responsible": "Verantwortlich für den Inhalt:"
       },
       "data": {

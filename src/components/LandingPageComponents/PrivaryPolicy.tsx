@@ -129,6 +129,7 @@
 // };
 
 // export default PrivacyPolicyModal;
+
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -165,12 +166,14 @@ const PrivacyPolicyModal = () => {
   return (
     <>
       {/* Button */}
-      <button
-        onClick={() => setOpen(true)}
-        className="px-6 py-3 w-[50%] bg-[#3d4b52] text-white rounded-xl shadow-md hover:bg-[#2d3a40] transition-all"
-      >
-        {t("legal.privacyPolicy.button")}
-      </button>
+      <div className="relative">
+        <button
+          onClick={() => setOpen(true)}
+          className=" py-3 absolute -top-[130px] w-[90%] font-bold bg-white text-[#3d4b52] rounded-xl shadow-md hover:bg-gray-300 transition-all"
+        >
+          {t("legal.privacyPolicy.button")}
+        </button>
+      </div>
 
       {/* Modal */}
       {open && (

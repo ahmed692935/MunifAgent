@@ -25,7 +25,7 @@ function Navbar() {
     { key: "about", label: t("menu.about") },
     { key: "services", label: t("menu.services") },
     { key: "contact", label: t("menu.contact") },
-    { key: "imprint", label: t("menu.imprint") },
+    // { key: "imprint", label: t("menu.imprint") },
   ];
 
   const changeLanguage = (lang: string) => i18n.changeLanguage(lang);

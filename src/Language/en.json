@@ -3,7 +3,6 @@
     "home": "Home",
     "about": "About",
     "services": "Legal Requirements",
-    "imprint": "Imprint",
     "contact": "Contact"
   },
   "auth": {
@@ -39,14 +38,15 @@
   "legal": {
     "title": "Legal Requirements",
     "impressum": {
+      "button": "Imprint",
       "title": "Imprint",
       "desc": "Any commercial website must provide a legally required Impressum. It must be easily visible, immediately accessible, and permanently available.",
       "labels": {
         "owner": "Owner:",
         "address": "Address:",
         "contact": "Contact:",
-        "email": "Email:",
-        "phone": "Phone:",
+        "email": "Email",
+        "phone": "Phone",
         "responsible": "Responsible for content:"
       },
       "data": {
