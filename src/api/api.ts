@@ -144,3 +144,16 @@ export const getLanguage = async ({
 
   return response.data;
 };
+
+export const contactForm = async (token: string, data: any) => {
+  const response = await api.post(`${API_URL}/contact-form`, data, {
+    headers: {
+      "ngrok-skip-browser-warning": "true",
+      Authorization: `Bearer ${token}`,
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+  });
+
+  return response.data;
+};

@@ -1,6 +1,9 @@
 import { useForm } from "react-hook-form";
 import type { IFormInput } from "../../Interface/LandingPage";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
+import { contactForm } from "../../api/api";
+import toast from "react-hot-toast";
 
 function LandingHookForm() {
   const { t } = useTranslation();
@@ -8,11 +11,30 @@ function LandingHookForm() {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<IFormInput>();
+  const token = useSelector((state: any) => state.auth.token);
 
-  const onSubmit = (data: IFormInput) => {
-    console.log("Form Data:", data);
+  // const onSubmit = (data: IFormInput) => {
+  //   console.log("Form Data:", data);
+  // };
+  const onSubmit = async (data: IFormInput) => {
+    try {
+      const body = {
+        first_name: data.firstName,
+        last_name: data.lastName,
+        email: data.email,
+        message: data.message,
+      };
+
+      const res = await contactForm(token, body);
+      toast.success(res.message || "Message sent successfully!");
+      reset();
+    } catch (error) {
+      console.log("Error:", error);
+      toast.error("Something went wrong!");
+    }
   };
 
   return (
