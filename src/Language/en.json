@@ -2,7 +2,6 @@
   "menu": {
     "home": "Home",
     "about": "About",
-    "services": "Legal Requirements",
     "contact": "Contact"
   },
   "auth": {

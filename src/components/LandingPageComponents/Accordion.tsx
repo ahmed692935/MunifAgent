@@ -30,11 +30,6 @@ function Accordion() {
               {t("faq.title")}
             </h2>
             <p className="text-[#fffeff] text-base pt-5">{t("faq.subtitle")}</p>
-
-            <div className="mt-6 flex flex-col gap-4">
-              <Impressum />
-              <PrivaryPolicy />
-            </div>
           </div>
 
           {/* Right content */}
@@ -82,6 +77,10 @@ function Accordion() {
               );
             })}
           </div>
+        </div>
+        <div className="mt-10 flex flex-col sm:flex-row">
+          <Impressum />
+          <PrivaryPolicy />
         </div>
       </div>
     </section>

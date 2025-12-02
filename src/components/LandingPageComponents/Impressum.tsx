@@ -35,12 +35,12 @@ const Impressum = () => {
       <div className="">
         <button
           onClick={() => setOpen(true)}
-          className="px-6 py-3 bg-white font-bold w-[90%] text-[#3d4b52] rounded-xl shadow-md hover:bg-gray-300 transition-all"
+          className="px-20 py-3 bg-white font-bold text-[#3d4b52] rounded-xl shadow-md hover:bg-gray-300 transition-all"
         >
           {t("legal.impressum.button")}
         </button>
       </div>
-      <section className="max-w-7xl mx-auto py-16 px-5">
+      <section className="max-w-7xl mx-auto py-5 px-5">
         {/* ---------- Button to open Modal ---------- */}
 
         {/* ---------- POPUP MODAL ---------- */}

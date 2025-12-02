@@ -166,10 +166,10 @@ const PrivacyPolicyModal = () => {
   return (
     <>
       {/* Button */}
-      <div className="relative">
+      <div className="">
         <button
           onClick={() => setOpen(true)}
-          className=" py-3 absolute -top-[130px] w-[90%] font-bold bg-white text-[#3d4b52] rounded-xl shadow-md hover:bg-gray-300 transition-all"
+          className=" py-3 px-20 font-bold bg-white text-[#3d4b52] rounded-xl shadow-md hover:bg-gray-300 transition-all"
         >
           {t("legal.privacyPolicy.button")}
         </button>
