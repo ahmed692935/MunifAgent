@@ -124,6 +124,7 @@
     "message": "Message",
     "messagePlaceholder": "Message...",
     "submit": "Send",
+    "sending": "sending",
     "validation": {
       "emailRequired": "Email is required",
       "invalidEmail": "Invalid email format"

@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { contactForm } from "../../api/api";
 import toast from "react-hot-toast";
+import { useState } from "react";
 
 function LandingHookForm() {
   const { t } = useTranslation();
@@ -19,8 +20,11 @@ function LandingHookForm() {
   // const onSubmit = (data: IFormInput) => {
   //   console.log("Form Data:", data);
   // };
+  const [loading, setLoading] = useState(false);
+
   const onSubmit = async (data: IFormInput) => {
     try {
+      setLoading(true);
       const body = {
         first_name: data.firstName,
         last_name: data.lastName,
@@ -34,6 +38,8 @@ function LandingHookForm() {
     } catch (error) {
       console.log("Error:", error);
       toast.error("Something went wrong!");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -105,11 +111,24 @@ function LandingHookForm() {
         </div>
 
         {/* ---------- Submit Button ---------- */}
-        <button
+        {/* <button
           type="submit"
           className="w-full bg-[#3d4b52] hover:bg-[#3d4b52]/80 text-white font-medium py-2 mt-4 px-5 rounded-full transition-all cursor-pointer"
         >
           {t("form.submit")}
+        </button> */}
+        <button
+          type="submit"
+          disabled={loading}
+          className={`w-full text-white font-medium py-2 mt-4 px-5 rounded-full transition-all cursor-pointer
+    ${
+      loading
+        ? "bg-gray-400 cursor-not-allowed"
+        : "bg-[#3d4b52] hover:bg-[#3d4b52]/80"
+    }
+  `}
+        >
+          {loading ? t("form.sending") : t("form.submit")}
         </button>
       </form>
     </div>
