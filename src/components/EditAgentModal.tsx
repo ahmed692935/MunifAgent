@@ -76,8 +76,13 @@ const EditAgentModal = ({ open, onClose, data, onSave }: Props) => {
       formData.append("voice_type", selectedVoice?.voice_name || "");
       formData.append("system_prompt", form.system_prompt);
       formData.append("owner_email", form.owner_email);
-      formData.append("business_hours_start", form.business_hours_start);
-      formData.append("business_hours_end", form.business_hours_end);
+      // formData.append("business_hours_start", form.business_hours_start);
+      // formData.append("business_hours_end", form.business_hours_end);
+      if (form.business_hours_start !== data.business_hours_start)
+        formData.append("business_hours_start", form.business_hours_start);
+
+      if (form.business_hours_end !== data.business_hours_end)
+        formData.append("business_hours_end", form.business_hours_end);
       formData.append("allowed_minutes", form.allowed_minutes.toString());
 
       if (
