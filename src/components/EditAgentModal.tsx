@@ -1,157 +1,3 @@
-// import { useEffect, useState } from "react";
-// import { useForm } from "react-hook-form";
-// import type { AgentFormData, AgentType } from "../Interface/AddAgent";
-// import { RiUserAddFill } from "react-icons/ri";
-
-// interface Props {
-//   open: boolean;
-//   onClose: () => void;
-//   data: AgentType | null;
-//   onSave: (updated: AgentFormData) => void;
-// }
-
-// const EditAgentModal = ({ open, onClose, data, onSave }: Props) => {
-//   const [preview, setPreview] = useState<string | null>(null);
-
-//   const { register, handleSubmit, reset } = useForm<AgentFormData>();
-
-//   useEffect(() => {
-//     if (data) {
-//       reset({
-//         agent_name: data.name,
-//         phone_number: data.phone,
-//         business_name: data.business,
-//         system_prompt: data.prompt,
-//         agent_image: data.image,
-//         industry: "",
-//         language: "",
-//         voice_type: "male",
-//       });
-
-//       setPreview(data.image);
-//     }
-//   }, [data, reset]);
-
-//   if (!open) return null;
-
-//   const submitHandler = (form: AgentFormData) => {
-//     onSave({
-//       ...form,
-//       agent_image: preview || form.agent_image,
-//     });
-//     onClose();
-//   };
-
-//   return (
-//     <div
-//       className="fixed inset-0 bg-black/40 flex items-center justify-center z-50"
-//       onClick={onClose}
-//     >
-//       <div
-//         className="bg-white w-[95%] md:w-[600px] rounded-xl shadow-xl p-6 overflow-y-auto max-h-[90vh]"
-//         onClick={(e) => e.stopPropagation()}
-//       >
-//         <div className="flex justify-between items-center mb-4">
-//           <h2 className="text-xl font-bold text-[#3d4b52] flex items-center gap-2">
-//             <RiUserAddFill />
-//             Edit Agent
-//           </h2>
-//           <button
-//             onClick={onClose}
-//             className="text-gray-600 hover:text-black text-xl cursor-pointer"
-//           >
-//             ✕
-//           </button>
-//         </div>
-
-//         <form onSubmit={handleSubmit(submitHandler)} className="space-y-6">
-//           {/* Image */}
-//           <div className="flex flex-col items-center">
-//             <label className="block text-sm font-semibold mb-2">
-//               Agent Image
-//             </label>
-
-//             <label className="relative w-32 h-32 rounded-full border-2 border-dashed flex items-center justify-center cursor-pointer overflow-hidden hover:border-[#3d4b52]">
-//               {preview ? (
-//                 <img src={preview} className="w-full h-full object-cover" />
-//               ) : (
-//                 <span className="text-gray-500 text-sm text-[#3d4b52]">
-//                   Upload +
-//                 </span>
-//               )}
-
-//               <input
-//                 type="file"
-//                 accept="image/*"
-//                 {...register("agent_image")}
-//                 onChange={(e) => {
-//                   const file = e.target.files?.[0];
-//                   if (file) setPreview(URL.createObjectURL(file));
-//                 }}
-//                 className="absolute top-0 left-0 w-full h-full opacity-0 cursor-pointer border-gray-300 rounded-lg focus:outline-none focus:border-[#3d4b52] transition-colors"
-//               />
-//             </label>
-//           </div>
-
-//           {/* Name */}
-//           <div>
-//             <label className="text-sm font-semibold text-[#3d4b52]">
-//               Agent Name
-//             </label>
-//             <input
-//               {...register("agent_name")}
-//               className="w-full border-2 mt-1 px-3 py-2 rounded-lg border-gray-300 rounded-lg focus:outline-none focus:border-[#3d4b52] transition-colors"
-//             />
-//           </div>
-
-//           {/* Phone */}
-//           <div>
-//             <label className="text-sm font-semibold text-[#3d4b52]">
-//               Phone
-//             </label>
-//             <input
-//               {...register("phone_number")}
-//               className="w-full border-2 px-3 py-2 rounded-lg mt-1 border-gray-300 rounded-lg focus:outline-none focus:border-[#3d4b52] transition-colors"
-//             />
-//           </div>
-
-//           {/* Business */}
-//           <div>
-//             <label className="text-sm font-semibold text-[#3d4b52]">
-//               Business Name
-//             </label>
-//             <input
-//               {...register("business_name")}
-//               className="w-full border-2 px-3 py-2 rounded-lg mt-1 border-gray-300 rounded-lg focus:outline-none focus:border-[#3d4b52] transition-colors"
-//             />
-//           </div>
-
-//           {/* System Prompt */}
-//           <div>
-//             <label className="text-sm font-semibold text-[#3d4b52]">
-//               System Prompt
-//             </label>
-//             <textarea
-//               rows={4}
-//               {...register("system_prompt")}
-//               className="w-full border-2 px-3 py-2 rounded-lg mt-1 border-gray-300 rounded-lg focus:outline-none focus:border-[#3d4b52] transition-colors"
-//             ></textarea>
-//           </div>
-
-//           <button
-//             type="submit"
-//             className="w-full bg-[#3d4b52] text-white py-3 rounded-lg hover:bg-[#2d3b42] transition cursor-pointer"
-//           >
-//             Save Changes
-//           </button>
-//         </form>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default EditAgentModal;
-
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import type { AgentFormData, AgentType } from "../Interface/AddAgent";
@@ -201,6 +47,10 @@ const EditAgentModal = ({ open, onClose, data, onSave }: Props) => {
         voice_type: data.voice_type || "",
         system_prompt: data.system_prompt || "",
         agent_image: data.avatar_presigned_url || "",
+        owner_email: data.owner_email || "",
+        business_hours_start: data.business_hours_start || "",
+        business_hours_end: data.business_hours_end || "",
+        allowed_minutes: data.allowed_minutes || 0,
       });
 
       setPreview(data.avatar_presigned_url || null);
@@ -225,6 +75,10 @@ const EditAgentModal = ({ open, onClose, data, onSave }: Props) => {
       // formData.append("voice_type", form.voice_type);
       formData.append("voice_type", selectedVoice?.voice_name || "");
       formData.append("system_prompt", form.system_prompt);
+      formData.append("owner_email", form.owner_email);
+      formData.append("business_hours_start", form.business_hours_start);
+      formData.append("business_hours_end", form.business_hours_end);
+      formData.append("allowed_minutes", form.allowed_minutes.toString());
 
       if (
         form.agent_image &&
@@ -353,12 +207,70 @@ const EditAgentModal = ({ open, onClose, data, onSave }: Props) => {
               </div>
 
               <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  Business Email
+                </label>
+                <input
+                  disabled
+                  type="email"
+                  {...register("owner_email", {})}
+                  className="w-full px-4 py-2 border-2 border-gray-200 rounded-lg 
+        focus:border-[#3d4b52] focus:ring-0 outline-none transition-colors"
+                  placeholder="Enter owner email"
+                />
+              </div>
+
+              <div>
                 <label className="text-sm font-semibold text-[#3d4b52]">
                   Industry
                 </label>
                 <input
                   {...register("industry")}
                   className="w-full border-2 mt-1 px-3 py-2 rounded-lg border-gray-300 focus:outline-none focus:border-[#3d4b52]"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  Allowed Minutes
+                </label>
+                <input
+                  type="number"
+                  {...register("allowed_minutes", {
+                    min: { value: 1, message: "Minimum 1 minute" },
+                  })}
+                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg 
+        focus:border-[#3d4b52] focus:ring-0 outline-none transition-colors"
+                  placeholder="e.g. 30"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  Business Hours Start
+                </label>
+                <input
+                  type="time"
+                  {...register("business_hours_start", {
+                    required: "Start time is required",
+                  })}
+                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg 
+        focus:border-[#3d4b52] focus:ring-0 outline-none transition-colors"
+                />
+              </div>
+
+              {/* Business End Time */}
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  Business Hours End
+                </label>
+                <input
+                  type="time"
+                  {...register("business_hours_end", {
+                    required: "End time is required",
+                  })}
+                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg 
+        focus:border-[#3d4b52] focus:ring-0 outline-none transition-colors"
                 />
               </div>
             </div>

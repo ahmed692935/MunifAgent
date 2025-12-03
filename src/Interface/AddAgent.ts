@@ -7,6 +7,10 @@ export interface AgentFormData {
   industry: string;
   language: string;
   business_name: string;
+  owner_email: string;
+  business_hours_start: string;
+  business_hours_end: string;
+  allowed_minutes: number;
   voice_type: "male" | "female" | "non-binary";
 }
 
@@ -20,6 +24,10 @@ export interface AgentType {
   system_prompt: string;
   language: string;
   industry: string;
+  owner_email: string;
+  business_hours_start: string;
+  business_hours_end: string;
+  allowed_minutes: number;
   voice_type: "male" | "female" | "non-binary";
 }
 

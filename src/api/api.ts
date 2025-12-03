@@ -72,13 +72,33 @@ export const getAllAgents = async (
   return response.data;
 };
 
-export const getAgentById = (token: string, id: string) =>
-  api.get(`${API_URL}/agents/${id}`, {
-    headers: {
-      "ngrok-skip-browser-warning": "true",
-      Authorization: `Bearer ${token}`,
-    },
-  });
+// export const getAgentById = (
+//   token: string,
+//   id: string,
+//   page: number = 1,
+//   pageSize: number = 10
+// ) =>
+//   api.get(`${API_URL}/agents/${id}?page=${page}&page_size=${pageSize}`, {
+//     headers: {
+//       "ngrok-skip-browser-warning": "true",
+//       Authorization: `Bearer ${token}`,
+//     },
+//   });
+export const getAgentById = (
+  token: string,
+  id: string,
+  callsPage: number = 1,
+  callsPageSize: number = 10
+) =>
+  api.get(
+    `${API_URL}/agents/${id}?calls_page=${callsPage}&calls_page_size=${callsPageSize}`,
+    {
+      headers: {
+        "ngrok-skip-browser-warning": "true",
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
 
 export const deleteAgent = async (token: string, id: number) => {
   const response = await api.delete(`${API_URL}/agents/${id}`, {
@@ -155,5 +175,23 @@ export const contactForm = async (token: string, data: any) => {
     },
   });
 
+  return response.data;
+};
+
+export const resetAgentMinutes = async (
+  token: string,
+  agentId: string | number
+) => {
+  const response = await api.post(
+    `${API_URL}/agents/${agentId}/reset-minutes`,
+    {},
+    {
+      headers: {
+        "ngrok-skip-browser-warning": "true",
+        Authorization: `Bearer ${token}`,
+        Accept: "application/json",
+      },
+    }
+  );
   return response.data;
 };

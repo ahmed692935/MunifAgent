@@ -54,6 +54,10 @@ const AddAgents = () => {
       // formData.append("voice_type", data.voice_type);
       formData.append("voice_type", selectedVoice?.voice_name || "");
       formData.append("system_prompt", data.system_prompt);
+      formData.append("owner_email", data.owner_email);
+      formData.append("business_hours_start", data.business_hours_start);
+      formData.append("business_hours_end", data.business_hours_end);
+      formData.append("allowed_minutes", data.allowed_minutes.toString());
 
       // image (file)
       if (data.agent_image && data.agent_image[0] instanceof File) {
@@ -62,7 +66,7 @@ const AddAgents = () => {
 
       const res = await postAddAgent(token, formData);
 
-      console.log("API Response:", res);
+      // console.log("API Response:", res);
       // toast.success("Agent Created Successfully!");
       toast.success(res?.data?.message || "Agent Created Successfully!");
 
@@ -221,6 +225,19 @@ const AddAgents = () => {
 
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-2">
+                      Business Email
+                    </label>
+                    <input
+                      type="email"
+                      {...register("owner_email", {})}
+                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg 
+        focus:border-[#3d4b52] focus:ring-0 outline-none transition-colors"
+                      placeholder="Enter owner email"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">
                       Industry
                     </label>
                     <input
@@ -229,6 +246,49 @@ const AddAgents = () => {
                       className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg 
            focus:border-[#3d4b52] focus:ring-0 outline-none transition-colors"
                       placeholder="e.g., Healthcare, Finance, Retail"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">
+                      Allowed Minutes
+                    </label>
+                    <input
+                      type="number"
+                      {...register("allowed_minutes", {
+                        min: { value: 1, message: "Minimum 1 minute" },
+                      })}
+                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg 
+        focus:border-[#3d4b52] focus:ring-0 outline-none transition-colors"
+                      placeholder="e.g. 30"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">
+                      Business Hours Start
+                    </label>
+                    <input
+                      type="time"
+                      {...register("business_hours_start", {
+                        required: "Start time is required",
+                      })}
+                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg 
+        focus:border-[#3d4b52] focus:ring-0 outline-none transition-colors"
+                    />
+                  </div>
+
+                  {/* Business End Time */}
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">
+                      Business Hours End
+                    </label>
+                    <input
+                      type="time"
+                      {...register("business_hours_end", {
+                        required: "End time is required",
+                      })}
+                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg 
+        focus:border-[#3d4b52] focus:ring-0 outline-none transition-colors"
                     />
                   </div>
                 </div>
@@ -328,9 +388,8 @@ const AddAgents = () => {
 
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-2">
-                      Select Voice Sample
+                      Select Voice Type
                     </label>
-
                     <input
                       type="text"
                       readOnly

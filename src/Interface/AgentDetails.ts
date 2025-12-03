@@ -107,4 +107,14 @@ export interface Agent {
   updated_at: string;
   call_stats: CallStats;
   calls: CallsData;
+  owner_email: string;
+  business_hours_start: string;
+  business_hours_end: string;
+  allowed_minutes: number;
+  minutes_info: MinInfo;
+}
+
+export interface MinInfo {
+  percentage_used: string;
+  used_minutes: string;
 }
