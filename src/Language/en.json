@@ -46,14 +46,18 @@
         "contact": "Contact:",
         "email": "Email",
         "phone": "Phone",
-        "responsible": "Responsible for content:"
+        "tax_value": "Value added tax:",
+        "responsible": "Responsible for the content according to Section 18, Paragraph 2 of the German State Media Treaty (MStV):",
+        "Business_purpose": "Business purpose:"
       },
       "data": {
-        "owner": "Munif Rahman",
-        "address": "Geschwister-Scholl-Str. 10, 86156 Augsburg",
+        "owner": "Munif Rahman (sole proprietor)",
+        "address": "Geschwister-Scholl-Str. 10, 86156 Augsburg, Germany",
         "email": "info@mrbot-ki.de",
         "phone": "0162 6352418",
-        "responsible": "Munif Rahman (same address as above)"
+        "tax_value": "According to Section 19 of the German Value Added Tax Act, no value added tax is shown (small business regulation).",
+        "responsible": "Munif Rahman",
+        "Business_purpose": "Services in the field of AI-powered chat and telephone bots."
       }
     },
     "privacy": {
