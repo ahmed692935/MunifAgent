@@ -45,14 +45,18 @@
         "contact": "Kontakt:",
         "email": "E-Mail",
         "phone": "Telefon",
-        "responsible": "Verantwortlich für den Inhalt:"
+        "tax_value": "Umsatzsteuer:",
+        "responsible": "Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV:",
+        "Business_purpose": "Geschäftszweck:"
       },
       "data": {
-        "owner": "Munif Rahman",
-        "address": "Geschwister-Scholl-Str. 10, 86156 Augsburg",
-        "email": "info@mrbot-ki.de",
+        "owner": " Munif Rahman (Einzelunternehmer)",
+        "address": " Geschwister-Scholl-Str. 10, 86156 Augsburg, Deutschland",
+        "email": " info@mrbot-ki.de",
         "phone": "0162 6352418",
-        "responsible": "Munif Rahman (Anschrift wie oben)"
+        "tax_value": "Gemäß § 19 UStG wird keine Umsatzsteuer ausgewiesen (Kleinunternehmerregelung).",
+        "responsible": "Munif Rahman",
+        "Business_purpose": "Dienstleistungen im Bereich KI-gestützter Chat- und Telefonbots."
       }
     },
     "privacy": {

@@ -6,7 +6,9 @@ type ImpressumData = {
   address: string;
   email: string;
   phone: string;
+  tax_value: string;
   responsible: string;
+  Business_purpose: string;
 };
 
 type ImpressumLabels = {
@@ -15,7 +17,9 @@ type ImpressumLabels = {
   contact: string;
   email: string;
   phone: string;
+  tax_value: string;
   responsible: string;
+  Business_purpose: string;
 };
 
 const Impressum = () => {
@@ -35,7 +39,7 @@ const Impressum = () => {
       <div className="">
         <button
           onClick={() => setOpen(true)}
-          className="px-20 py-3 bg-white font-bold text-[#3d4b52] rounded-xl shadow-md hover:bg-gray-300 transition-all"
+          className="px-20 py-3 bg-white font-bold text-[#3d4b52] rounded-xl shadow-md hover:bg-gray-300 transition-all cursor-pointer"
         >
           {t("legal.impressum.button")}
         </button>
@@ -54,7 +58,7 @@ const Impressum = () => {
                 </h2>
                 <button
                   onClick={() => setOpen(false)}
-                  className="text-gray-600 text-xl hover:text-black"
+                  className="text-gray-600 text-xl hover:text-black cursor-pointer"
                 >
                   ✕
                 </button>
@@ -84,9 +88,23 @@ const Impressum = () => {
 
                 <div>
                   <h3 className="font-semibold text-lg">
+                    {labels.tax_value}
+                  </h3>
+                  <p>{impressumData.tax_value}</p>
+                </div>
+
+                <div>
+                  <h3 className="font-semibold text-lg">
                     {labels.responsible}
                   </h3>
                   <p>{impressumData.responsible}</p>
+                </div>
+
+                <div>
+                  <h3 className="font-semibold text-lg">
+                    {labels.Business_purpose}
+                  </h3>
+                  <p>{impressumData.Business_purpose}</p>
                 </div>
               </div>
             </div>
