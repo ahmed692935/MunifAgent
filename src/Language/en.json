@@ -30,6 +30,10 @@
       {
         "title": "Forwarding & Notification",
         "description": "Important calls or messages are automatically forwarded to you or your team – via email, SMS, or chat. Appointments are entered and managed in your existing CRM system."
+      },
+      {
+        "title": "External Service Providers",
+        "description": "External service providers (hosting, AI, telephony) are used under data processing agreements pursuant to Art. 28 GDPR. Any data transfer to third countries is carried out only with appropriate safeguards under Art. 44 et seq. GDPR."
       }
     ]
   },
@@ -46,18 +50,18 @@
         "contact": "Contact:",
         "email": "Email",
         "phone": "Phone",
-        "tax_value": "Value added tax:",
-        "responsible": "Responsible for the content according to Section 18, Paragraph 2 of the German State Media Treaty (MStV):",
+        "tax_value": "VAT:",
+        "responsible": "Responsible for content:",
         "Business_purpose": "Business purpose:"
       },
       "data": {
         "owner": "Munif Rahman (sole proprietor)",
         "address": "Geschwister-Scholl-Str. 10, 86156 Augsburg, Germany",
         "email": "info@mrbot-ki.de",
-        "phone": "0162 6352418",
-        "tax_value": "According to Section 19 of the German Value Added Tax Act, no value added tax is shown (small business regulation).",
+        "phone": "+49 162 6352418",
+        "tax_value": "VAT exempt according to §19 UStG (German Small Business Regulation)",
         "responsible": "Munif Rahman",
-        "Business_purpose": "Services in the field of AI-powered chat and telephone bots."
+        "Business_purpose": "AI-powered chat and voice bot services."
       }
     },
     "privacy": {
@@ -78,42 +82,24 @@
     },
     "privacyPolicy": {
       "button": "Privacy Policy",
-      "title": "Privacy Policy (GDPR Compliant)",
+      "title": "Data Protection – AI & Voice Bot (MrBot)",
+      "desc": "MrBot is an AI-powered chat and voice bot used for general inquiries and initial contact.",
       "sections": {
-        "responsibleTitle": "1. Data Controller",
-        "responsibleContent": "The responsible party for data processing on this website is:\nMunif Rahman\nGeschwister-Scholl-Str. 10\n86156 Augsburg\nEmail: info@mrbot-ki.de\nPhone: 0162 6352418",
+        "processedTitle": "Processed data:",
+        "processedContent": " Name, email address, phone number, conversation content, technical metadata (e.g. IP address).",
 
-        "generalTitle": "2. General Information on Data Processing",
-        "generalContent": "We take the protection of your personal data very seriously. Your data is treated confidentially and in accordance with legal data protection regulations and this privacy policy.\nThe use of our website is normally possible without providing personal data. If personal data is collected (such as name, email, phone), this is always done on a voluntary basis.",
+        "purposeTitle": "Purpose:",
+        "purposeContent": "Responding to inquiries, contract initiation, service improvement.",
 
-        "contactTitle": "3. Contacting Us",
-        "contactContent": "If you contact us via email or contact form, we will store your data to process your request. The data will not be shared without your consent. Legal basis: Art. 6(1)(b) GDPR.",
+        "legalTitle": "Legal basis:",
+        "legalContent": " Art. 6(1)(a), (b), (f) GDPR.",
 
-        "cookiesTitle": "4. Cookies & Analytics",
-        "cookiesContent": "Our website may use cookies. You can deactivate cookies in your browser at any time. If analytics tools are used, processing is based on Art. 6(1)(f) GDPR.",
+        "sensitiveTitle": "No sensitive data:",
+        "sensitiveContent": "Please do not provide health or sensitive personal data.",
 
-        "embeddedTitle": "5. Embedded Content & External Services",
-        "embeddedContent": "Our website may include third-party content. When loading such content, your IP address may be transmitted to the provider.",
+        "retentionTitle": "Retention",
+        "retentionContent": "Data is stored only as long as necessary or legally required."
 
-        "rightsTitle": "6. Your Rights",
-        "rightsList": [
-          "Right of access (Art. 15 GDPR)",
-          "Right to rectification (Art. 16 GDPR)",
-          "Right to erasure (Art. 17 GDPR)",
-          "Right to restriction (Art. 18 GDPR)",
-          "Right to data portability (Art. 20 GDPR)",
-          "Right to object (Art. 21 GDPR)"
-        ],
-        "rightsContact": "To exercise your rights: info@mrbot-ki.de",
-
-        "complaintTitle": "7. Right to Lodge a Complaint",
-        "complaintContent": "You have the right to lodge a complaint with your local data protection authority.",
-
-        "securityTitle": "8. Data Security",
-        "securityContent": "We implement technical and organizational measures to protect your data.",
-
-        "changesTitle": "9. Changes",
-        "changesContent": "We reserve the right to update this privacy policy when necessary.\nLast updated: November 2025"
       }
     }
   },
