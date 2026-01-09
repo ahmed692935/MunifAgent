@@ -15,6 +15,10 @@ import Public from "./routes/Public";
 import ForgotPassword from "./pages/Auth/ForgotPassword";
 import ResetPassword from "./pages/Auth/ResetPassword";
 
+// User Routes
+import UserDashboard from "./pages/User/Dashboard";
+import CallLogs from "./pages/User/CallLogs";
+
 const router = createBrowserRouter([
   // PUBLIC ROUTES
   {
@@ -25,7 +29,7 @@ const router = createBrowserRouter([
     path: "/forgot-password",
     element: <ForgotPassword />,
   },
-   {
+  {
     path: "/reset-password",
     element: <ResetPassword />,
   },
@@ -68,6 +72,22 @@ const router = createBrowserRouter([
     element: (
       <Private>
         <AgentDetails />
+      </Private>
+    ),
+  },
+  {
+    path: "/user-dashboard",
+    element: (
+      <Private>
+        <UserDashboard />
+      </Private>
+    ),
+  },
+  {
+    path: "/call-logs",
+    element: (
+      <Private>
+        <CallLogs />
       </Private>
     ),
   },

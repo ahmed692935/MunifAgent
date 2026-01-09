@@ -33,6 +33,10 @@ export interface User {
   id: number;
   username: string;
   email: string;
+  first_name?: string | null;
+  last_name?: string | null;
+  created_at?: string;
+  is_admin?: boolean;
   token: string; // keep this if backend returns `token`
   access_token?: string; // optional if some APIs return `access_token`
 }
