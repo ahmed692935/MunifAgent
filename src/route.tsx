@@ -18,6 +18,19 @@ import ResetPassword from "./pages/Auth/ResetPassword";
 // User Routes
 import UserDashboard from "./pages/User/Dashboard";
 import CallLogs from "./pages/User/CallLogs";
+import Agent from "./pages/User/Agent";
+
+import { useSelector } from "react-redux";
+import type { RootState } from "./store/store";
+
+const RoleBasedDashboard = () => {
+    const { user } = useSelector((state: RootState) => state.auth);
+
+    if (user?.is_admin) {
+        return <Dashboard />;
+    }
+    return <UserDashboard />;
+};
 
 const router = createBrowserRouter([
   // PUBLIC ROUTES
@@ -63,7 +76,7 @@ const router = createBrowserRouter([
     path: "/dashboard",
     element: (
       <Private>
-        <Dashboard />
+        <RoleBasedDashboard />
       </Private>
     ),
   },
@@ -75,14 +88,14 @@ const router = createBrowserRouter([
       </Private>
     ),
   },
-  {
-    path: "/user-dashboard",
-    element: (
-      <Private>
-        <UserDashboard />
-      </Private>
-    ),
-  },
+  // {
+  //   path: "/user-dashboard",
+  //   element: (
+  //     <Private>
+  //       <UserDashboard />
+  //     </Private>
+  //   ),
+  // },
   {
     path: "/call-logs",
     element: (
@@ -91,6 +104,14 @@ const router = createBrowserRouter([
       </Private>
     ),
   },
+  {
+    path: "/agent",
+    element: (
+      <Private>
+        <Agent />
+      </Private>
+    ),
+  }
 ]);
 
 export default router;

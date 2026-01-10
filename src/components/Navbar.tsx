@@ -45,7 +45,7 @@ const Navbar = () => {
 
     // If Standard User (user.is_admin is false or undefined)
     return [
-      { key: "dashboard", label: "Dashboard", to: "/user-dashboard" },
+      { key: "dashboard", label: "Dashboard", to: "/dashboard" },
       { key: "call-logs", label: "Call Logs", to: "/call-logs" },
       { key: "agent", label: "Agent", to: "/agent" },
     ];
