@@ -12,12 +12,12 @@ import { FaRegUserCircle, FaChevronDown } from "react-icons/fa";
 
 const Navbar = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const [isScrolled, setIsScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState(false);
 
-  const dispatch = useDispatch();
   const { user } = useSelector((state: RootState) => state.auth);
 
   useEffect(() => {
@@ -26,17 +26,35 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const menuItems = [
-    { key: "home", label: "Home", to: "/" },
-    { key: "dashbaord", label: "Dashboard", to: "/dashboard" },
-    { key: "add-agent", label: "Add Agent", to: "/add-agent" },
-  ];
+
+
+  const menuItems = (() => {
+    // If not logged in, show default Home
+    if (!user) {
+      return [{ key: "home", label: "Home", to: "/" }];
+    }
+
+    // If Admin
+    if (user.is_admin) {
+      return [
+        { key: "home", label: "Home", to: "/" },
+        { key: "dashboard", label: "Dashboard", to: "/dashboard" },
+        { key: "add-agent", label: "Add Agent", to: "/add-agent" },
+      ];
+    }
+
+    // If Standard User (user.is_admin is false or undefined)
+    return [
+      { key: "dashboard", label: "Dashboard", to: "/dashboard" },
+      { key: "call-logs", label: "Call Logs", to: "/call-logs" },
+      { key: "agent", label: "Agent", to: "/agent" },
+    ];
+  })();
 
   return (
     <header
-      className={`fixed top-0 left-0 w-full h-16 sm:h-20 z-50 transition-all duration-300 px-4 md:px-8 ${
-        isScrolled ? "bg-white shadow-md" : "bg-white shadow-lg"
-      }`}
+      className={`fixed top-0 left-0 w-full h-16 sm:h-20 z-50 transition-all duration-300 px-4 md:px-8 ${isScrolled ? "bg-white shadow-md" : "bg-white shadow-lg"
+        }`}
     >
       <div className="max-w-7xl mx-auto w-full h-full flex items-center justify-between">
         {/* Logo */}
@@ -114,9 +132,8 @@ const Navbar = () => {
 
       {/* Mobile Slide Menu */}
       <div
-        className={`fixed top-0 right-0 h-full w-3/4 sm:w-2/3 bg-white shadow-lg z-50 transform transition-transform duration-500 ${
-          menuOpen ? "translate-x-0" : "translate-x-full"
-        }`}
+        className={`fixed top-0 right-0 h-full w-3/4 sm:w-2/3 bg-white shadow-lg z-50 transform transition-transform duration-500 ${menuOpen ? "translate-x-0" : "translate-x-full"
+          }`}
       >
         <button
           onClick={() => setMenuOpen(false)}

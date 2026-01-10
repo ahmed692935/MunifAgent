@@ -192,32 +192,32 @@ const AgentDetails = () => {
                 <strong>First Call:</strong>{" "}
                 {agent?.call_stats?.first_call_at
                   ? new Date(agent.call_stats.first_call_at).toLocaleString(
-                      "en-GB",
-                      {
-                        day: "2-digit",
-                        month: "short",
-                        year: "numeric",
-                        hour: "2-digit",
-                        minute: "2-digit",
-                        hour12: false,
-                      }
-                    )
+                    "en-GB",
+                    {
+                      day: "2-digit",
+                      month: "short",
+                      year: "numeric",
+                      hour: "2-digit",
+                      minute: "2-digit",
+                      hour12: false,
+                    }
+                  )
                   : "N/A"}
               </p>
               <p>
                 <strong>Last Call:</strong>{" "}
                 {agent?.call_stats?.last_call_at
                   ? new Date(agent.call_stats.last_call_at).toLocaleString(
-                      "en-GB",
-                      {
-                        day: "2-digit",
-                        month: "short",
-                        year: "numeric",
-                        hour: "2-digit",
-                        minute: "2-digit",
-                        hour12: false,
-                      }
-                    )
+                    "en-GB",
+                    {
+                      day: "2-digit",
+                      month: "short",
+                      year: "numeric",
+                      hour: "2-digit",
+                      minute: "2-digit",
+                      hour12: false,
+                    }
+                  )
                   : "N/A"}
               </p>
             </div>
@@ -367,11 +367,10 @@ const AgentDetails = () => {
               <button
                 disabled={currentPage === 1}
                 onClick={() => fetchData(currentPage - 1)}
-                className={`px-4 py-2 rounded ${
-                  currentPage === 1
+                className={`px-4 py-2 rounded ${currentPage === 1
                     ? "bg-gray-300 cursor-not-allowed"
                     : "bg-[#3d4b52] text-white hover:bg-[#2d3b42]"
-                }`}
+                  }`}
               >
                 Prev
               </button>
@@ -383,11 +382,10 @@ const AgentDetails = () => {
               <button
                 disabled={currentPage === totalPages}
                 onClick={() => fetchData(currentPage + 1)}
-                className={`px-4 py-2 rounded ${
-                  currentPage === totalPages
+                className={`px-4 py-2 rounded ${currentPage === totalPages
                     ? "bg-gray-300 cursor-not-allowed"
                     : "bg-[#3d4b52] text-white hover:bg-[#2d3b42]"
-                }`}
+                  }`}
               >
                 Next
               </button>
@@ -402,7 +400,7 @@ const AgentDetails = () => {
               <h3 className="text-lg font-bold mb-4 text-center">Transcript</h3>
               <pre className="whitespace-pre-wrap">{transcriptData}</pre>
               <button
-                className="mt-4 w-full mt-10 bg-[#3d4b52] hover:bg-[#2d3b42] text-white py-2 rounded-lg cursor-pointer"
+                className="w-full mt-10 bg-[#3d4b52] hover:bg-[#2d3b42] text-white py-2 rounded-lg cursor-pointer"
                 onClick={() => setOpenTranscript(null)}
               >
                 Close
