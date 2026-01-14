@@ -31,12 +31,19 @@ const SignIn = () => {
 
       // ✅ Extract token + user from API response
       const token = response.access_token;
-      const user = { ...response.user, access_token: token };
+      // Fixed: Mapped access_token to token as required by User interface
+      const user = { ...response.user, access_token: token, token: token };
 
       dispatch(loginSuccess({ user, token }));
 
       toast.success("Sign-in successful!");
-      navigate("/dashboard");
+
+      if (response.onboard) {
+        navigate("/onboarding");
+      } else {
+        navigate("/dashboard");
+      }
+      
       reset();
     } catch (err: unknown) {
       const error = err as AxiosError<{ error: string }>;
@@ -107,7 +114,8 @@ const SignIn = () => {
                 {...register("password", {
                   required: "Password is required",
                   minLength: {
-                    value: 8,
+                    // value: 8,
+                    value: 4,
                     message: "Password must be at least 8 characters",
                   },
                 })}

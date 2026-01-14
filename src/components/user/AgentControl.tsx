@@ -1,8 +1,33 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
+import { dashboardOverview } from "../../api/userDashboard"
+import type { UserDashboardData } from "../../Interface/UserDashboard"
 
 function agentControl() {
 
-    const [isActive, setIsActive] = useState<boolean>(true);
+    const [isActive, setIsActive] = useState<boolean>(false);
+    const [data, setData] = useState<UserDashboardData | null>(null);
+    // const [loading, setLoading] = useState<boolean>(true);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const token = localStorage.getItem("token") || "";
+                const response = await dashboardOverview(token);
+
+                if (response.success) {
+                    setData(response.data);
+                    // API se aane wali status ko local state mein set karein
+                    setIsActive(response.data.agent_status.is_active);
+                }
+            } catch (error) {
+                console.error("Error fetching dashboard data:", error);
+            } finally {
+                // setLoading(false);
+            }
+        };
+
+        fetchData();
+    }, []);
 
     const handleToggle = () => {
         setIsActive(!isActive)
@@ -41,16 +66,17 @@ function agentControl() {
                                 AI Agent is {isActive ? 'ON' : 'OFF'}
                             </p>
                             <span className="text-gray-400 text-xs">
-                                {isActive ? 'Currently handling inbound calls' : 'Agent is currently paused'}
+                                {data?.agent_status.status_text || (isActive ? 'Currently handling inbound calls' : 'Agent is currently paused')}
                             </span>
                         </div>
                     </div>
                     {/* Right Side: Badge */}
                     <div className="flex items-start sm:items-center">
                         <span
-                            className={`px-4 py-1 rounded-full text-xs font-medium transition-colors ${isActive
-                                ? 'bg-green-100 text-green-600'
-                                : 'bg-gray-100 text-gray-500'
+                            className={`px-4 py-1 rounded-full text-xs font-medium transition-colors 
+                                ${isActive
+                                    ? 'bg-green-100 text-green-600'
+                                    : 'bg-gray-100 text-gray-500'
                                 }`}
                         >
                             {isActive ? 'Active' : 'Inactive'}

@@ -12,14 +12,19 @@ export interface SignUpFormData {
 }
 
 export interface AuthResponse {
-  success: boolean;
-  token?: string;
-  message?: string;
-  user?: {
-    id: string;
+  access_token: string;
+  token_type: string;
+  user: {
+    id: number;
     username: string;
-    email?: string;
+    email: string;
+    first_name: string | null;
+    last_name: string | null;
+    created_at: string;
+    is_admin: boolean;
+    role: string;
   };
+  onboard: boolean;
 }
 
 export interface AuthError {

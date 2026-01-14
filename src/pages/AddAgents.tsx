@@ -1,11 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import type { AgentFormData } from "../Interface/AddAgent";
 import { RiUserAddFill } from "react-icons/ri";
 import Navbar from "../components/Navbar";
 
 import { useNavigate } from "react-router-dom";
-import { getLanguage, postAddAgent } from "../api/api";
+import { getLanguage, postAddAgent, getUsers } from "../api/api";
 import toast from "react-hot-toast";
 import type { AxiosError } from "axios";
 
@@ -89,6 +89,33 @@ const AddAgents = () => {
     }
   };
 
+  // --- New States ---
+  const [usersList, setUsersList] = useState<any[]>([]);
+  const [loadingUsers, setLoadingUsers] = useState(false);
+
+  // --- API Fetching Logic ---
+  useEffect(() => {
+    const fetchUsers = async () => {
+      const token = localStorage.getItem("token");
+      if (!token) return;
+
+      setLoadingUsers(true);
+      try {
+        const response = await getUsers(token);
+        if (response.success) {
+          setUsersList(response.users);
+        }
+      } catch (error) {
+        console.error("Error fetching users:", error);
+        toast.error("Failed to load users list");
+      } finally {
+        setLoadingUsers(false);
+      }
+    };
+
+    fetchUsers();
+  }, []);
+
   const languageFlags: Record<string, string> = {
     en: Uk, // English
     de: German, // German
@@ -157,6 +184,33 @@ const AddAgents = () => {
                   {errors.agent_image && (
                     <p className="mt-2 text-sm text-red-600">
                       {errors.agent_image.message}
+                    </p>
+                  )}
+                </div>
+
+                {/* Select Agent Dropdown */}
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    Select Agent (From Users List)
+                  </label>
+                  <select
+                    {...register("agent_name", {
+                      required: "Please select an agent",
+                    })}
+                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg 
+    focus:border-[#3d4b52] focus:ring-0 outline-none transition-colors bg-white"
+                  >
+                    <option value="">{loadingUsers ? "Loading users..." : "Select a username"}</option>
+                    {usersList.map((user) => (
+                      <option key={user.id} value={user.username}>
+                        {user.username}
+                      </option>
+                    ))}
+                  </select>
+
+                  {errors.agent_name && (
+                    <p className="mt-1 text-sm text-red-600">
+                      {errors.agent_name.message}
                     </p>
                   )}
                 </div>
@@ -459,7 +513,7 @@ const AddAgents = () => {
                     type="submit"
                     disabled={isSubmitting}
                     className="w-full py-4 px-6 text-white font-semibold rounded-lg shadow-lg bg-[#3d4b52] hover:shadow-xl hover:bg-[#2d3b42] transform cursor-pointer transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
-                    //   style={{ backgroundColor: "#3d4b52" }}
+                  //   style={{ backgroundColor: "#3d4b52" }}
                   >
                     {isSubmitting ? (
                       <span className="flex items-center justify-center">

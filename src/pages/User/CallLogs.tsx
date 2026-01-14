@@ -187,7 +187,7 @@ const CallLogs = () => {
                                                 <div className="col-span-1 text-right">
                                                     <button
                                                         onClick={() => handleViewDetails(log)}
-                                                        className="px-3 py-1.5 bg-[#2E68FF] text-white text-[11px] font-semibold rounded-lg hover:bg-[#1a54e6] flex items-center gap-1 ml-auto"
+                                                        className="px-3 py-1.5 bg-[#3d4b52] text-white text-[11px] font-semibold rounded-lg hover:bg-[#2d3b42] flex items-center gap-1 ml-auto cursor-pointer"
                                                     >
                                                         <Eye size={14} /> View
                                                     </button>
@@ -204,7 +204,7 @@ const CallLogs = () => {
                                 <div className="flex items-center gap-2">
                                     <button onClick={() => setCurrentPage(p => Math.max(1, p - 1))} disabled={currentPage === 1} className="p-2 border rounded-lg disabled:opacity-30"><ChevronLeft size={18} /></button>
                                     {[...Array(totalPages)].map((_, i) => (
-                                        <button key={i + 1} onClick={() => setCurrentPage(i + 1)} className={`w-10 h-10 rounded-lg text-sm ${currentPage === i + 1 ? 'bg-[#2E68FF] text-white' : 'border'}`}>{i + 1}</button>
+                                        <button key={i + 1} onClick={() => setCurrentPage(i + 1)} className={`w-10 h-10 rounded-lg text-sm ${currentPage === i + 1 ? 'bg-[#2d3b42] text-white' : 'border'}`}>{i + 1}</button>
                                     ))}
                                     <button onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))} disabled={currentPage === totalPages} className="p-2 border rounded-lg disabled:opacity-30"><ChevronRight size={18} /></button>
                                 </div>
