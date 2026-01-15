@@ -10,6 +10,23 @@ export interface UserDashboard {
     reset_in_days: number;
 }
 
+export interface PlanUsageData {
+    used_minutes: number;
+    total_minutes: number;
+    percentage: number;
+    
+    is_active?: boolean;
+    status_text?: string;
+    total_calls?: number;
+    missed_calls?: number;
+    reset_in_days?: number;
+}
+
+export interface PlanUsageResponse {
+    success: boolean;
+    data: PlanUsageData;
+}
+
 export interface AgentStatus {
     is_active: boolean;
     status_text: string;

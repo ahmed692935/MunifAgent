@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { FiCalendar, FiPhone, FiAlertTriangle, FiSettings, FiArrowRight } from 'react-icons/fi';
 import { recentAction } from '../../api/userDashboard';
 import type { ActionItem } from '../../Interface/UserDashboard';
+import { Loader2 } from 'lucide-react';
 
 
 function RecentActions() {
@@ -120,11 +121,11 @@ function RecentActions() {
             </div>
 
             {/* Actions List */}
-            <div className="flex flex-col gap-5 flex-grow">
+            <div className="flex flex-col gap-5 grow">
                 {loading ? (
                     /* --- Loading Ring (Spinner) --- */
-                    <div className="flex flex-grow items-center justify-center py-10">
-                        <div className="w-8 h-8 border-4 border-blue-200 border-t-[#3d4b52] rounded-full animate-spin"></div>
+                    <div className="flex grow items-center justify-center py-10">
+                        <Loader2 className="w-10 h-10 text-[#3d4b52] animate-spin" />
                     </div>
                 ) : actions.length > 0 ? (
                     actions.map((action, index) => {

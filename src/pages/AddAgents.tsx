@@ -7,7 +7,6 @@ import Navbar from "../components/Navbar";
 import { useNavigate } from "react-router-dom";
 import { getLanguage, postAddAgent, getUsers } from "../api/api";
 import toast from "react-hot-toast";
-import type { AxiosError } from "axios";
 
 import Uk from "../assets/Images/uk.png";
 import German from "../assets/Images/germany.png";
@@ -34,6 +33,61 @@ const AddAgents = () => {
     watch,
   } = useForm<AgentFormData>();
 
+  // const onSubmit = async (data: AgentFormData) => {
+  //   setIsSubmitting(true);
+
+  //   try {
+  //     const token = localStorage.getItem("token");
+  //     if (!token) {
+  //       toast.error("User token missing!");
+  //       return;
+  //     }
+
+  //     // Create formData for API
+  //     const formData = new FormData();
+  //     formData.append("agent_name", data.agent_name);
+  //     formData.append("phone_number", data.phone_number);
+  //     formData.append("owner_name", data.business_name || "");
+  //     formData.append("industry", data.industry || "");
+  //     formData.append("language", data.language || "");
+  //     // formData.append("voice_type", data.voice_type);
+  //     formData.append("voice_type", selectedVoice?.voice_name || "");
+  //     formData.append("system_prompt", data.system_prompt);
+  //     formData.append("owner_email", data.owner_email);
+  //     formData.append("business_hours_start", data.business_hours_start);
+  //     formData.append("business_hours_end", data.business_hours_end);
+  //     formData.append("allowed_minutes", data.allowed_minutes.toString());
+
+  //     // image (file)
+  //     if (data.agent_image && data.agent_image[0] instanceof File) {
+  //       formData.append("avatar", data.agent_image[0]);
+  //     }
+
+  //     const res = await postAddAgent(token, formData);
+
+  //     // console.log("API Response:", res);
+  //     // toast.success("Agent Created Successfully!");
+  //     toast.success(res?.data?.message || "Agent Created Successfully!");
+
+  //     reset();
+  //     setPreview(null);
+
+  //     setTimeout(() => {
+  //       navigate("/dashboard");
+  //     }, 700);
+  //   } catch (error: unknown) {
+  //     const axiosError = error as AxiosError<{ error: string }>;
+  //     const apiMessage =
+  //       axiosError?.response?.data?.error ||
+  //       axiosError?.message ||
+  //       "Error creating agent!";
+
+  //     toast.error(apiMessage);
+  //   } finally {
+  //     setIsSubmitting(false);
+  //   }
+  // };
+
   const onSubmit = async (data: AgentFormData) => {
     setIsSubmitting(true);
 
@@ -44,14 +98,17 @@ const AddAgents = () => {
         return;
       }
 
-      // Create formData for API
       const formData = new FormData();
-      formData.append("agent_name", data.agent_name);
+
+      // --- UPDATED PART: Passing user_id and agent_name ---
+      formData.append("user_id", String(data.user_id)); // Selected ID from dropdown
+      formData.append("agent_name", data.agent_name); // Agent Name from text input
+      // --------------------------------------------------
+
       formData.append("phone_number", data.phone_number);
       formData.append("owner_name", data.business_name || "");
       formData.append("industry", data.industry || "");
       formData.append("language", data.language || "");
-      // formData.append("voice_type", data.voice_type);
       formData.append("voice_type", selectedVoice?.voice_name || "");
       formData.append("system_prompt", data.system_prompt);
       formData.append("owner_email", data.owner_email);
@@ -59,35 +116,26 @@ const AddAgents = () => {
       formData.append("business_hours_end", data.business_hours_end);
       formData.append("allowed_minutes", data.allowed_minutes.toString());
 
-      // image (file)
       if (data.agent_image && data.agent_image[0] instanceof File) {
         formData.append("avatar", data.agent_image[0]);
       }
 
       const res = await postAddAgent(token, formData);
-
-      // console.log("API Response:", res);
-      // toast.success("Agent Created Successfully!");
-      toast.success(res?.data?.message || "Agent Created Successfully!");
+      toast.success(res?.data?.error || "Agent Created Successfully!");
 
       reset();
       setPreview(null);
+      setTimeout(() => navigate("/dashboard"), 700);
 
-      setTimeout(() => {
-        navigate("/dashboard");
-      }, 700);
-    } catch (error: unknown) {
-      const axiosError = error as AxiosError<{ error: string }>;
-      const apiMessage =
-        axiosError?.response?.data?.error ||
-        axiosError?.message ||
-        "Error creating agent!";
-
-      toast.error(apiMessage);
+    } catch (error: any) {
+      // ... error handling
+      toast.error(error.res?.data?.error || "Failed to create agent!");
     } finally {
       setIsSubmitting(false);
     }
   };
+
+
 
   // --- New States ---
   const [usersList, setUsersList] = useState<any[]>([]);
@@ -189,7 +237,7 @@ const AddAgents = () => {
                 </div>
 
                 {/* Select Agent Dropdown */}
-                <div>
+                {/* <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-2">
                     Select Agent (From Users List)
                   </label>
@@ -212,6 +260,28 @@ const AddAgents = () => {
                     <p className="mt-1 text-sm text-red-600">
                       {errors.agent_name.message}
                     </p>
+                  )}
+                </div> */}
+
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    Select User (Linked Account)
+                  </label>
+                  <select
+                    {...register("user_id", {
+                      required: "Please select a user",
+                    })}
+                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-[#3d4b52] focus:ring-0 outline-none transition-colors bg-white"
+                  >
+                    <option value="">{loadingUsers ? "Loading users..." : "Select a user"}</option>
+                    {usersList.map((user) => (
+                      <option key={user.id} value={user.id}>
+                        {user.username} {/*(ID: {user.id}) */}
+                      </option>
+                    ))}
+                  </select>
+                  {errors.user_id && (
+                    <p className="mt-1 text-sm text-red-600">{errors.user_id.message}</p>
                   )}
                 </div>
 

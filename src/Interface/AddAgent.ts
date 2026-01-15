@@ -12,6 +12,7 @@ export interface AgentFormData {
   business_hours_end: string;
   allowed_minutes: number;
   voice_type: "male" | "female" | "non-binary";
+  user_id: number;
 }
 
 export interface AgentType {

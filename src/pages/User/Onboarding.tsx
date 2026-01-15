@@ -3,8 +3,9 @@ import { useForm } from "react-hook-form";
 import type { SubmitHandler } from "react-hook-form";
 import toast, { Toaster } from "react-hot-toast";
 import Logo from "../../assets/Images/MrBot_Logo.webp";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import type { RootState } from "../../store/store";
+import { loginSuccess } from "../../store/slices/authSlice";
 import { businessDetail } from "../../api/userDashboard";
 // 1. useNavigate import karein
 import { useNavigate } from "react-router-dom";
@@ -24,6 +25,7 @@ const Onboarding = () => {
 
     // 2. navigate function initialize karein
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const {
         register,
@@ -38,6 +40,12 @@ const Onboarding = () => {
 
             if (response.success) {
                 toast.success(response.message || "Details submitted successfully!");
+
+                // Update Redux state to reflect onboarding is done
+                if (user) {
+                    const updatedUser = { ...user, onboard: true };
+                    dispatch(loginSuccess({ user: updatedUser, token: token as string }));
+                }
 
                 // 3. Success par dashboard par bhej dain
                 // Thoda delay (e.g. 1.5s) dena chahen takay toast nazar aa jaye to setTimeout use kar sakte hain
@@ -141,7 +149,7 @@ const Onboarding = () => {
                             <option value="">Select Language</option>
                             <option value="English">English</option>
                             <option value="German">German</option>
-                            <option value="Spanish">Spanish</option>
+                            {/* <option value="Spanish">Spanish</option> */}
                         </select>
                     </div>
 

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import Navbar from "../components/Navbar"
-import { getUsers, adminStatus, userActiveToggle } from "../api/api"
+import { getUsers, adminStatus } from "../api/api"
 import { Loader2, Search } from "lucide-react";
 import toast, { Toaster } from "react-hot-toast";
 
@@ -45,33 +45,33 @@ function Users() {
     )
 
     // Agent Status Toggle Handler
-    const handleToggleAgent = async (userId: number, currentStatus: boolean) => {
-        const token = localStorage.getItem("token") || "";
-        const loadingToast = toast.loading("Updating agent status...");
+    // const handleToggleAgent = async (userId: number, currentStatus: boolean) => {
+    //     const token = localStorage.getItem("token") || "";
+    //     const loadingToast = toast.loading("Updating agent status...");
 
-        // Toggle logic: Current ka ulta (true -> false, false -> true)
-        const newStatus = !currentStatus;
-        const agentId = 1; // Aapki API image mein 1 hai, ise dynamic karein agar zaroorat ho
+    //     // Toggle logic: Current ka ulta (true -> false, false -> true)
+    //     const newStatus = !currentStatus;
+    //     const agentId = 1; // Aapki API image mein 1 hai, ise dynamic karein agar zaroorat ho
 
-        try {
-            // Charo parameters bhejein: token, userId, agentId, aur newStatus
-            const data = await userActiveToggle(token, userId, agentId, newStatus);
+    //     try {
+    //         // Charo parameters bhejein: token, userId, agentId, aur newStatus
+    //         const data = await userActiveToggle(token, userId, agentId, newStatus);
 
-            if (data.success) {
-                setUsers((prev) =>
-                    prev.map((u) =>
-                        u.id === userId ? { ...u, is_active: data.data.is_active } : u
-                    )
-                );
-                toast.success(data.message, { id: loadingToast });
-            }
-        } catch (error: any) {
-            console.error("Toggle Error:", error.response?.data);
-            toast.error(error.response?.data?.message || "Update failed (422)", { id: loadingToast });
-        }
-    };
-    // Header logic: Agar koi bhi user active agent hai to header change ho jaye
-    const isAnyAgentActive = users.some(u => u.is_active);
+    //         if (data.success) {
+    //             setUsers((prev) =>
+    //                 prev.map((u) =>
+    //                     u.id === userId ? { ...u, is_active: data.data.is_active } : u
+    //                 )
+    //             );
+    //             toast.success(data.error, { id: loadingToast });
+    //         }
+    //     } catch (error: any) {
+    //         console.error("Toggle Error:", error.response?.data);
+    //         toast.error(error.response?.data?.error || "Update failed", { id: loadingToast });
+    //     }
+    // };
+    // // Header logic: Agar koi bhi user active agent hai to header change ho jaye
+    // const isAnyAgentActive = users.some(u => u.is_active);
 
     // Admin Status Toggle Handler
     const handleToggleAdmin = async (userId: number, currentStatus: boolean) => {
@@ -144,9 +144,9 @@ function Users() {
                                 <div className="grid grid-cols-12 px-6 py-3 text-xs font-semibold text-[#667085] uppercase bg-[#F9FAFB] border-b border-[#EAECF0]">
                                     <div className="col-span-3">Name</div>
                                     <div className="col-span-4">Email</div>
-                                    <div className="col-span-3">
+                                    {/* <div className="col-span-3">
                                         Agent {isAnyAgentActive ? "(Active)" : "(in_Active)"}
-                                    </div>
+                                    </div> */}
                                     <div className="col-span-2 text-right">Admin</div>
                                 </div>
 
@@ -170,7 +170,7 @@ function Users() {
                                                 </div>
 
                                                 {/* Agent Toggle Switch */}
-                                                <div className="col-span-3">
+                                                {/* <div className="col-span-3">
                                                     <label className="relative inline-flex items-center cursor-pointer">
                                                         <input
                                                             type="checkbox"
@@ -183,7 +183,7 @@ function Users() {
                                                             {user.is_active ? "Active" : "In_Active"}
                                                         </span>
                                                     </label>
-                                                </div>
+                                                </div> */}
 
                                                 {/* Admin Toggle */}
                                                 <div className="col-span-2 flex justify-end">

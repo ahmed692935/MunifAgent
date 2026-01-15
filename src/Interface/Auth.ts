@@ -42,6 +42,7 @@ export interface User {
   last_name?: string | null;
   created_at?: string;
   is_admin?: boolean;
+  onboard?: boolean;
   token: string; // keep this if backend returns `token`
   access_token?: string; // optional if some APIs return `access_token`
 }

@@ -26,6 +26,18 @@ export const dashboardOverview = async (token: string) => {
   return response.data;
 };
 
+// User Plan usage
+export const planUsage = async (token: string) => {
+  const response = await api.get(`${API_URL}/dashboard/plan-usage`, {
+    headers: {
+      "ngrok-skip-browser-warning": "true",
+      Authorization: `Bearer ${token}`,
+      Accept: "application/json",
+    },
+  });
+  return response.data;
+};
+
 // User Dashboard recent-action
 export const recentAction = async (token: string) => {
   const response = await api.get(`${API_URL}/dashboard/recent-actions`, {
@@ -58,6 +70,18 @@ export const putMyAgent = async (token: string, formData: FormData) => {
       "ngrok-skip-browser-warning": "true",
       Authorization: `Bearer ${token}`,
       "Content-Type": "multipart/form-data",
+      Accept: "application/json",
+    },
+  });
+  return response.data;
+};
+
+// get User detail
+export const userProfile = async (token: string) => {
+  const response = await api.get(`${API_URL}/user-profile`, {
+    headers: {
+      "ngrok-skip-browser-warning": "true",
+      Authorization: `Bearer ${token}`,
       Accept: "application/json",
     },
   });

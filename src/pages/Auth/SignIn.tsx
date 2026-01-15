@@ -32,13 +32,17 @@ const SignIn = () => {
       // ✅ Extract token + user from API response
       const token = response.access_token;
       // Fixed: Mapped access_token to token as required by User interface
-      const user = { ...response.user, access_token: token, token: token };
+      const user = { ...response.user, access_token: token, token: token, onboard: response.onboard };
 
       dispatch(loginSuccess({ user, token }));
 
       toast.success("Sign-in successful!");
 
-      if (response.onboard) {
+      
+      
+      if (response.user.is_admin) {
+        navigate("/dashboard");
+      } else if (!response.onboard) {
         navigate("/onboarding");
       } else {
         navigate("/dashboard");

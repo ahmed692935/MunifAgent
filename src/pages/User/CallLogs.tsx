@@ -88,7 +88,7 @@ const CallLogs = () => {
                     {/* Page Content ya Loading Spinner */}
                     {pageLoading ? (
                         <div className="w-full h-[400px] flex flex-col items-center justify-center bg-white border border-[#0000001A] rounded-[14px] shadow-sm">
-                            <Loader2 className="w-10 h-10 text-[#2E68FF] animate-spin" />
+                            <Loader2 className="w-10 h-10 text-[#3d4b52] animate-spin" />
                             <p className="mt-4 text-[#667085] font-medium"></p>
                         </div>
                     ) : (
@@ -146,7 +146,7 @@ const CallLogs = () => {
                             <div className="overflow-x-auto border border-[#EAECF0] rounded-lg relative min-h-[300px]">
                                 {tableLoading && (
                                     <div className="absolute inset-0 z-10 bg-white/50 backdrop-blur-[1px] flex items-center justify-center">
-                                        <Loader2 className="w-8 h-8 text-[#2E68FF] animate-spin" />
+                                        <Loader2 className="w-8 h-8 text-[#3d4b52] animate-spin" />
                                     </div>
                                 )}
 
