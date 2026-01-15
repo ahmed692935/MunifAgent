@@ -504,14 +504,14 @@
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import type { AgentFormData } from "../../Interface/AddAgent";
+import type { Agent as AgentType } from "../../Interface/User";
 import { RiUserAddFill } from "react-icons/ri";
 import Navbar from "../../components/Navbar";
 import { getLanguage } from "../../api/api";
-
-// import { useNavigate } from "react-router-dom";
 import { getMyAgent, putMyAgent } from "../../api/userDashboard";
 import toast from "react-hot-toast";
 import type { AxiosError } from "axios";
+import { ChevronDown } from "lucide-react";
 
 import Uk from "../../assets/Images/uk.png";
 import German from "../../assets/Images/germany.png";
@@ -520,32 +520,31 @@ import Netherlands from "../../assets/Images/netherlands.png";
 import Spainsh from "../../assets/Images/spanish.png";
 import France from "../../assets/Images/france.png";
 
-import { Loader2 } from "lucide-react";
-
 function Agent() {
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const [isEditing, setIsEditing] = useState(false); // New state for toggling edit mode
+    const [isEditing, setIsEditing] = useState(false);
     const [preview, setPreview] = useState<string | null>(null);
     const [openVoicePopup, setOpenVoicePopup] = useState(false);
     const [voiceSamples, setVoiceSamples] = useState<any[]>([]);
     const [selectedVoice, setSelectedVoice] = useState<any>(null);
     const [loadingVoiceSamples, setLoadingVoiceSamples] = useState(false);
 
-    const [isLoadingData, setIsLoadingData] = useState(true); // Initial state true
+    const [isLoadingData, setIsLoadingData] = useState(true);
 
-    // const navigate = useNavigate();
+    // Multi-agent state
+    const [agents, setAgents] = useState<AgentType[]>([]);
+    const [selectedAgentId, setSelectedAgentId] = useState<number | null>(null);
 
     const {
         register,
         handleSubmit,
-        // formState: { errors },
         reset,
         watch,
-        // setValue,
     } = useForm<AgentFormData>();
 
+    // Initial Fetch of Agents
     useEffect(() => {
-        const fetchAgentData = async () => {
+        const fetchAgents = async () => {
             setIsLoadingData(true);
             try {
                 const token = localStorage.getItem("token");
@@ -553,40 +552,63 @@ function Agent() {
 
                 const response = await getMyAgent(token);
 
-                if (response.success && response.data) {
-                    const agent = response.data;
-
-                    reset({
-                        agent_name: agent.agent_name,
-                        phone_number: agent.phone_number,
-                        system_prompt: agent.system_prompt,
-                        industry: agent.industry,
-                        language: agent.language,
-                        business_name: agent.owner_name,
-                        owner_email: agent.owner_email,
-                        allowed_minutes: agent.allowed_minutes || 0,
-                    });
-
-                    if (agent.voice_type) {
-                        setSelectedVoice({ voice_name: agent.voice_type });
-                    }
-
-                    if (agent.avatar_url) {
-                        setPreview(agent.avatar_url);
-                    }
+                if (response.success && response.data && response.data.agents.length > 0) {
+                    setAgents(response.data.agents);
+                    // Default select the first agent
+                    setSelectedAgentId(response.data.agents[0].id);
+                } else {
+                    toast.error("No agents found.");
                 }
             } catch (error) {
-                // console.error("Error fetching agent:", error);
-                toast.error("Failed to load agent data");
+                console.error("Error fetching agents:", error);
+                toast.error("Failed to load agents data");
             } finally {
-                setIsLoadingData(false); // Loading khatam
+                setIsLoadingData(false);
             }
         };
 
-        fetchAgentData();
-    }, [reset]);
+        fetchAgents();
+    }, []);
+
+    // Update form when selected agent changes
+    useEffect(() => {
+        if (!selectedAgentId || agents.length === 0) return;
+
+        const agent = agents.find(a => a.id === selectedAgentId);
+        if (!agent) return;
+
+        reset({
+            agent_name: agent.agent_name,
+            phone_number: agent.phone_number,
+            system_prompt: agent.system_prompt,
+            industry: agent.industry || "",
+            language: agent.language,
+            business_name: agent.owner_name,
+            owner_email: agent.owner_email,
+            allowed_minutes: agent.allowed_minutes || 0,
+        });
+
+        if (agent.voice_type) {
+            setSelectedVoice({ voice_name: agent.voice_type });
+        } else {
+            setSelectedVoice(null);
+        }
+
+        if (agent.avatar_presigned_url || agent.avatar_url) {
+            setPreview(agent.avatar_presigned_url || agent.avatar_url || null);
+        } else {
+            setPreview(null);
+        }
+
+    }, [selectedAgentId, agents, reset]);
+
 
     const onSubmit = async (data: AgentFormData) => {
+        if (!selectedAgentId) {
+            toast.error("No agent selected to update.");
+            return;
+        }
+
         setIsSubmitting(true);
         try {
             const token = localStorage.getItem("token");
@@ -595,10 +617,7 @@ function Agent() {
                 return;
             }
 
-            // 1. FormData object banayein (image handling ke liye)
             const formData = new FormData();
-
-            // Sabhi fields ko append karein
             formData.append("agent_name", data.agent_name);
             formData.append("system_prompt", data.system_prompt);
             formData.append("industry", data.industry);
@@ -606,23 +625,38 @@ function Agent() {
             formData.append("business_name", data.business_name);
             formData.append("owner_email", data.owner_email);
 
-            // Voice type (agar selectedVoice state mein hai)
             if (selectedVoice) {
                 formData.append("voice_type", selectedVoice.voice_name);
             }
 
-            // 2. Image handle karein
-            // Agar user ne nayi image select ki hai (FileList check)
             if (data.agent_image && data.agent_image instanceof FileList && data.agent_image[0]) {
-                formData.append("agent_image", data.agent_image[0]);
+                formData.append("avatar", data.agent_image[0]); // Changed to 'avatar' based on previous context implementation, verify API expectation. Assuming 'avatar' based on previous `agent_image` logic or verify. Wait, User request mentioned JSON response has `avatar_url`. Let's stick to standard `avatar` or `agent_image`. Previous code used `agent_image` in append but file input name is `agent_image`. Previous working code used `avatar` in formData append at line 65. I'll stick to `avatar`.
             }
 
-            // 3. API Call
-            const response = await putMyAgent(token, formData);
+            // Using the new signature: putMyAgent(token, agentId, formData)
+            const response = await putMyAgent(token, selectedAgentId, formData);
 
             if (response.success) {
                 toast.success("Agent updated successfully!");
-                setIsEditing(false); // Edit mode off kar dein
+                setIsEditing(false);
+
+                // Update local state to reflect changes immediately
+                setAgents(prevAgents => prevAgents.map(a =>
+                    a.id === selectedAgentId
+                        ? { ...a, ...response.data } // Assuming response.data is the updated agent object or contains updated fields
+                        : a
+                ));
+
+                // If response.data isn't the full object, we might need refetch, but let's assume optimistically or based on standard.
+                // Or better, just refetch getMyAgent to be safe and sync.
+                // But for smoothness, let's keep it simple.
+
+                // Re-fetch to ensure sync (optional but safer)
+                const freshResponse = await getMyAgent(token);
+                if (freshResponse.success && freshResponse.data) {
+                    setAgents(freshResponse.data.agents);
+                }
+
             } else {
                 toast.error(response.message || "Update failed!");
             }
@@ -657,198 +691,223 @@ function Agent() {
                     <div className="bg-white border border-[#0000001A] rounded-2xl overflow-hidden relative min-h-[300px]">
                         <div className="p-8 md:p-10">
 
-                            {isLoadingData ? (
-                                <div className="absolute inset-0 z-10 bg-white/50 backdrop-blur-[1px] flex items-center justify-center">
-                                    <Loader2 className="w-10 h-10 text-[#3d4b52] animate-spin" />
+
+                            {/* Agent Selection Dropdown */}
+                            <div className="mb-8">
+                                <label className="block text-sm font-semibold text-gray-700 mb-2">Select Agent to Edit</label>
+                                <div className="relative">
+                                    <select
+                                        value={selectedAgentId || ""}
+                                        onChange={(e) => {
+                                            const id = Number(e.target.value);
+                                            setSelectedAgentId(id);
+                                            setIsEditing(false); // Reset edit mode on switch
+                                        }}
+                                        disabled={isLoadingData}
+                                        className="w-full px-4 py-3 pr-10 border-2 border-gray-200 rounded-lg appearance-none bg-white focus:border-[#3d4b52] outline-none cursor-pointer"
+                                    >
+                                        {isLoadingData ? <option>---</option> : agents.map((agent) => (
+                                            <option key={agent.id} value={agent.id}>
+                                                {agent.agent_name} {/*({agent.phone_number})*/}
+                                            </option>
+                                        ))}
+                                    </select>
+                                    <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none" size={20} />
                                 </div>
-                            ) : (
+                            </div>
 
-                                <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-                                    {/* Image Upload - Disabled if not editing */}
-                                    <div className="flex flex-col items-center">
-                                        <label className="block text-sm font-semibold text-gray-700 mb-3">Agent Image</label>
-                                        <label className={`w-32 h-32 rounded-full border-dashed border-2 flex items-center justify-center overflow-hidden relative transition ${isEditing ? 'border-gray-300 cursor-pointer hover:border-[#3d4b52]' : 'border-gray-100 cursor-not-allowed'}`}>
-                                            {preview ? (
-                                                <img src={preview} alt="Preview" className="w-full h-full object-cover" />
-                                            ) : (
-                                                <span className="text-gray-500 text-sm text-center px-2">Upload Image +</span>
-                                            )}
-                                            <input
-                                                type="file"
-                                                accept="image/*"
-                                                disabled={!isEditing}
-                                                {...register("agent_image")}
-                                                onChange={(e) => {
-                                                    const file = e.target.files?.[0];
-                                                    if (file) setPreview(URL.createObjectURL(file));
-                                                }}
-                                                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer disabled:cursor-not-allowed"
-                                            />
-                                        </label>
-                                    </div>
+                            <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+                                {/* Image Upload - Disabled if not editing */}
+                                <div className="flex flex-col items-center">
+                                    <label className="block text-sm font-semibold text-gray-700 mb-3">Agent Image</label>
+                                    <label className={`w-32 h-32 rounded-full border-dashed border-2 flex items-center justify-center overflow-hidden relative transition ${isEditing ? 'border-gray-300 cursor-pointer hover:border-[#3d4b52]' : 'border-gray-100 cursor-not-allowed'}`}>
+                                        {preview ? (
+                                            <img src={preview} alt="Preview" className="w-full h-full object-cover" />
+                                        ) : (
+                                            <span className="text-gray-500 text-sm text-center px-2">Upload Image +</span>
+                                        )}
+                                        <input
+                                            type="file"
+                                            accept="image/*"
+                                            disabled={!isEditing}
+                                            {...register("agent_image")}
+                                            onChange={(e) => {
+                                                const file = e.target.files?.[0];
+                                                if (file) setPreview(URL.createObjectURL(file));
+                                            }}
+                                            className="absolute inset-0 w-full h-full opacity-0 cursor-pointer disabled:cursor-not-allowed"
+                                        />
+                                    </label>
+                                </div>
 
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                        <div>
-                                            <label className="block text-sm font-semibold text-gray-700 mb-2">Agent Name</label>
-                                            <input
-                                                type="text"
-                                                disabled={!isEditing}
-                                                {...register("agent_name", { required: "Agent name is required" })}
-                                                className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-[#3d4b52] outline-none disabled:bg-gray-50 disabled:text-gray-500"
-                                                placeholder="Enter agent name"
-                                            />
-                                        </div>
-
-                                        <div>
-                                            <label className="block text-sm font-semibold text-gray-700 mb-2">Phone Number (Read-only)</label>
-                                            <input
-                                                type="tel"
-                                                disabled={true} // Hamesha disabled rahega
-                                                {...register("phone_number")}
-                                                className="w-full px-4 py-3 border-2 border-gray-100 bg-gray-50 text-gray-400 rounded-lg outline-none cursor-not-allowed"
-                                                placeholder="+1 (555) 000-0000"
-                                            />
-                                        </div>
-                                    </div>
-
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                        <div>
-                                            <label className="block text-sm font-semibold text-gray-700 mb-2">Business Name</label>
-                                            <input
-                                                type="text"
-                                                disabled={!isEditing}
-                                                {...register("business_name")}
-                                                className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-[#3d4b52] outline-none disabled:bg-gray-50"
-                                            />
-                                        </div>
-
-                                        <div>
-                                            <label className="block text-sm font-semibold text-gray-700 mb-2">Business Email</label>
-                                            <input
-                                                type="email"
-                                                disabled={!isEditing}
-                                                {...register("owner_email")}
-                                                className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-[#3d4b52] outline-none disabled:bg-gray-50"
-                                            />
-                                        </div>
-                                    </div>
-
-                                    <div className="w-full">
-                                        <label className="block text-sm font-semibold text-gray-700 mb-2">Industry</label>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div>
+                                        <label className="block text-sm font-semibold text-gray-700 mb-2">Agent Name</label>
                                         <input
                                             type="text"
-                                            disabled={!isEditing}
-                                            {...register("industry")}
-                                            className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-[#3d4b52] outline-none disabled:bg-gray-50"
+                                            disabled={isLoadingData || !isEditing}
+                                            {...register("agent_name", { required: "Agent name is required" })}
+                                            className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-[#3d4b52] outline-none disabled:bg-gray-50 disabled:text-gray-500"
+                                            placeholder={isLoadingData ? "---" : "Enter agent name"}
                                         />
-                                    </div>
-
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                        <div>
-                                            <label className="block text-sm font-semibold text-gray-700 mb-2">Language</label>
-                                            <select
-                                                disabled={!isEditing}
-                                                {...register("language")}
-                                                className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-[#3d4b52] outline-none bg-white disabled:bg-gray-50"
-                                            >
-                                                <option value="de">German</option>
-                                                <option value="en">English</option>
-                                                <option value="fr">French</option>
-                                                <option value="it">Italian</option>
-                                                <option value="es">Spanish</option>
-                                                <option value="nl">Dutch</option>
-                                            </select>
-                                        </div>
-
-                                        <div>
-                                            <label className="block text-sm font-semibold text-gray-700 mb-2">Select Voice Type</label>
-                                            <input
-                                                type="text"
-                                                readOnly
-                                                value={selectedVoice?.voice_name || ""}
-                                                placeholder="Click to choose a voice"
-                                                onFocus={async () => {
-                                                    const lang = watch("language");
-
-                                                    if (!lang) {
-                                                        toast.error("Please select a language first!");
-                                                        return;
-                                                    }
-
-                                                    setOpenVoicePopup(true);
-                                                    setLoadingVoiceSamples(true);
-
-                                                    try {
-                                                        const token = localStorage.getItem("token");
-                                                        if (!token) {
-                                                            toast.error("Token missing!");
-                                                            return;
-                                                        }
-
-                                                        const response = await getLanguage({
-                                                            language: lang,
-                                                            token: token,
-                                                        });
-
-                                                        setVoiceSamples(
-                                                            response.grouped_by_language?.[lang] || []
-                                                        );
-                                                    } catch (error) {
-                                                        console.error(error);
-                                                        toast.error("Error fetching voice samples");
-                                                    } finally {
-                                                        setLoadingVoiceSamples(false);
-                                                    }
-                                                }}
-                                                className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg 
-       focus:border-[#3d4b52] focus:ring-0 outline-none transition-colors bg-white cursor-pointer"
-                                            />
-                                        </div>
                                     </div>
 
                                     <div>
-                                        <label className="block text-sm font-semibold text-gray-700 mb-2">System Prompt</label>
-                                        <textarea
-                                            disabled={!isEditing}
-                                            {...register("system_prompt", { required: "System prompt is required" })}
-                                            rows={5}
-                                            className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-[#3d4b52] outline-none resize-none disabled:bg-gray-50"
+                                        <label className="block text-sm font-semibold text-gray-700 mb-2">Phone Number (Read-only)</label>
+                                        <input
+                                            type="tel"
+                                            disabled={true} // Hamesha disabled rahega
+                                            {...register("phone_number")}
+                                            className="w-full px-4 py-3 border-2 border-gray-100 bg-gray-50 text-gray-400 rounded-lg outline-none cursor-not-allowed"
+                                            placeholder={isLoadingData ? "---" : "+1 (555) 000-0000"}
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div>
+                                        <label className="block text-sm font-semibold text-gray-700 mb-2">Business Name</label>
+                                        <input
+                                            type="text"
+                                            disabled={isLoadingData || !isEditing}
+                                            {...register("business_name")}
+                                            className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-[#3d4b52] outline-none disabled:bg-gray-50"
+                                            placeholder={isLoadingData ? "---" : ""}
                                         />
                                     </div>
 
-                                    <div className="pt-4">
-                                        {!isEditing ? (
-                                            // Edit Button
+                                    <div>
+                                        <label className="block text-sm font-semibold text-gray-700 mb-2">Business Email</label>
+                                        <input
+                                            type="email"
+                                            disabled={isLoadingData || !isEditing}
+                                            {...register("owner_email")}
+                                            className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-[#3d4b52] outline-none disabled:bg-gray-50"
+                                            placeholder={isLoadingData ? "---" : ""}
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className="w-full">
+                                    <label className="block text-sm font-semibold text-gray-700 mb-2">Industry</label>
+                                    <input
+                                        type="text"
+                                        disabled={isLoadingData || !isEditing}
+                                        {...register("industry")}
+                                        className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-[#3d4b52] outline-none disabled:bg-gray-50"
+                                        placeholder={isLoadingData ? "---" : ""}
+                                    />
+                                </div>
+
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div>
+                                        <label className="block text-sm font-semibold text-gray-700 mb-2">Language</label>
+                                        <select
+                                            disabled={isLoadingData || !isEditing}
+                                            {...register("language")}
+                                            className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-[#3d4b52] outline-none bg-white disabled:bg-gray-50"
+                                        >
+                                            {isLoadingData ? <option>---</option> : null}
+                                            <option value="de">German</option>
+                                            <option value="en">English</option>
+                                            <option value="fr">French</option>
+                                            <option value="it">Italian</option>
+                                            <option value="es">Spanish</option>
+                                            <option value="nl">Dutch</option>
+                                        </select>
+                                    </div>
+
+                                    <div>
+                                        <label className="block text-sm font-semibold text-gray-700 mb-2">Select Voice Type</label>
+                                        <input
+                                            type="text"
+                                            readOnly
+                                            disabled={isLoadingData}
+                                            value={selectedVoice?.voice_name || ""}
+                                            placeholder={isLoadingData ? "---" : "Click to choose a voice"}
+                                            onFocus={async () => {
+                                                const lang = watch("language");
+
+                                                if (!lang) {
+                                                    toast.error("Please select a language first!");
+                                                    return;
+                                                }
+
+                                                setOpenVoicePopup(true);
+                                                setLoadingVoiceSamples(true);
+
+                                                try {
+                                                    const token = localStorage.getItem("token");
+                                                    if (!token) {
+                                                        toast.error("Token missing!");
+                                                        return;
+                                                    }
+
+                                                    const response = await getLanguage({
+                                                        language: lang,
+                                                        token: token,
+                                                    });
+
+                                                    setVoiceSamples(
+                                                        response.grouped_by_language?.[lang] || []
+                                                    );
+                                                } catch (error) {
+                                                    console.error(error);
+                                                    toast.error("Error fetching voice samples");
+                                                } finally {
+                                                    setLoadingVoiceSamples(false);
+                                                }
+                                            }}
+                                            className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg 
+                    focus:border-[#3d4b52] focus:ring-0 outline-none transition-colors bg-white cursor-pointer"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label className="block text-sm font-semibold text-gray-700 mb-2">System Prompt</label>
+                                    <textarea
+                                        disabled={isLoadingData || !isEditing}
+                                        {...register("system_prompt", { required: "System prompt is required" })}
+                                        rows={5}
+                                        className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-[#3d4b52] outline-none resize-none disabled:bg-gray-50"
+                                        placeholder={isLoadingData ? "---" : ""}
+                                    />
+                                </div>
+
+                                <div className="pt-4">
+                                    {!isEditing ? (
+                                        // Edit Button
+                                        <button
+                                            type="button"
+                                            onClick={() => setIsEditing(true)}
+                                            className="w-full py-4 px-6 text-white font-semibold rounded-lg shadow-lg bg-[#3d4b52] hover:bg-[#2d3b42] transition-all cursor-pointer"
+                                        >
+                                            Edit Agent
+                                        </button>
+                                    ) : (
+                                        // Update Button (Submit type)
+                                        <div className="flex gap-4">
+                                            <button
+                                                type="submit"
+                                                disabled={isSubmitting}
+                                                className="flex-1 py-4 px-6 text-white font-semibold rounded-lg shadow-lg bg-[#3d4b52] hover:bg-[#2d3b42] transition-all disabled:opacity-50 cursor-pointer"
+                                            >
+                                                {isSubmitting ? "Updating..." : "Update Agent"}
+                                            </button>
                                             <button
                                                 type="button"
-                                                onClick={() => setIsEditing(true)}
-                                                className="w-full py-4 px-6 text-white font-semibold rounded-lg shadow-lg bg-[#3d4b52] hover:bg-[#2d3b42] transition-all cursor-pointer"
+                                                onClick={() => setIsEditing(false)}
+                                                className="py-4 px-6 text-gray-600 font-semibold rounded-lg border-2 border-gray-200 hover:bg-gray-50 transition-all cursor-pointer"
                                             >
-                                                Edit Agent
+                                                Cancel
                                             </button>
-                                        ) : (
-                                            // Update Button (Submit type)
-                                            <div className="flex gap-4">
-                                                <button
-                                                    type="submit"
-                                                    disabled={isSubmitting}
-                                                    className="flex-1 py-4 px-6 text-white font-semibold rounded-lg shadow-lg bg-[#3d4b52] hover:bg-[#2d3b42] transition-all disabled:opacity-50 cursor-pointer"
-                                                >
-                                                    {isSubmitting ? "Updating..." : "Update Agent"}
-                                                </button>
-                                                <button
-                                                    type="button"
-                                                    onClick={() => setIsEditing(false)}
-                                                    className="py-4 px-6 text-gray-600 font-semibold rounded-lg border-2 border-gray-200 hover:bg-gray-50 transition-all cursor-pointer"
-                                                >
-                                                    Cancel
-                                                </button>
-                                            </div>
-                                        )}
-                                    </div>
-                                </form>
+                                        </div>
+                                    )}
+                                </div>
+                            </form>
 
-                            )}
+
 
                         </div>
                     </div>

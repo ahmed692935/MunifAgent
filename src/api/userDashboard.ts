@@ -53,7 +53,8 @@ export const recentAction = async (token: string) => {
 
 // get my-agent
 export const getMyAgent = async (token: string) => {
-  const response = await api.get(`${API_URL}/user/my-agent`, {
+  // const response = await api.get(`${API_URL}/user/my-agent`, {
+  const response = await api.get(`${API_URL}/agents`, {
     headers: {
       "ngrok-skip-browser-warning": "true",
       Authorization: `Bearer ${token}`,
@@ -64,13 +65,12 @@ export const getMyAgent = async (token: string) => {
 };
 
 // update my-agent
-export const putMyAgent = async (token: string, formData: FormData) => {
-  const response = await api.put(`${API_URL}/user/my-agent`, formData, {
+export const putMyAgent = async (token: string, agentId: number, formData: FormData) => {
+  const response = await api.put(`${API_URL}/agents/${agentId}`, formData, {
     headers: {
       "ngrok-skip-browser-warning": "true",
       Authorization: `Bearer ${token}`,
       "Content-Type": "multipart/form-data",
-      Accept: "application/json",
     },
   });
   return response.data;
@@ -79,6 +79,18 @@ export const putMyAgent = async (token: string, formData: FormData) => {
 // get User detail
 export const userProfile = async (token: string) => {
   const response = await api.get(`${API_URL}/user-profile`, {
+    headers: {
+      "ngrok-skip-browser-warning": "true",
+      Authorization: `Bearer ${token}`,
+      Accept: "application/json",
+    },
+  });
+  return response.data;
+};
+
+// get User detail
+export const agentCalls = async (token: string, agentId: number) => {
+  const response = await api.get(`${API_URL}/agents/${agentId}/calls`, {
     headers: {
       "ngrok-skip-browser-warning": "true",
       Authorization: `Bearer ${token}`,

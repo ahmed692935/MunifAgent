@@ -176,11 +176,11 @@ const AddAgents = () => {
   return (
     <>
       <Navbar />
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 py-12 px-4 sm:px-6 lg:px-8">
+      <div className="min-h-screen bg-linear-to-br from-gray-50 to-gray-100 py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto">
           {/* Header */}
           <div className="text-center mb-10">
-            <div className="p-3 flex mb-4 justify-center !mt-16">
+            <div className="p-3 flex mb-4 justify-center mt-16!">
               <RiUserAddFill size={30} className="mt-2 mx-5" color="#3d4b52" />
               <h1 className="text-4xl font-bold text-[#3d4b52] mb-2">
                 Add New Agent
