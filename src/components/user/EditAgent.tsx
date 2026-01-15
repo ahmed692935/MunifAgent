@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import type { AgentFormData, AgentType } from "../Interface/AddAgent";
+import type { AgentFormData, AgentType } from "../../Interface/AddAgent";
 import { RiUserAddFill } from "react-icons/ri";
-import { getLanguage, updateAgent } from "../api/api";
+import { getLanguage } from "../../api/api";
+import { putMyAgent } from "../../api/userDashboard";
 import toast from "react-hot-toast";
 import type { AxiosError } from "axios";
 
@@ -13,7 +14,7 @@ interface Props {
   onSave: (updated: AgentFormData) => void;
 }
 
-const EditAgentModal = ({ open, onClose, data, onSave }: Props) => {
+const EditAgent = ({ open, onClose, data, onSave }: Props) => {
   const [preview, setPreview] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -68,7 +69,7 @@ const EditAgentModal = ({ open, onClose, data, onSave }: Props) => {
       // Prepare FormData for image upload
       const formData = new FormData();
       formData.append("agent_name", form.agent_name);
-      formData.append("phone_number", form.phone_number);
+    //   formData.append("phone_number", form.phone_number);
       formData.append("owner_name", form.business_name);
       formData.append("industry", form.industry);
       formData.append("language", form.language);
@@ -81,9 +82,9 @@ const EditAgentModal = ({ open, onClose, data, onSave }: Props) => {
       if (form.business_hours_start !== data.business_hours_start)
         formData.append("business_hours_start", form.business_hours_start);
 
-      if (form.business_hours_end !== data.business_hours_end)
-        formData.append("business_hours_end", form.business_hours_end);
-      formData.append("allowed_minutes", form.allowed_minutes.toString());
+    //   if (form.business_hours_end !== data.business_hours_end)
+        // formData.append("business_hours_end", form.business_hours_end);
+    //   formData.append("allowed_minutes", form.allowed_minutes.toString());
 
       if (
         form.agent_image &&
@@ -94,7 +95,7 @@ const EditAgentModal = ({ open, onClose, data, onSave }: Props) => {
       }
 
       // Call API
-      const res = await updateAgent(token, data.id, formData);
+      const res = await putMyAgent(token, data.id, formData);
 
       // Notify user
       toast.success(res?.message || "Agent updated successfully");
@@ -190,7 +191,7 @@ const EditAgentModal = ({ open, onClose, data, onSave }: Props) => {
                   {...register("phone_number", {
                     required: "Phone number is required",
                   })}
-                  className="w-full border-2 mt-1 px-3 py-2 rounded-lg border-gray-300 focus:outline-none focus:border-[#3d4b52]"
+                  className="w-full border-2 mt-1 px-3 py-2 rounded-lg border-gray-300 focus:outline-none focus:border-[#3d4b52] cursor-not-allowed bg-gray-100"
                 />
                 {errors.phone_number && (
                   <p className="text-sm text-red-600">
@@ -217,7 +218,6 @@ const EditAgentModal = ({ open, onClose, data, onSave }: Props) => {
                   Business Email
                 </label>
                 <input
-                  disabled
                   type="email"
                   {...register("owner_email", {})}
                   className="w-full px-4 py-2 border-2 border-gray-200 rounded-lg 
@@ -473,4 +473,4 @@ const EditAgentModal = ({ open, onClose, data, onSave }: Props) => {
   );
 };
 
-export default EditAgentModal;
+export default EditAgent;

@@ -42,8 +42,6 @@ const SignIn = () => {
       
       if (response.user.is_admin) {
         navigate("/dashboard");
-      } else if (!response.onboard) {
-        navigate("/onboarding");
       } else {
         navigate("/dashboard");
       }

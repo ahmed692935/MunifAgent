@@ -159,7 +159,7 @@
 
 
 import { useState, useEffect } from 'react';
-import { Eye, Download, User, Loader2 } from 'lucide-react';
+import { Eye, User, Loader2 } from 'lucide-react';
 import Navbar from '../../components/Navbar';
 import type { Call, CallStatus, Pagination } from '../../Interface/User';
 import CallModal from '../../components/user/CallModal';
@@ -170,7 +170,7 @@ const CallLogs = () => {
     const [calls, setCalls] = useState<Call[]>([]);
     const [pagination, setPagination] = useState<Pagination | null>(null);
     const [currentPage] = useState(1);
-    
+
     // Modal states
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedCall, setSelectedCall] = useState<Call | null>(null);
@@ -190,13 +190,13 @@ const CallLogs = () => {
             // Since API requires agent_id, and previous code didn't have it, we might need to fetch `getMyAgent` first or similar.
             // However, the prompt implies "agentCalls api hai", so I'll assume we have a way to get it or fetch for a default agent.
             // For this implementation, I will assume we fetch for agent 7 as per example or if available, otherwise generic.
-            
+
             // NOTE: In a real scenario, we should get the agent ID dynamically. 
             // Since I don't have the full context of how agent is selected, I will use a placeholder or derived ID.
             // Let's assume we maintain the functionality. If dynamic agent ID is needed, we'd add that.
             // Using 7 as per the example JSON for now to ensure query works if backend expects valid ID.
-            const agentId = 7; 
-            
+            const agentId = 7;
+
             const data = await agentCalls(token, agentId);
             if (data && data.success) {
                 setCalls(data.calls);
@@ -230,9 +230,9 @@ const CallLogs = () => {
             default: return 'bg-gray-100 text-gray-800';
         }
     };
-    
+
     const getStatusDotColor = (status: CallStatus) => {
-         switch (status) {
+        switch (status) {
             case 'completed': return 'bg-[#027A48]';
             case 'failed': return 'bg-[#B42318]';
             case 'in_progress': return 'bg-[#175CD3]';
@@ -245,7 +245,7 @@ const CallLogs = () => {
         setSelectedCall(log);
         setIsModalOpen(true);
     };
-    
+
     const formatDuration = (seconds: number) => {
         const minutes = Math.floor(seconds / 60);
         const remainingSeconds = Math.floor(seconds % 60);
@@ -262,9 +262,9 @@ const CallLogs = () => {
                         {/* Header Section */}
                         <div className="flex flex-col md:flex-row gap-5 justify-between items-start md:items-center mb-8">
                             <h1 className="text-xl font-semibold text-[#101828]">Call Logs & History</h1>
-                            <button className="flex items-center gap-2 px-4 py-2 border border-[#D0D5DD] rounded-lg text-sm font-medium text-[#344054] hover:bg-gray-50 transition-all">
+                            {/* <button className="flex items-center gap-2 px-4 py-2 border border-[#D0D5DD] rounded-lg text-sm font-medium text-[#344054] hover:bg-gray-50 transition-all">
                                 <Download size={18} /> Export CSV
-                            </button>
+                            </button> */}
                         </div>
 
 
@@ -278,8 +278,9 @@ const CallLogs = () => {
                             )}
 
                             <div className="min-w-[900px]">
-                                <div className="grid grid-cols-12 px-4 py-3 text-xs font-medium text-[#667085] uppercase bg-[#F9FAFB] border-b border-[#EAECF0]">
-                                    <div className="col-span-4">Caller Detail</div>
+                                <div className="grid grid-cols-13 px-4 py-3 text-xs font-medium text-[#667085] uppercase bg-[#F9FAFB] border-b border-[#EAECF0]">
+                                    <div className="col-span-3">Caller Detail</div>
+                                    <div className="col-span-2">Agent Name</div>
                                     <div className="col-span-2">Status</div>
                                     <div className="col-span-3">Date & Time</div>
                                     <div className="col-span-2">Duration</div>
@@ -289,16 +290,17 @@ const CallLogs = () => {
                                 <div className="divide-y divide-[#EAECF0]">
                                     {filteredLogs.length > 0 ? (
                                         filteredLogs.map((log) => (
-                                            <div key={log.id} className="grid grid-cols-12 px-4 py-4 items-center hover:bg-[#F9FAFB] transition-colors">
-                                                <div className="col-span-4 flex items-center gap-3">
+                                            <div key={log.id} className="grid grid-cols-13 px-4 py-4 items-center hover:bg-[#F9FAFB] transition-colors">
+                                                <div className="col-span-3 flex items-center gap-3">
                                                     <div className="w-10 h-10 rounded-full bg-[#F2F4F7] flex items-center justify-center text-[#667085]">
                                                         <User size={20} />
                                                     </div>
                                                     <div className="truncate">
                                                         <div className="text-sm font-medium text-[#101828]">{log.caller_number}</div>
-                                                        <div className="text-sm text-[#667085]">ID: {log.call_id}</div>
+                                                        {/* <div className="text-sm text-[#667085]">ID: {log.call_id}</div> */}
                                                     </div>
                                                 </div>
+                                                <div className="col-span-2 text-sm text-[#667085]">{log.agent_name}</div>
                                                 <div className="col-span-2">
                                                     <span className={`px-2 py-1 rounded-full text-[11px] font-medium border flex items-center w-fit gap-1.5 ${getStatusStyle(log.status)}`}>
                                                         <span className={`w-1 h-1 rounded-full ${getStatusDotColor(log.status)}`}></span>
@@ -310,7 +312,7 @@ const CallLogs = () => {
                                                         const dateStr = log.created_at || log.started_at;
                                                         if (!dateStr) return 'N/A';
                                                         const date = new Date(dateStr);
-                                                        return !isNaN(date.getTime()) 
+                                                        return !isNaN(date.getTime())
                                                             ? date.toLocaleString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit', hour12: true })
                                                             : 'Invalid Date';
                                                     })()}

@@ -34,6 +34,7 @@ export interface Pagination {
 export interface Call {
     id: number;
     agent_id: number;
+    agent_name: string;
     call_id: string;
     caller_number: string;
     status: CallStatus;

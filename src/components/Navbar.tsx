@@ -48,7 +48,8 @@ const Navbar = () => {
     return [
       { key: "dashboard", label: "Dashboard", to: "/dashboard" },
       { key: "call-logs", label: "Call Logs", to: "/call-logs" },
-      { key: "agent", label: "Agent", to: "/agent" },
+      // { key: "agent", label: "Agent", to: "/agent" },
+      { key: "onboarding", label: "Onboarding", to: "/onboarding" },
     ];
   })();
 

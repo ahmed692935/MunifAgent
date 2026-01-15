@@ -2,7 +2,8 @@ import Navbar from "../../components/Navbar"
 // import AgentControl from "../../components/user/AgentControl"
 import CallActivity from "../../components/user/CallActivity"
 import CallUsage from "../../components/user/CallUsage"
-import RecentActions from "../../components/user/RecentActions"
+import AgentCards from "../../components/user/AgentCards"
+
 
 function userDashboard() {
     return (
@@ -18,7 +19,7 @@ function userDashboard() {
                 </div>
 
                 <div className="mt-5">
-                    <RecentActions />
+                    <AgentCards />
                 </div>
 
             </div>

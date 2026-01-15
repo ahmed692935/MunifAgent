@@ -19,7 +19,7 @@ import ResetPassword from "./pages/Auth/ResetPassword";
 // User Routes
 import UserDashboard from "./pages/User/Dashboard";
 import CallLogs from "./pages/User/CallLogs";
-import Agent from "./pages/User/Agent";
+// import Agent from "./pages/User/Agent";
 import Profile from "./pages/User/Profile";
 
 import { useSelector } from "react-redux";
@@ -108,14 +108,14 @@ const router = createBrowserRouter([
       </Private>
     ),
   },
-  {
-    path: "/agent",
-    element: (
-      <Private>
-        <Agent />
-      </Private>
-    ),
-  },
+  // {
+  //   path: "/agent",
+  //   element: (
+  //     <Private>
+  //       <Agent />
+  //     </Private>
+  //   ),
+  // },
   {
     path: "/profile",
     element: (

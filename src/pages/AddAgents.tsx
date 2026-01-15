@@ -276,7 +276,7 @@ const AddAgents = () => {
                     <option value="">{loadingUsers ? "Loading users..." : "Select a user"}</option>
                     {usersList.map((user) => (
                       <option key={user.id} value={user.id}>
-                        {user.username} {/*(ID: {user.id}) */}
+                        {user.username} ({user.email})
                       </option>
                     ))}
                   </select>
