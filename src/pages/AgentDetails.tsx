@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
+import type { RootState } from "../store/store";
 import Navbar from "../components/Navbar";
 import type { Agent, CallLog, TranscriptItem } from "../Interface/AgentDetails";
 import AgentImg from "../assets/Images/Agent.png";
@@ -9,6 +11,7 @@ import { FiRotateCw } from "react-icons/fi";
 
 const AgentDetails = () => {
   const { id } = useParams();
+  const { user } = useSelector((state: RootState) => state.auth);
 
   const [agent, setAgent] = useState<Agent | null>(null);
   const [calls, setCalls] = useState<CallLog[]>([]);
@@ -249,25 +252,28 @@ const AgentDetails = () => {
 
           <div className="relative bg-white p-4 rounded-lg shadow text-center hover:shadow-xl border hover:scale-102">
             {/* Reset icon at top-right */}
-            <button
-              className="absolute top-2 right-2 text-gray-500 hover:text-[#3d4b52]"
-              onClick={async () => {
-                const token = localStorage.getItem("token");
-                if (!token || !agent?.id) return;
+            {/* Reset icon at top-right */}
+            {user?.is_admin && (
+              <button
+                className="absolute top-2 right-2 text-gray-500 hover:text-[#3d4b52]"
+                onClick={async () => {
+                  const token = localStorage.getItem("token");
+                  if (!token || !agent?.id) return;
 
-                try {
-                  await resetAgentMinutes(token, agent.id);
-                  toast.success("Agent Minutes reset successfully!");
-                  // Refetch agent to update minutes
-                  fetchData(currentPage);
-                } catch (err) {
-                  console.error(err);
-                  toast.error("Failed to reset minutes.");
-                }
-              }}
-            >
-              <FiRotateCw size={20} />
-            </button>
+                  try {
+                    await resetAgentMinutes(token, agent.id);
+                    toast.success("Agent Minutes reset successfully!");
+                    // Refetch agent to update minutes
+                    fetchData(currentPage);
+                  } catch (err) {
+                    console.error(err);
+                    toast.error("Failed to reset minutes.");
+                  }
+                }}
+              >
+                <FiRotateCw size={20} />
+              </button>
+            )}
 
             <p className="text-2xl font-bold">
               {agent?.minutes_info?.used_minutes ?? 0} min
