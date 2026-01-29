@@ -31,62 +31,8 @@ const AddAgents = () => {
     formState: { errors },
     reset,
     watch,
+    setValue,
   } = useForm<AgentFormData>();
-
-  // const onSubmit = async (data: AgentFormData) => {
-  //   setIsSubmitting(true);
-
-  //   try {
-  //     const token = localStorage.getItem("token");
-  //     if (!token) {
-  //       toast.error("User token missing!");
-  //       return;
-  //     }
-
-  //     // Create formData for API
-  //     const formData = new FormData();
-  //     formData.append("agent_name", data.agent_name);
-  //     formData.append("phone_number", data.phone_number);
-  //     formData.append("owner_name", data.business_name || "");
-  //     formData.append("industry", data.industry || "");
-  //     formData.append("language", data.language || "");
-  //     // formData.append("voice_type", data.voice_type);
-  //     formData.append("voice_type", selectedVoice?.voice_name || "");
-  //     formData.append("system_prompt", data.system_prompt);
-  //     formData.append("owner_email", data.owner_email);
-  //     formData.append("business_hours_start", data.business_hours_start);
-  //     formData.append("business_hours_end", data.business_hours_end);
-  //     formData.append("allowed_minutes", data.allowed_minutes.toString());
-
-  //     // image (file)
-  //     if (data.agent_image && data.agent_image[0] instanceof File) {
-  //       formData.append("avatar", data.agent_image[0]);
-  //     }
-
-  //     const res = await postAddAgent(token, formData);
-
-  //     // console.log("API Response:", res);
-  //     // toast.success("Agent Created Successfully!");
-  //     toast.success(res?.data?.message || "Agent Created Successfully!");
-
-  //     reset();
-  //     setPreview(null);
-
-  //     setTimeout(() => {
-  //       navigate("/dashboard");
-  //     }, 700);
-  //   } catch (error: unknown) {
-  //     const axiosError = error as AxiosError<{ error: string }>;
-  //     const apiMessage =
-  //       axiosError?.response?.data?.error ||
-  //       axiosError?.message ||
-  //       "Error creating agent!";
-
-  //     toast.error(apiMessage);
-  //   } finally {
-  //     setIsSubmitting(false);
-  //   }
-  // };
 
   const onSubmit = async (data: AgentFormData) => {
     setIsSubmitting(true);
@@ -164,6 +110,20 @@ const AddAgents = () => {
     fetchUsers();
   }, []);
 
+  // --- Auto-fill Email Logic ---
+  const selectedUserId = watch("user_id");
+
+  useEffect(() => {
+    if (selectedUserId && usersList.length > 0) {
+      const selectedUser = usersList.find((u) => String(u.id) === String(selectedUserId));
+      if (selectedUser) {
+        setValue("owner_email", selectedUser.email);
+      }
+    } else if (!selectedUserId) {
+      setValue("owner_email", "");
+    }
+  }, [selectedUserId, usersList, setValue]);
+
   const languageFlags: Record<string, string> = {
     en: Uk, // English
     de: German, // German
@@ -236,33 +196,6 @@ const AddAgents = () => {
                   )}
                 </div>
 
-                {/* Select Agent Dropdown */}
-                {/* <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    Select Agent (From Users List)
-                  </label>
-                  <select
-                    {...register("agent_name", {
-                      required: "Please select an agent",
-                    })}
-                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg 
-    focus:border-[#3d4b52] focus:ring-0 outline-none transition-colors bg-white"
-                  >
-                    <option value="">{loadingUsers ? "Loading users..." : "Select a username"}</option>
-                    {usersList.map((user) => (
-                      <option key={user.id} value={user.username}>
-                        {user.username}
-                      </option>
-                    ))}
-                  </select>
-
-                  {errors.agent_name && (
-                    <p className="mt-1 text-sm text-red-600">
-                      {errors.agent_name.message}
-                    </p>
-                  )}
-                </div> */}
-
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-2">
                     Select User (Linked Account)
@@ -298,7 +231,6 @@ const AddAgents = () => {
                       })}
                       className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg 
            focus:border-[#3d4b52] focus:ring-0 outline-none transition-colors"
-                      // style={{ focusBorderColor: "#3d4b52" }}
                       placeholder="Enter agent name"
                     />
                     {errors.agent_name && (
@@ -451,65 +383,6 @@ const AddAgents = () => {
                     </div>
                   </div>
 
-                  {/* <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">
-                      Voice Type
-                    </label>
-                    <div className="sm:grid grid-cols-3 gap-3">
-                      {(["male", "female", "non-binary"] as const).map(
-                        (type) => (
-                          <label
-                            key={type}
-                            className="relative flex items-center justify-center cursor-pointer"
-                          >
-                            <input
-                              type="radio"
-                              value={type}
-                              {...register("voice_type", {
-                                required: "Voice type is required",
-                              })}
-                              className="sr-only peer"
-                            />
-                            <div
-                              className="w-full py-3 px-4 border-2 border-gray-200 rounded-lg text-center font-medium text-gray-700 peer-checked:border-2 peer-checked:text-white transition-all capitalize"
-                              style={{
-                                backgroundColor: "transparent",
-                                borderColor: "#e5e7eb",
-                              }}
-                              onMouseOver={(e) => {
-                                const input = e.currentTarget
-                                  .previousElementSibling as HTMLInputElement | null;
-                                if (!input?.checked)
-                                  e.currentTarget.style.backgroundColor =
-                                    "#f3f4f6";
-                              }}
-                              onMouseOut={(e) => {
-                                const input = e.currentTarget
-                                  .previousElementSibling as HTMLInputElement | null;
-                                if (!input?.checked)
-                                  e.currentTarget.style.backgroundColor =
-                                    "transparent";
-                              }}
-                            >
-                              {type}
-                            </div>
-                            <style>{`
-                          input[type="radio"]:checked + div {
-                            background-color: #3d4b52 !important;
-                            border-color: #3d4b52 !important;
-                          }
-                        `}</style>
-                          </label>
-                        )
-                      )}
-                    </div>
-                    {errors.voice_type && (
-                      <p className="mt-1 text-sm text-red-600">
-                        {errors.voice_type.message}
-                      </p>
-                    )}
-                  </div> */}
-
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-2">
                       Select Voice Type
@@ -622,7 +495,7 @@ const AddAgents = () => {
           <div className="mt-6 p-4 bg-white rounded-lg shadow-md">
             <div className="flex items-start">
               <svg
-                className="w-5 h-5 mt-0.5 mr-3 flex-shrink-0"
+                className="w-5 h-5 mt-0.5 mr-3 shrink-0"
                 style={{ color: "#3d4b52" }}
                 fill="currentColor"
                 viewBox="0 0 20 20"
@@ -649,34 +522,6 @@ const AddAgents = () => {
               Select Voice Sample
             </h2>
 
-            {/* <div className="max-h-90 overflow-y-auto space-y-4"> */}
-            {/* <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 max-h-90 overflow-y-auto">
-              {voiceSamples.map((voice) => (
-                <div
-                  key={voice.id}
-                  className="border border-[#3d4b52] hover:border-2 p-4 rounded-lg flex items-center justify-between hover:bg-gray-50 cursor-pointer"
-                  onClick={() => {
-                    setSelectedVoice(voice);
-                    setOpenVoicePopup(false);
-                  }}
-                >
-                  <div>
-                    <p className="font-semibold text-[#3d4b52]">
-                      {voice.voice_name}
-                    </p>
-                    <p className="text-sm text-gray-500">
-                      {voice.gender} • {voice.language.toUpperCase()}
-                    </p>
-                  </div>
-
-                  <audio
-                    controls
-                    src={voice.audio_url}
-                    className="h-10"
-                  ></audio>
-                </div>
-              ))}
-            </div> */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 max-h-90 overflow-y-auto">
               {loadingVoiceSamples ? (
                 <div className="col-span-full flex justify-center items-center py-20">
