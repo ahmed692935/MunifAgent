@@ -116,3 +116,23 @@ export const getGoogleAuth = async (token: string) => {
 
   return response.data;
 };
+
+// Outlook Calendar 
+export const outlookCalendar = async (token: string, userId: number) => {
+  const response = await api.get(
+    `${API_URL}/calendar/outlook/auth`,
+    {
+      params: { 
+        user_id: userId 
+      },
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "ngrok-skip-browser-warning": "true",
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+    }
+  );
+
+  return response.data;
+};

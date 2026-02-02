@@ -294,6 +294,7 @@ const AgentDetails = () => {
             <table className="min-w-full">
               <thead>
                 <tr className="bg-[#3d4b52] text-white text-left">
+                  <th className="p-3">Caller Number</th>
                   <th className="p-3">Date</th>
                   <th className="p-3">Ended At</th>
                   <th className="p-3">Transcript</th>
@@ -306,6 +307,7 @@ const AgentDetails = () => {
                     <tr key={call.id} className="border-b border-gray-300">
                       {/* <td className="p-3">{call.created_at}</td>
                       <td className="p-3">{call.ended_at || "N/A"}</td> */}
+                      <td className="p-3">{call.caller_number}</td>
                       <td className="p-3">{formatDate(call.created_at)}</td>
                       <td className="p-3">{formatDate(call.ended_at)}</td>
 
@@ -374,8 +376,8 @@ const AgentDetails = () => {
                 disabled={currentPage === 1}
                 onClick={() => fetchData(currentPage - 1)}
                 className={`px-4 py-2 rounded ${currentPage === 1
-                    ? "bg-gray-300 cursor-not-allowed"
-                    : "bg-[#3d4b52] text-white hover:bg-[#2d3b42]"
+                  ? "bg-gray-300 cursor-not-allowed"
+                  : "bg-[#3d4b52] text-white hover:bg-[#2d3b42]"
                   }`}
               >
                 Prev
@@ -389,8 +391,8 @@ const AgentDetails = () => {
                 disabled={currentPage === totalPages}
                 onClick={() => fetchData(currentPage + 1)}
                 className={`px-4 py-2 rounded ${currentPage === totalPages
-                    ? "bg-gray-300 cursor-not-allowed"
-                    : "bg-[#3d4b52] text-white hover:bg-[#2d3b42]"
+                  ? "bg-gray-300 cursor-not-allowed"
+                  : "bg-[#3d4b52] text-white hover:bg-[#2d3b42]"
                   }`}
               >
                 Next
