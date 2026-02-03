@@ -231,7 +231,9 @@ const Dashboard = () => {
                       </div>
                     </div>
 
-                    <p className="mt-3 font-medium">{agent.owner_name}</p>
+                    <p className="mt-3 font-medium">{agent.owner_name} {" "}
+                      <span className="text-sm text-gray-500">(owner name)</span>
+                    </p>
 
                     <p className="mt-2 text-sm line-clamp-2">
                       {agent.system_prompt ||
@@ -315,7 +317,9 @@ const Dashboard = () => {
                       </div>
                     </div>
 
-                    <p className="mt-3 font-medium">{agent.owner_name}</p>
+                    <p className="mt-3 font-medium">{agent.owner_name} {" "}
+                      <span className="text-sm text-gray-500">(owner name)</span>
+                    </p>
 
                     <p className="mt-2 text-sm line-clamp-2">
                       {agent.system_prompt ||

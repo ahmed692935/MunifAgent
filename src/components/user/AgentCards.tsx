@@ -16,14 +16,18 @@ import {
 } from "../../api/api";
 import toast from "react-hot-toast";
 import type { AxiosError } from "axios";
+import { useSelector } from "react-redux";
+import type { RootState } from "../../store/store";
 
 const AgentCards = () => {
     const [editOpen, setEditOpen] = useState(false);
     const [selectedAgent, setSelectedAgent] = useState<AgentType | null>(null);
     const navigate = useNavigate();
     const [deletingId, setDeletingId] = useState<number | null>(null);
+    const { user } = useSelector((state: RootState) => state.auth);
 
     const [searchText, setSearchText] = useState("");
+    const [agentSearchText, setAgentSearchText] = useState("");
     const [searchResults, setSearchResults] = useState<AgentType[]>([]);
     const [isSearchingMode, setIsSearchingMode] = useState(false);
 
@@ -35,6 +39,9 @@ const AgentCards = () => {
             setSearchResults([]);
             return;
         }
+
+        // Clear agent search when searching by owner
+        setAgentSearchText("");
 
         try {
             const res = await searchAgentsByOwner(token, searchText.trim());
@@ -52,6 +59,13 @@ const AgentCards = () => {
             setSearchResults([]);
             setIsSearchingMode(true);
         }
+    };
+
+    const getFilteredAgents = (agents: AgentType[]) => {
+        if (!agentSearchText.trim()) return agents;
+        return agents.filter((agent) =>
+            agent.agent_name.toLowerCase().includes(agentSearchText.toLowerCase())
+        );
     };
 
     const [analytics, setAnalytics] = useState<AnalyticsData | null>(null);
@@ -157,29 +171,50 @@ const AgentCards = () => {
                     </div>
                 </div>
 
-                {/* Search Bar */}
-                <div className="mb-6">
+                {/* Search Bars */}
+                <div className="mb-6 space-y-4">
+                    {/* Search by Owner */}
+                    {user?.is_admin && (
+                        <div className="relative w-full">
+                            <input
+                                type="text"
+                                placeholder="Search by owner name..."
+                                className="w-full px-4 py-3 pr-12 focus:ring-0 outline-none border border-[#0000001A] rounded-[14px] bg-white"
+                                value={searchText}
+                                onChange={(e) => {
+                                    setSearchText(e.target.value);
+                                    if (e.target.value.trim() === "") {
+                                        setIsSearchingMode(false);
+                                        setSearchResults([]);
+                                    }
+                                }}
+                                onKeyDown={(e) => e.key === "Enter" && handleSearch()}
+                            />
+
+                            <button
+                                onClick={handleSearch}
+                                className="absolute inset-y-0 right-3 flex items-center text-gray-500 hover:text-[#3d4b52] cursor-pointer"
+                            >
+                                <IoMdSearch size={25} />
+                            </button>
+                        </div>
+                    )}
+
+                    {/* Search by Agent Name */}
                     <div className="relative w-full">
                         <input
                             type="text"
-                            placeholder="Search by owner name..."
+                            placeholder="Search by agent name..."
                             className="w-full px-4 py-3 pr-12 focus:ring-0 outline-none border border-[#0000001A] rounded-[14px] bg-white"
-                            value={searchText}
+                            value={agentSearchText}
                             onChange={(e) => {
-                                setSearchText(e.target.value);
-                                if (e.target.value.trim() === "") {
-                                    setIsSearchingMode(false);
-                                    setSearchResults([]);
-                                }
+                                setAgentSearchText(e.target.value);
                             }}
-                            onKeyDown={(e) => e.key === "Enter" && handleSearch()}
                         />
 
                         <button
-                            onClick={handleSearch}
                             className="absolute inset-y-0 right-3 flex items-center text-gray-500 hover:text-[#3d4b52] cursor-pointer"
                         >
-                            {/* 🔍 */}
                             <IoMdSearch size={25} />
                         </button>
                     </div>
@@ -188,13 +223,13 @@ const AgentCards = () => {
                 {/* SEARCH MODE UI */}
                 {isSearchingMode && (
                     <div className="">
-                        {searchResults.length === 0 ? (
+                        {getFilteredAgents(searchResults).length === 0 ? (
                             <p className="text-center text-[#3d4b52] mt-10 text-xl font-semibold">
-                                No Business Owner Found
+                                No Agents Found
                             </p>
                         ) : (
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-10">
-                                {searchResults.map((agent) => (
+                                {getFilteredAgents(searchResults).map((agent) => (
                                     <div
                                         key={agent.id}
                                         className="bg-white shadow-lg rounded-2xl p-5 border hover:border-2 hover:shadow-2xl transition cursor-pointer text-[#3d4b52]"
@@ -223,17 +258,21 @@ const AgentCards = () => {
                                                         setEditOpen(true);
                                                     }}
                                                 />
-                                                <MdDeleteOutline
-                                                    className="hover:text-red-600 cursor-pointer"
-                                                    onClick={(e) => {
-                                                        e.stopPropagation();
-                                                        handleDeleteAgent(agent.id);
-                                                    }}
-                                                />
+                                                {user?.is_admin && (
+                                                    <MdDeleteOutline
+                                                        className="hover:text-red-600 cursor-pointer"
+                                                        onClick={(e) => {
+                                                            e.stopPropagation();
+                                                            handleDeleteAgent(agent.id);
+                                                        }}
+                                                    />
+                                                )}
                                             </div>
                                         </div>
 
-                                        <p className="mt-3 font-medium">{agent.owner_name}</p>
+                                        <p className="mt-3 font-medium">{agent.owner_name} {" "}
+                                            <span className="text-sm text-gray-500">(owner name)</span>
+                                        </p>
 
                                         <p className="mt-2 text-sm line-clamp-2">
                                             {agent.system_prompt ||
@@ -264,10 +303,10 @@ const AgentCards = () => {
                                 <div className="flex justify-center col-span-3 mt-10">
                                     <div className="w-12 h-12 border-4 border-t-[#3d4b52] border-gray-200 rounded-full animate-spin"></div>
                                 </div>
-                            ) : apiAgents.length === 0 ? (
+                            ) : getFilteredAgents(apiAgents).length === 0 ? (
                                 <p className="text-center col-span-3 mt-10">No agents found</p>
                             ) : (
-                                apiAgents.map((agent) => (
+                                getFilteredAgents(apiAgents).map((agent) => (
                                     <div
                                         key={agent.id}
                                         id={`agent-card-${agent.id}`}
@@ -303,21 +342,25 @@ const AgentCards = () => {
                                                     }}
                                                 />
 
-                                                {deletingId === agent.id ? (
-                                                    <div className="w-5 h-5 border-2 border-t-red-600 border-gray-300 rounded-full animate-spin"></div>
-                                                ) : (
-                                                    <MdDeleteOutline
-                                                        className="hover:text-red-600 cursor-pointer"
-                                                        onClick={(e) => {
-                                                            e.stopPropagation();
-                                                            handleDeleteAgent(agent.id);
-                                                        }}
-                                                    />
+                                                {user?.is_admin && (
+                                                    deletingId === agent.id ? (
+                                                        <div className="w-5 h-5 border-2 border-t-red-600 border-gray-300 rounded-full animate-spin"></div>
+                                                    ) : (
+                                                        <MdDeleteOutline
+                                                            className="hover:text-red-600 cursor-pointer"
+                                                            onClick={(e) => {
+                                                                e.stopPropagation();
+                                                                handleDeleteAgent(agent.id);
+                                                            }}
+                                                        />
+                                                    )
                                                 )}
                                             </div>
                                         </div>
 
-                                        <p className="mt-3 font-medium">{agent.owner_name}</p>
+                                        <p className="mt-3 font-medium">{agent.owner_name} {" "}
+                                            <span className="text-sm text-gray-500">(owner name)</span>
+                                        </p>
 
                                         <p className="mt-2 text-sm line-clamp-2">
                                             {agent.system_prompt ||
