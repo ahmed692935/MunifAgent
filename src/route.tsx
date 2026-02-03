@@ -4,7 +4,7 @@ import { createBrowserRouter } from "react-router-dom";
 // Pages
 import LandingPage from "./pages/LandingPage";
 import SignIn from "./pages/Auth/SignIn";
-import Signup from "./pages/Auth/Signup";
+// import Signup from "./pages/Auth/Signup";
 import AddAgents from "./pages/AddAgents";
 import Dashboard from "./pages/Dashboard";
 import AgentDetails from "./pages/AgentDetails";
@@ -58,14 +58,14 @@ const router = createBrowserRouter([
       </Public>
     ),
   },
-  {
-    path: "/signup",
-    element: (
-      <Public>
-        <Signup />
-      </Public>
-    ),
-  },
+  // {
+  //   path: "/signup",
+  //   element: (
+  //     <Public>
+  //       <Signup />
+  //     </Public>
+  //   ),
+  // },
 
   // PRIVATE ROUTES
   {

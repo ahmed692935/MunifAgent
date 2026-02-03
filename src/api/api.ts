@@ -199,7 +199,8 @@ export const resetAgentMinutes = async (
 
 // Admin Users Page - Get All Users
 export const getUsers = async (token: string) => {
-  const response = await api.get(`${API_URL}/users/list`, {
+  // const response = await api.get(`${API_URL}/users/list`, {
+  const response = await api.get(`${API_URL}/admin/users`, {
     headers: {
       "ngrok-skip-browser-warning": "true",
       Authorization: `Bearer ${token}`,
@@ -208,6 +209,20 @@ export const getUsers = async (token: string) => {
   });
   return response.data;
 };
+
+// Add agent page - Get All Users
+export const getUsersAgent = async (token: string) => {
+  const response = await api.get(`${API_URL}/users/list`, {
+  // const response = await api.get(`${API_URL}/admin/users`, {
+    headers: {
+      "ngrok-skip-browser-warning": "true",
+      Authorization: `Bearer ${token}`,
+      Accept: "application/json",
+    },
+  });
+  return response.data;
+};
+
 
 // User Admin/User Toggle
 export const adminStatus = async (token: string, userId: number, newStatus: boolean) => {
@@ -242,5 +257,19 @@ export const userActiveToggle = async (token: string, userId: number, agentId: n
       },
     }
   );
+  return response.data;
+};
+
+// Admin create new user
+export const adminCreateUser = async (token: string, data: any) => {
+  // data ko second argument (body) ke bajaye params mein pass karein
+  const response = await api.post(`${API_URL}/admin/create-user`, {}, {
+    params: data, // Yeh data ko URL?key=value format mein convert kar dega
+    headers: {
+      "ngrok-skip-browser-warning": "true",
+      Authorization: `Bearer ${token}`,
+      Accept: "application/json",
+    },
+  });
   return response.data;
 };

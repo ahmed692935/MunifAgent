@@ -88,9 +88,21 @@ export const userProfile = async (token: string) => {
   return response.data;
 };
 
-// get User detail
+// get Agent Calls history
 export const agentCalls = async (token: string, agentId: number) => {
   const response = await api.get(`${API_URL}/agents/${agentId}/calls`, {
+    headers: {
+      "ngrok-skip-browser-warning": "true",
+      Authorization: `Bearer ${token}`,
+      Accept: "application/json",
+    },
+  });
+  return response.data;
+};
+
+// get Calls history
+export const getCalls = async (token: string) => {
+  const response = await api.get(`${API_URL}/calls`, {
     headers: {
       "ngrok-skip-browser-warning": "true",
       Authorization: `Bearer ${token}`,
@@ -125,6 +137,23 @@ export const outlookCalendar = async (token: string, userId: number) => {
       params: { 
         user_id: userId 
       },
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "ngrok-skip-browser-warning": "true",
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+    }
+  );
+
+  return response.data;
+};
+
+// Calendar Status
+export const calendarStatus = async (token: string) => {
+  const response = await api.get(
+    `${API_URL}/calendar/status`,
+    {
       headers: {
         Authorization: `Bearer ${token}`,
         "ngrok-skip-browser-warning": "true",

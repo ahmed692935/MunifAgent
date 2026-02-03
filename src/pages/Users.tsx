@@ -1,22 +1,29 @@
 import { useState, useEffect } from "react"
 import Navbar from "../components/Navbar"
-import { getUsers, adminStatus } from "../api/api"
+import { getUsers } from "../api/api"
 import { Loader2, Search } from "lucide-react";
-import toast, { Toaster } from "react-hot-toast";
+import { FaPlus } from "react-icons/fa";
+
+import OnboardModal from "../components/OnboardModal";
 
 // User interface for TypeScript
 interface User {
     id: number;
     username: string;
     email: string;
+    first_name: string | null;
+    last_name: string | null;
     is_admin: boolean;
-    is_active: boolean;
+    is_check: boolean;
+    agent_name: string | null;
+    onboarding_completed: boolean;
 }
 
 function Users() {
     const [users, setUsers] = useState<User[]>([]);
     const [tableLoading, setTableLoading] = useState<boolean>(true);
     const [searchTerm, setSearchTerm] = useState<string>(""); // Search state
+    const [showOnboardModal, setShowOnboardModal] = useState(false); // Modal state
 
     // Fetch Users on Component Mount
     useEffect(() => {
@@ -25,9 +32,10 @@ function Users() {
                 setTableLoading(true);
                 const token = localStorage.getItem("token") || "";
                 const data = await getUsers(token);
+                // console.log("Frontend Data Check:", data);
 
                 if (data.success) {
-                    setUsers(data.users);
+                    setUsers(data.data.users);
                 }
             } catch (error) {
                 console.error("Error fetching users:", error);
@@ -39,10 +47,12 @@ function Users() {
         fetchUsers();
     }, []);
 
-    // Filter Logic: Username ke base par filter
-    const filteredUsers = users.filter((user) =>
-        user.username.toLowerCase().includes(searchTerm.toLowerCase())
-    )
+    // Filter Logic: Username ke base par filter (Sorted New to Old)
+    const filteredUsers = [...users]
+        .sort((a, b) => b.id - a.id)
+        .filter((user) =>
+            user.username.toLowerCase().includes(searchTerm.toLowerCase())
+        )
 
     // Agent Status Toggle Handler
     // const handleToggleAgent = async (userId: number, currentStatus: boolean) => {
@@ -74,42 +84,47 @@ function Users() {
     // const isAnyAgentActive = users.some(u => u.is_active);
 
     // Admin Status Toggle Handler
-    const handleToggleAdmin = async (userId: number, currentStatus: boolean) => {
-        const token = localStorage.getItem("token") || "";
-        const newStatus = !currentStatus; // Toggle logic
+    // const handleToggleAdmin = async (userId: number, currentStatus: boolean) => {
+    //     const token = localStorage.getItem("token") || "";
+    //     const newStatus = !currentStatus; // Toggle logic
 
-        // Optimistic UI update: Pehle UI change kar dein (optional but feels fast)
-        // Agar aap error handle karna chahte hain toh actual API response ke baad karein.
+    //     // Optimistic UI update: Pehle UI change kar dein (optional but feels fast)
+    //     // Agar aap error handle karna chahte hain toh actual API response ke baad karein.
 
-        const loadingToast = toast.loading("Updating status...");
+    //     const loadingToast = toast.loading("Updating status...");
 
-        try {
-            // API call with userId and the new status
-            const data = await adminStatus(token, userId, newStatus);
+    //     try {
+    //         // API call with userId and the new status
+    //         const data = await adminStatus(token, userId, newStatus);
 
-            if (data.success) {
-                setUsers((prev) =>
-                    prev.map((u) => (u.id === userId ? { ...u, is_admin: newStatus } : u))
-                );
-                toast.success(data.message || "Status updated!", { id: loadingToast });
-            }
-        } catch (error: any) {
-            console.error("422 Error Detail:", error.response?.data); // Isse debug karne mein madad milegi
-            toast.error(error.response?.data?.message || "Failed to update admin status", { id: loadingToast });
-        }
-    };
+    //         if (data.success) {
+    //             setUsers((prev) =>
+    //                 prev.map((u) => (u.id === userId ? { ...u, is_admin: newStatus } : u))
+    //             );
+    //             toast.success(data.message || "Status updated!", { id: loadingToast });
+    //         }
+    //     } catch (error: any) {
+    //         console.error("422 Error Detail:", error.response?.data); // Isse debug karne mein madad milegi
+    //         toast.error(error.response?.data?.message || "Failed to update admin status", { id: loadingToast });
+    //     }
+    // };
 
 
     return (
         <>
-            {/* Toast Container add kiya */}
-            <Toaster position="top-right" reverseOrder={false} />
             <Navbar />
             <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8 pt-25">
                 <div className="max-w-5xl mx-auto border border-[#0000001A] rounded-[14px] bg-white p-6">
                     {/* <h1 className="text-xl font-semibold mb-6 text-[#101828]">Users</h1> */}
                     {/* Header aur Search Section */}
                     <div className="mb-6">
+                        <button 
+                            onClick={() => setShowOnboardModal(true)}
+                            className="flex items-center gap-2 bg-[#3d4b52] text-white font-semibold py-2 px-4 rounded-lg hover:bg-[#2d3b42] cursor-pointer mb-5"
+                        >
+                            <FaPlus />
+                            Onboard
+                        </button>
                         <h1 className="text-xl font-semibold text-[#101828]">Users</h1>
 
                         {/* Filter Input */}
@@ -143,11 +158,10 @@ function Users() {
                                 {/* Header */}
                                 <div className="grid grid-cols-12 px-6 py-3 text-xs font-semibold text-[#667085] uppercase bg-[#F9FAFB] border-b border-[#EAECF0]">
                                     <div className="col-span-3">Name</div>
-                                    <div className="col-span-4">Email</div>
-                                    {/* <div className="col-span-3">
-                                        Agent {isAnyAgentActive ? "(Active)" : "(in_Active)"}
-                                    </div> */}
-                                    <div className="col-span-2 text-right">Admin</div>
+                                    <div className="col-span-3">Email</div>
+                                    <div className="col-span-2">Agent Status</div>
+                                    <div className="col-span-3">Agent Name</div>
+                                    {/* <div className="col-span-2 text-right">Admin</div> */}
                                 </div>
 
                                 {/* Body */}
@@ -165,28 +179,26 @@ function Users() {
                                                 </div>
 
                                                 {/* Email */}
-                                                <div className="col-span-4">
+                                                <div className="col-span-3">
                                                     <span className="text-sm text-[#667085]">{user.email}</span>
                                                 </div>
 
-                                                {/* Agent Toggle Switch */}
-                                                {/* <div className="col-span-3">
-                                                    <label className="relative inline-flex items-center cursor-pointer">
-                                                        <input
-                                                            type="checkbox"
-                                                            className="sr-only peer"
-                                                            checked={user.is_active}
-                                                            onChange={() => handleToggleAgent(user.id, user.is_active)}
-                                                        />
-                                                        <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#12B76A]"></div>
-                                                        <span className="ml-3 text-xs font-medium text-gray-600">
-                                                            {user.is_active ? "Active" : "In_Active"}
-                                                        </span>
-                                                    </label>
-                                                </div> */}
+                                                {/* Status */}
+                                                <div className="col-span-2">
+                                                    <span className={`text-sm font-medium ${user.is_check ? 'text-green-600' : 'text-gray-500'}`}>
+                                                        {user.is_check ? "Assigned" : "Not Assigned"}
+                                                    </span>
+                                                </div>
+
+                                                {/* agent name */}
+                                                <div className="col-span-3">
+                                                    <span className="text-sm text-[#667085]">
+                                                        {user.agent_name || "N/A"}
+                                                    </span>
+                                                </div>
 
                                                 {/* Admin Toggle */}
-                                                <div className="col-span-2 flex justify-end">
+                                                {/* <div className="col-span-2 flex justify-end">
                                                     <label className="relative inline-flex items-center cursor-pointer">
                                                         <input
                                                             type="checkbox"
@@ -196,7 +208,7 @@ function Users() {
                                                         />
                                                         <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#2E68FF]"></div>
                                                     </label>
-                                                </div>
+                                                </div> */}
                                             </div>
                                         ))
                                     )}
@@ -215,6 +227,17 @@ function Users() {
                     </div>
                 </div>
             </div>
+            
+            <OnboardModal 
+                open={showOnboardModal} 
+                onClose={() => setShowOnboardModal(false)}
+                onUserAdded={() => {
+                    const token = localStorage.getItem("token") || "";
+                    getUsers(token).then(data => {
+                        if (data.success) setUsers(data.data.users);
+                    });
+                }}
+            />
         </>
     )
 }

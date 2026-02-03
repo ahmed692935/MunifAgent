@@ -25,6 +25,7 @@ export interface AuthResponse {
     role: string;
   };
   onboard: boolean;
+  onboarding_completed: boolean;
 }
 
 export interface AuthError {
@@ -43,6 +44,7 @@ export interface User {
   created_at?: string;
   is_admin?: boolean;
   onboard?: boolean;
+  onboarding_completed?: boolean;
   token: string; // keep this if backend returns `token`
   access_token?: string; // optional if some APIs return `access_token`
 }

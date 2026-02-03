@@ -10,6 +10,7 @@ import { businessDetail } from "../../api/userDashboard";
 // 1. useNavigate import karein
 import { useNavigate } from "react-router-dom";
 import Navbar from "../../components/Navbar";
+import { useEffect } from "react";
 
 interface OnboardingInputs {
     agent_name: string;
@@ -27,6 +28,12 @@ const Onboarding = () => {
     // 2. navigate function initialize karein
     const navigate = useNavigate();
     const dispatch = useDispatch();
+
+    useEffect(() => {
+        if (user?.is_admin) {
+            navigate("/dashboard");
+        }
+    }, [user, navigate]);
 
     const {
         register,

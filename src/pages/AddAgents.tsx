@@ -5,7 +5,7 @@ import { RiUserAddFill } from "react-icons/ri";
 import Navbar from "../components/Navbar";
 
 import { useNavigate } from "react-router-dom";
-import { getLanguage, postAddAgent, getUsers } from "../api/api";
+import { getLanguage, postAddAgent, getUsersAgent } from "../api/api";
 import toast from "react-hot-toast";
 
 import Uk from "../assets/Images/uk.png";
@@ -95,7 +95,7 @@ const AddAgents = () => {
 
       setLoadingUsers(true);
       try {
-        const response = await getUsers(token);
+        const response = await getUsersAgent(token);
         if (response.success) {
           setUsersList(response.users);
         }

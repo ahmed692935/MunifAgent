@@ -5,7 +5,12 @@ import CallActivity from "../../components/user/CallActivity"
 import CallUsage from "../../components/user/CallUsage"
 import AgentCards from "../../components/user/AgentCards"
 import toast from "react-hot-toast"
-import { getGoogleAuth, outlookCalendar } from "../../api/userDashboard"
+import { getGoogleAuth, outlookCalendar, calendarStatus } from "../../api/userDashboard"
+
+interface CalendarStatuses {
+    google: { connected: boolean };
+    outlook: { connected: boolean };
+}
 
 
 function userDashboard() {
@@ -13,8 +18,9 @@ function userDashboard() {
     const [googleLoading, setGoogleLoading] = useState(false);
     const [outlookLoading, setOutlookLoading] = useState(false);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const [calStatuses, setCalStatuses] = useState<CalendarStatuses | null>(null);
     const dropdownRef = useRef<HTMLDivElement>(null);
-    
+
     const token = localStorage.getItem("token");
 
     // Dropdown ke bahar click detect karne ke liye
@@ -28,6 +34,24 @@ function userDashboard() {
         return () => document.removeEventListener("mousedown", handleClickOutside);
     }, []);
 
+    // Fetch calendar status
+    const fetchCalendarStatus = async () => {
+        if (!token) return;
+        try {
+            const data = await calendarStatus(token);
+            if (data?.success) {
+                setCalStatuses(data.calendars);
+            }
+        } catch (error) {
+            console.error("Error fetching calendar status:", error);
+        }
+    };
+
+    useEffect(() => {
+        fetchCalendarStatus();
+    }, [token]);
+
+    // Handle Google Calendar click
     const handleCalendarClick = async () => {
         if (!token) {
             toast.error("Missing authentication token");
@@ -53,6 +77,7 @@ function userDashboard() {
         }
     };
 
+    // Handle Outlook Calendar click
     const handleOutlookClick = async () => {
         if (!token) {
             toast.error("Missing authentication token");
@@ -84,9 +109,9 @@ function userDashboard() {
         try {
             const data = await outlookCalendar(token, userId);
 
-            if (data?.authorization_url) {
+            if (data?.auth_url) {
                 // Redirect in same tab
-                window.location.href = data.authorization_url;
+                window.location.href = data.auth_url;
             } else {
                 toast.error("Authorization URL not found");
             }
@@ -128,7 +153,12 @@ function userDashboard() {
                                         disabled={googleLoading}
                                         className="w-full text-left px-4 py-3 text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-2 cursor-pointer"
                                     >
-                                        <span className="w-2 h-2 bg-red-500 rounded-full"></span>
+                                        {calStatuses?.google?.connected && (
+                                            <span className="relative flex h-2 w-2">
+                                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                                                <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                                            </span>
+                                        )}
                                         Google Calendar
                                     </button>
                                     <button
@@ -136,7 +166,12 @@ function userDashboard() {
                                         disabled={outlookLoading}
                                         className="w-full text-left px-4 py-3 text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-2 cursor-pointer"
                                     >
-                                        <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
+                                        {calStatuses?.outlook?.connected && (
+                                            <span className="relative flex h-2 w-2">
+                                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                                                <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                                            </span>
+                                        )}
                                         {outlookLoading ? "Connecting..." : "Outlook Calendar"}
                                     </button>
                                 </div>
@@ -163,8 +198,8 @@ export default userDashboard
 
 
 
-                {/* <AgentControl /> */}
-                {/* <div className="w-full flex gap-5 justify-end">
+{/* <AgentControl /> */ }
+{/* <div className="w-full flex gap-5 justify-end">
                     <button
                         onClick={handleCalendarClick}
                         disabled={googleLoading}

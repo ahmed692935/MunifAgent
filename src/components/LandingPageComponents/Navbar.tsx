@@ -121,7 +121,7 @@ function Navbar() {
           ) : (
             <>
               {/* IF USER IS NOT LOGGED IN → SHOW SIGNUP + LOGIN */}
-              <Link
+              {/* <Link
                 to="/signup"
                 className={`h-9 sm:h-10 px-3 sm:px-5 text-sm sm:text-base rounded-md font-semibold flex items-center justify-center transition-all duration-300 ${
                   isScrolled
@@ -130,7 +130,7 @@ function Navbar() {
                 }`}
               >
                 {t("auth.signup")}
-              </Link>
+              </Link> */}
 
               <Link
                 to="/signin"

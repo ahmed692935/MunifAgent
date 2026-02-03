@@ -5,10 +5,9 @@ import { useNavigate } from "react-router-dom";
 
 import type { AppDispatch, RootState } from "../../store/store";
 import { useDispatch, useSelector } from "react-redux";
-import { loginStart, loginSuccess } from "../../store/slices/authSlice";
+import { loginStart, loginSuccess, loginFailure } from "../../store/slices/authSlice";
 import { loginUser } from "../../api/api";
 import toast from "react-hot-toast";
-import type { AxiosError } from "axios";
 
 const SignIn = () => {
   const {
@@ -32,7 +31,13 @@ const SignIn = () => {
       // ✅ Extract token + user from API response
       const token = response.access_token;
       // Fixed: Mapped access_token to token as required by User interface
-      const user = { ...response.user, access_token: token, token: token, onboard: response.onboard };
+      const user = { 
+        ...response.user, 
+        access_token: token, 
+        token: token, 
+        onboard: response.onboard,
+        onboarding_completed: response.onboarding_completed 
+      };
 
       dispatch(loginSuccess({ user, token }));
 
@@ -40,25 +45,31 @@ const SignIn = () => {
 
       
       
-      if (response.user.is_admin) {
+      if (user.is_admin) {
         navigate("/dashboard");
+      } else if (response.onboarding_completed === false) {
+        navigate("/onboarding");
       } else {
         navigate("/dashboard");
       }
       
       reset();
-    } catch (err: unknown) {
-      const error = err as AxiosError<{ error: string }>;
-      toast.error(error?.response?.data?.error || "Oops an error occurred");
-      console.error(err);
-    } finally {
-      dispatch({ type: "auth/loginFailure", payload: null });
+    } catch (err: any) {
+      const errorMessage = 
+        err.response?.data?.error || 
+        err.response?.data?.message || 
+        err.message || 
+        "Oops an error occurred";
+        
+      toast.error(errorMessage);
+      console.error("Login Error:", err);
+      dispatch(loginFailure(errorMessage));
     }
   };
 
-  const handleNavigate = () => {
-    navigate("/signup");
-  };
+  // const handleNavigate = () => {
+  //   navigate("/signup");
+  // };
 
   return (
     <div className="min-h-screen bg-[#3d4b52] flex items-center justify-center px-4">
@@ -148,10 +159,10 @@ const SignIn = () => {
               className="text-sm text-[#3d4b52]">
               Not have account? <span className=" hover:underline">Signup</span>
             </Link> */}
-            <button onClick={handleNavigate} className="text-sm text-[#3d4b52]">
+            {/* <button onClick={handleNavigate} className="text-sm text-[#3d4b52]">
               Not have account?{" "}
               <span className=" hover:underline cursor-pointer">Signup</span>
-            </button>
+            </button> */}
           </div>
 
           <div className="mt-1 text-center">
