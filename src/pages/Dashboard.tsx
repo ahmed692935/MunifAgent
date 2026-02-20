@@ -140,14 +140,14 @@ const Dashboard = () => {
       <div className=" container mx-auto mt-28">
         {/* ---------- Top Analytics ---------- */}
         <div className="grid md:grid-cols-2 gap-4 mb-8 px-2 lg:px-20">
-          <div className="bg-white border-1 text-[#3d4b52] rounded-xl p-6 shadow-md text-center transition-all duration-300 hover:shadow-2xl hover:border-2 hover:-translate-y-1">
+          <div className="bg-white border text-[#3d4b52] rounded-xl p-6 shadow-md text-center transition-all duration-300 hover:shadow-2xl hover:border-2 hover:-translate-y-1">
             <h3 className="text-xl font-semibold">Total Calls Received</h3>
             <p className="text-3xl font-bold mt-2">
               {analytics?.total_calls ?? 0}
             </p>
           </div>
 
-          <div className="bg-white border-1 text-[#3d4b52] rounded-xl p-6 shadow-md text-center transition-all duration-300 hover:shadow-2xl hover:border-2 hover:-translate-y-1">
+          <div className="bg-white border text-[#3d4b52] rounded-xl p-6 shadow-md text-center transition-all duration-300 hover:shadow-2xl hover:border-2 hover:-translate-y-1">
             <h3 className="text-xl font-semibold">Total Agents</h3>
             <p className="text-3xl font-bold mt-2">
               {analytics?.total_agents ?? 0}
@@ -195,7 +195,7 @@ const Dashboard = () => {
                 {searchResults.map((agent) => (
                   <div
                     key={agent.id}
-                    className="bg-white shadow-lg rounded-2xl p-5 border-1 hover:border-2 hover:shadow-2xl transition cursor-pointer text-[#3d4b52]"
+                    className="bg-white shadow-lg rounded-2xl p-5 border hover:border-2 hover:shadow-2xl transition cursor-pointer text-[#3d4b52]"
                   >
                     <div className="flex justify-between">
                       <div className="flex items-center gap-4">
@@ -231,7 +231,9 @@ const Dashboard = () => {
                       </div>
                     </div>
 
-                    <p className="mt-3 font-medium">{agent.owner_name}</p>
+                    <p className="mt-3 font-medium">{agent.owner_name} {" "}
+                      <span className="text-sm text-gray-500">(owner name)</span>
+                    </p>
 
                     <p className="mt-2 text-sm line-clamp-2">
                       {agent.system_prompt ||
@@ -269,7 +271,7 @@ const Dashboard = () => {
                   <div
                     key={agent.id}
                     id={`agent-card-${agent.id}`}
-                    className="bg-white shadow-lg rounded-2xl p-5 border-1 hover:border-2 hover:shadow-2xl transition cursor-pointer text-[#3d4b52]"
+                    className="bg-white shadow-lg rounded-2xl p-5 border hover:border-2 hover:shadow-2xl transition cursor-pointer text-[#3d4b52]"
                   >
                     <div className="flex justify-between">
                       <div className="flex items-center gap-4">
@@ -315,7 +317,9 @@ const Dashboard = () => {
                       </div>
                     </div>
 
-                    <p className="mt-3 font-medium">{agent.owner_name}</p>
+                    <p className="mt-3 font-medium">{agent.owner_name} {" "}
+                      <span className="text-sm text-gray-500">(owner name)</span>
+                    </p>
 
                     <p className="mt-2 text-sm line-clamp-2">
                       {agent.system_prompt ||

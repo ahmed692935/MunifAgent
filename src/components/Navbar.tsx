@@ -40,6 +40,7 @@ const Navbar = () => {
         { key: "home", label: "Home", to: "/" },
         { key: "dashboard", label: "Dashboard", to: "/dashboard" },
         { key: "add-agent", label: "Add Agent", to: "/add-agent" },
+        { key: "users", label: "Users", to: "/users" },
       ];
     }
 
@@ -47,7 +48,8 @@ const Navbar = () => {
     return [
       { key: "dashboard", label: "Dashboard", to: "/dashboard" },
       { key: "call-logs", label: "Call Logs", to: "/call-logs" },
-      { key: "agent", label: "Agent", to: "/agent" },
+      // { key: "agent", label: "Agent", to: "/agent" },
+      { key: "onboarding", label: "Onboarding", to: "/onboarding" },
     ];
   })();
 
@@ -100,6 +102,17 @@ const Navbar = () => {
                   <div className="px-4 py-2 border-b border-gray-200 text-[#3d4b52]/70">
                     {user.email}
                   </div>
+
+                  {/* Profile Link (Hidden for Admin) */}
+                  {!user.is_admin && (
+                    <Link
+                      to="/profile"
+                      onClick={() => setOpenDropdown(false)}
+                      className="block w-full text-left px-4 py-2 hover:bg-gray-100 text-[#3d4b52] cursor-pointer border-b border-gray-100"
+                    >
+                      Profile
+                    </Link>
+                  )}
 
                   <button
                     onClick={() => {
@@ -167,6 +180,17 @@ const Navbar = () => {
                     {user.email}
                   </span>
                 </div>
+
+                {/* Profile Link Mobile (Hidden for Admin) */}
+                {!user.is_admin && (
+                  <Link
+                    to="/profile"
+                    onClick={() => setMenuOpen(false)}
+                    className="bg-white border border-[#3d4b52] text-[#3d4b52] py-2 rounded-md font-semibold text-center hover:bg-gray-50"
+                  >
+                    Profile
+                  </Link>
+                )}
 
                 <button
                   onClick={() => {

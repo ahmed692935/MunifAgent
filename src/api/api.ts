@@ -1,5 +1,5 @@
 import axios from "axios";
-import type { SignInFormData, SignUpFormData } from "../Interface/Auth";
+import type { SignInFormData, SignUpFormData, AuthResponse } from "../Interface/Auth";
 import api from "./axiosInterceptor";
 
 // const API_URL = "http://localhost:8080/api";
@@ -11,7 +11,7 @@ export const signupUser = async (data: SignUpFormData) => {
   return response.data;
 };
 
-export const loginUser = async (data: SignInFormData) => {
+export const loginUser = async (data: SignInFormData): Promise<AuthResponse> => {
   const response = await axios.post(`${API_URL}/login`, data);
   console.log(response, "respLogin");
   return response.data;
@@ -193,5 +193,83 @@ export const resetAgentMinutes = async (
       },
     }
   );
+  return response.data;
+};
+
+
+// Admin Users Page - Get All Users
+export const getUsers = async (token: string) => {
+  // const response = await api.get(`${API_URL}/users/list`, {
+  const response = await api.get(`${API_URL}/admin/users`, {
+    headers: {
+      "ngrok-skip-browser-warning": "true",
+      Authorization: `Bearer ${token}`,
+      Accept: "application/json",
+    },
+  });
+  return response.data;
+};
+
+// Add agent page - Get All Users
+export const getUsersAgent = async (token: string) => {
+  const response = await api.get(`${API_URL}/users/list`, {
+  // const response = await api.get(`${API_URL}/admin/users`, {
+    headers: {
+      "ngrok-skip-browser-warning": "true",
+      Authorization: `Bearer ${token}`,
+      Accept: "application/json",
+    },
+  });
+  return response.data;
+};
+
+
+// User Admin/User Toggle
+export const adminStatus = async (token: string, userId: number, newStatus: boolean) => {
+  const response = await api.patch(
+    `${API_URL}/admin/users/${userId}/admin-status`, 
+    { is_admin: newStatus }, // Body mein data bhejna 422 error solve kar sakta hai
+    {
+      headers: {
+        "ngrok-skip-browser-warning": "true",
+        Authorization: `Bearer ${token}`,
+        Accept: "application/json",
+      },
+    }
+  );
+  return response.data;
+};
+
+// User Active/Inactive Toggle
+export const userActiveToggle = async (token: string, userId: number, agentId: number, isActive: boolean) => {
+  const response = await api.post(
+    `${API_URL}/agents/toggle-status`, 
+    { 
+      user_id: userId, 
+      agent_id: agentId, 
+      is_active: isActive
+    }, 
+    {
+      headers: {
+        "ngrok-skip-browser-warning": "true",
+        Authorization: `Bearer ${token}`,
+        Accept: "application/json",
+      },
+    }
+  );
+  return response.data;
+};
+
+// Admin create new user
+export const adminCreateUser = async (token: string, data: any) => {
+  // data ko second argument (body) ke bajaye params mein pass karein
+  const response = await api.post(`${API_URL}/admin/create-user`, {}, {
+    params: data, // Yeh data ko URL?key=value format mein convert kar dega
+    headers: {
+      "ngrok-skip-browser-warning": "true",
+      Authorization: `Bearer ${token}`,
+      Accept: "application/json",
+    },
+  });
   return response.data;
 };
