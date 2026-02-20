@@ -186,7 +186,7 @@ const EditAgentModal = ({ open, onClose, data, onSave }: Props) => {
                   Phone Number
                 </label>
                 <input
-                  disabled={true}
+                  // disabled={true}
                   {...register("phone_number", {
                     required: "Phone number is required",
                   })}
@@ -217,7 +217,7 @@ const EditAgentModal = ({ open, onClose, data, onSave }: Props) => {
                   Business Email
                 </label>
                 <input
-                  disabled
+                  // disabled
                   type="email"
                   {...register("owner_email", {})}
                   className="w-full px-4 py-2 border-2 border-gray-200 rounded-lg 
