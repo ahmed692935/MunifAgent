@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import { planUsage } from "../../api/userDashboard";
 import type { PlanUsageData } from "../../Interface/UserDashboard";
+import { useTranslation } from "react-i18next";
 
 function CallUsage() {
+    const { t } = useTranslation();
     const [data, setData] = useState<PlanUsageData | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
 
@@ -35,7 +37,7 @@ function CallUsage() {
     return (
         <div className="border border-[#0000001A] rounded-[14px] bg-white p-6 w-full max-w-2xl shadow-sm">
             <h2 className="text-base font-semibold text-gray-900">
-                Plan Usage
+                {t("dashboardUser.planUsage")}
             </h2>
 
             <div className="mt-3 flex items-baseline justify-between">
@@ -43,7 +45,7 @@ function CallUsage() {
                     {loading ? "..." : `${percentage}%`}
                 </h2>
                 <span className="text-sm font-medium text-gray-400 uppercase tracking-wider">
-                    Used
+                    {t("dashboardUser.used")}
                 </span>
             </div>
 
@@ -57,13 +59,13 @@ function CallUsage() {
 
             <div className="mt-4 flex justify-between items-center text-sm text-gray-500 font-medium">
                 {loading ? (
-                    <span>Loading usage details...</span>
+                    <span>{t("dashboardUser.loadingUsageDetails")}</span>
                 ) : (
                     <>
-                        <span>{usedMinutes} / {totalMinutes} Minutes</span>
+                        <span>{t("dashboardUser.minutesUsed", { used: usedMinutes, total: totalMinutes })}</span>
                         {/* Sirf tab dikhayen agar resetDays available ho */}
                         {data?.reset_in_days !== undefined && (
-                            <span>Resets in {resetDays} days</span>
+                            <span>{t("dashboardUser.resetsInDays", { days: resetDays })}</span>
                         )}
                     </>
                 )}

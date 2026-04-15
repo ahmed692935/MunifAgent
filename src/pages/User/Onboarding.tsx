@@ -11,6 +11,7 @@ import { businessDetail } from "../../api/userDashboard";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../../components/Navbar";
 import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
 interface OnboardingInputs {
     agent_name: string;
@@ -22,6 +23,7 @@ interface OnboardingInputs {
 }
 
 const Onboarding = () => {
+    const { t } = useTranslation();
     const { user, token } = useSelector((state: RootState) => state.auth);
     const [isLoading, setIsLoading] = useState(false);
 
@@ -47,7 +49,7 @@ const Onboarding = () => {
             const response = await businessDetail(token as string, data);
 
             if (response.success) {
-                toast.success(response.message || "Details submitted successfully!");
+                toast.success(response.message || t("onboarding.toast.success"));
 
                 // Update Redux state to reflect onboarding is done
                 if (user) {
@@ -63,7 +65,7 @@ const Onboarding = () => {
             }
         } catch (error: any) {
             console.error("Submission Error:", error);
-            toast.error(error.response?.data?.message || "Failed to submit details. Please try again.");
+            toast.error(error.response?.data?.message || t("onboarding.toast.error"));
         } finally {
             setIsLoading(false);
         }
@@ -84,29 +86,29 @@ const Onboarding = () => {
             </div> */}
 
                 <div className="w-full max-w-[650px] mx-auto bg-white rounded-3xl shadow-sm border border-gray-100 p-8 md:p-12">
-                    <h2 className="text-2xl font-bold text-[#111827] mb-8">Tell us about your business</h2>
+                    <h2 className="text-2xl font-bold text-[#111827] mb-8">{t("onboarding.title")}</h2>
 
                     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                         <div className="space-y-1.5">
                             <label className="text-[15px] font-semibold text-gray-800">
-                                Agent Name <span className="text-red-500">*</span>
+                                {t("onboarding.fields.agentName")} <span className="text-red-500">*</span>
                             </label>
                             <input
                                 type="text"
-                                placeholder="e.g., Sarah (Customer Support AI)"
+                                placeholder={t("onboarding.placeholders.agentName")}
                                 className={`w-full px-4 py-3 rounded-xl border ${errors.agent_name ? 'border-red-500' : 'border-gray-200'} focus:outline-none focus:ring-2 focus:ring-blue-500/10 focus:border-blue-500 transition-all`}
                                 {...register("agent_name", { required: true })}
                             />
-                            <p className="text-xs text-gray-400">What should your AI agent be called?</p>
+                            <p className="text-xs text-gray-400">{t("onboarding.hints.agentName")}</p>
                         </div>
 
                         <div className="space-y-1.5">
                             <label className="text-[15px] font-semibold text-gray-800">
-                                Business Name <span className="text-red-500">*</span>
+                                {t("onboarding.fields.businessName")} <span className="text-red-500">*</span>
                             </label>
                             <input
                                 type="text"
-                                placeholder="e.g., Acme Corporation"
+                                placeholder={t("onboarding.placeholders.businessName")}
                                 className={`w-full px-4 py-3 rounded-xl border ${errors.business_name ? 'border-red-500' : 'border-gray-200'} focus:outline-none focus:ring-2 focus:ring-blue-500/10 focus:border-blue-500 transition-all`}
                                 {...register("business_name", { required: true })}
                             />
@@ -114,11 +116,11 @@ const Onboarding = () => {
 
                         <div className="space-y-1.5">
                             <label className="text-[15px] font-semibold text-gray-800">
-                                Business Email <span className="text-red-500">*</span>
+                                {t("onboarding.fields.businessEmail")} <span className="text-red-500">*</span>
                             </label>
                             <input
                                 type="email"
-                                placeholder="contact@acme.com"
+                                placeholder={t("onboarding.placeholders.businessEmail")}
                                 className={`w-full px-4 py-3 rounded-xl border ${errors.business_email ? 'border-red-500' : 'border-gray-200'} focus:outline-none focus:ring-2 focus:ring-blue-500/10 focus:border-blue-500 transition-all`}
                                 {...register("business_email", { required: true })}
                             />
@@ -126,11 +128,11 @@ const Onboarding = () => {
 
                         <div className="space-y-1.5">
                             <label className="text-[15px] font-semibold text-gray-800">
-                                Phone Number <span className="text-red-500">*</span>
+                                {t("onboarding.fields.phoneNumber")} <span className="text-red-500">*</span>
                             </label>
                             <input
                                 type="text"
-                                placeholder="+1 234 567 890"
+                                placeholder={t("onboarding.placeholders.phoneNumber")}
                                 className={`w-full px-4 py-3 rounded-xl border ${errors.phone_number ? 'border-red-500' : 'border-gray-200'} focus:outline-none focus:ring-2 focus:ring-blue-500/10 focus:border-blue-500 transition-all`}
                                 {...register("phone_number", { required: true })}
                             />
@@ -138,11 +140,11 @@ const Onboarding = () => {
 
                         <div className="space-y-1.5">
                             <label className="text-[15px] font-semibold text-gray-800">
-                                Industry <span className="text-red-500">*</span>
+                                {t("onboarding.fields.industry")} <span className="text-red-500">*</span>
                             </label>
                             <input
                                 type="text"
-                                placeholder="e.g., Healthcare"
+                                placeholder={t("onboarding.placeholders.industry")}
                                 className={`w-full px-4 py-3 rounded-xl border ${errors.industry ? 'border-red-500' : 'border-gray-200'} focus:outline-none focus:ring-2 focus:ring-blue-500/10 focus:border-blue-500 transition-all`}
                                 {...register("industry", { required: true })}
                             />
@@ -150,15 +152,15 @@ const Onboarding = () => {
 
                         <div className="space-y-1.5">
                             <label className="text-[15px] font-semibold text-gray-800">
-                                Language <span className="text-red-500">*</span>
+                                {t("onboarding.fields.language")} <span className="text-red-500">*</span>
                             </label>
                             <select
                                 className={`w-full px-4 py-3 rounded-xl border ${errors.language ? 'border-red-500' : 'border-gray-200'} bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/10 focus:border-blue-500 transition-all appearance-none`}
                                 {...register("language", { required: true })}
                             >
-                                <option value="">Select Language</option>
-                                <option value="English">English</option>
-                                <option value="German">German</option>
+                                <option value="">{t("onboarding.selectLanguage")}</option>
+                                <option value="English">{t("onboarding.languageOptionEnglish")}</option>
+                                <option value="German">{t("onboarding.languageOptionGerman")}</option>
                                 {/* <option value="Spanish">Spanish</option> */}
                             </select>
                         </div>
@@ -169,7 +171,7 @@ const Onboarding = () => {
                                 disabled={isLoading}
                                 className="bg-[#3d4b52] hover:bg-[#2d3b42] disabled:bg-blue-300 text-white font-semibold px-10 py-3 rounded-xl transition-all shadow-md active:scale-95 min-w-[140px] cursor-pointer"
                             >
-                                {isLoading ? "Submitting..." : "Submit"}
+                                {isLoading ? t("onboarding.submitting") : t("onboarding.submit")}
                             </button>
                         </div>
                     </form>

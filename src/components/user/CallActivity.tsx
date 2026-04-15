@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react"
 import { dashboardOverview } from "../../api/userDashboard"
 import type { UserDashboard } from "../../Interface/UserDashboard"
+import { useTranslation } from "react-i18next";
 
 function CallActivity() {
+    const { t } = useTranslation();
 
     const [data, setData] = useState<UserDashboard | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
@@ -29,12 +31,12 @@ function CallActivity() {
     return (
         <div className="border border-[#0000001A] rounded-[14px] bg-white p-6 w-full">
             <h2 className="text-base font-medium">
-                Today's Activity
+                {t("dashboardUser.todayActivity")}
             </h2>
 
             {/* total Calls */}
             <div className="flex gap-4 justify-between item-center mt-3">
-                <p className="text-base text-[#4A5565]">Total Calls</p>
+                <p className="text-base text-[#4A5565]">{t("dashboardUser.totalCalls")}</p>
                 <p className="text-2xl font-semibold text-[#0A0A0A]">
                     {loading ? "..." : (data?.total_calls ?? 0)}
                 </p>
@@ -42,7 +44,7 @@ function CallActivity() {
 
             {/* Missed Calls */}
             <div className="flex gap-4 justify-between item-center mt-3">
-                <p className="text-base text-[#4A5565]">Missed</p>
+                <p className="text-base text-[#4A5565]">{t("dashboardUser.missedCalls")}</p>
                 <p className="text-2xl font-semibold text-[#E7000B]">
                     {loading ? "..." : (data?.missed_calls ?? 0)}
                 </p>

@@ -3,6 +3,7 @@ import { RiUserAddFill } from "react-icons/ri";
 import { adminCreateUser } from "../api/api";
 import toast from "react-hot-toast";
 import { Loader2 } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   open: boolean;
@@ -18,6 +19,7 @@ interface FormData {
 }
 
 const OnboardModal = ({ open, onClose, onUserAdded }: Props) => {
+  const { t } = useTranslation();
   const [formData, setFormData] = useState<FormData>({
     username: "",
     email: "",
@@ -41,7 +43,7 @@ const OnboardModal = ({ open, onClose, onUserAdded }: Props) => {
     try {
       const res = await adminCreateUser(token, formData);
       if (res.success || res) { // Adjust based on actual API response structure
-        toast.success(res.message || "User created successfully!");
+        toast.success(res.message || t("users.onboardModal.userCreated"));
         setFormData({
             username: "",
             email: "",
@@ -52,7 +54,7 @@ const OnboardModal = ({ open, onClose, onUserAdded }: Props) => {
         onClose();
       }
     } catch (error: any) {
-      toast.error(error.response?.data?.error || "Failed to create user");
+      toast.error(error.response?.data?.error || t("users.onboardModal.userCreateFailed"));
     } finally {
       setIsLoading(false);
     }
@@ -71,7 +73,7 @@ const OnboardModal = ({ open, onClose, onUserAdded }: Props) => {
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-xl font-bold text-[#3d4b52] flex items-center gap-2">
             <RiUserAddFill />
-            Onboard New User
+            {t("users.onboardModal.title")}
           </h2>
           <button
             disabled={isLoading}
@@ -86,14 +88,14 @@ const OnboardModal = ({ open, onClose, onUserAdded }: Props) => {
           {/* Username */}
           <div className="w-full">
             <label className="block text-sm font-semibold text-[#3d4b52] mb-1.5">
-              Username
+              {t("users.onboardModal.username")}
             </label>
             <input
               type="text"
               name="username"
               value={formData.username}
               onChange={handleChange}
-              placeholder="Enter username"
+              placeholder={t("users.onboardModal.usernamePlaceholder")}
               className="w-full border border-gray-300 px-3 py-2.5 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#3d4b52]/20 focus:border-[#3d4b52] transition-all"
               required
             />
@@ -102,14 +104,14 @@ const OnboardModal = ({ open, onClose, onUserAdded }: Props) => {
           {/* Email */}
           <div className="w-full">
             <label className="block text-sm font-semibold text-[#3d4b52] mb-1.5">
-              Email Address
+              {t("users.onboardModal.email")}
             </label>
             <input
               type="email"
               name="email"
               value={formData.email}
               onChange={handleChange}
-              placeholder="user@example.com"
+              placeholder={t("users.onboardModal.emailPlaceholder")}
               className="w-full border border-gray-300 px-3 py-2.5 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#3d4b52]/20 focus:border-[#3d4b52] transition-all"
               required
             />
@@ -119,14 +121,14 @@ const OnboardModal = ({ open, onClose, onUserAdded }: Props) => {
             {/* first name */}
             <div className="w-full">
               <label className="block text-sm font-semibold text-[#3d4b52] mb-1.5">
-                First Name
+                {t("users.onboardModal.firstName")}
               </label>
               <input
                 type="text"
                 name="first_name"
                 value={formData.first_name}
                 onChange={handleChange}
-                placeholder="First Name"
+                placeholder={t("users.onboardModal.firstName")}
                 className="w-full border border-gray-300 px-3 py-2.5 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#3d4b52]/20 focus:border-[#3d4b52] transition-all"
               />
             </div>
@@ -134,14 +136,14 @@ const OnboardModal = ({ open, onClose, onUserAdded }: Props) => {
             {/* last name */}
             <div className="w-full">
               <label className="block text-sm font-semibold text-[#3d4b52] mb-1.5">
-                Last Name
+                {t("users.onboardModal.lastName")}
               </label>
               <input
                 type="text"
                 name="last_name"
                 value={formData.last_name}
                 onChange={handleChange}
-                placeholder="Last Name"
+                placeholder={t("users.onboardModal.lastName")}
                 className="w-full border border-gray-300 px-3 py-2.5 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#3d4b52]/20 focus:border-[#3d4b52] transition-all"
               />
             </div>
@@ -157,9 +159,9 @@ const OnboardModal = ({ open, onClose, onUserAdded }: Props) => {
             {isLoading ? (
                 <>
                     <Loader2 className="w-5 h-5 animate-spin" />
-                    Submitting...
+                    {t("users.onboardModal.submitting")}
                 </>
-            ) : "Submit"}
+            ) : t("users.onboardModal.submit")}
           </button>
         </form>
       </div>

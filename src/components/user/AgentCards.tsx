@@ -18,8 +18,10 @@ import toast from "react-hot-toast";
 import type { AxiosError } from "axios";
 import { useSelector } from "react-redux";
 import type { RootState } from "../../store/store";
+import { useTranslation } from "react-i18next";
 
 const AgentCards = () => {
+    const { t } = useTranslation();
     const [editOpen, setEditOpen] = useState(false);
     const [selectedAgent, setSelectedAgent] = useState<AgentType | null>(null);
     const navigate = useNavigate();
@@ -85,11 +87,11 @@ const AgentCards = () => {
         try {
             const response = await deleteAgent(token, id);
             setApiAgents((prev) => prev.filter((a) => a.id !== id));
-            toast.success(response?.message || "Agent deleted successfully");
+            toast.success(response?.message || t("dashboardAdmin.toast.agentDeleted"));
             await reloadAgents();
         } catch (err: unknown) {
             const error = err as AxiosError<{ error: string }>;
-            toast.error(error?.response?.data?.error || "Failed to delete agent");
+            toast.error(error?.response?.data?.error || t("dashboardAdmin.toast.agentDeleteFailed"));
         } finally {
             setDeletingId(null);
         }
@@ -163,7 +165,7 @@ const AgentCards = () => {
 
                     <div className="border border-[#0000001A] rounded-[14px] bg-white p-6 w-full">
                         <div className="flex items-center justify-between py-10">
-                            <h3 className="text-base font-medium">Total Agents</h3>
+                            <h3 className="text-base font-medium">{t("dashboardAdmin.totalAgents")}</h3>
                             <p className="text-2xl font-semibold text-[#0A0A0A]">
                                 {analytics?.total_agents ?? 0}
                             </p>
@@ -178,7 +180,7 @@ const AgentCards = () => {
                         <div className="relative w-full">
                             <input
                                 type="text"
-                                placeholder="Search by owner name..."
+                                placeholder={t("dashboardAdmin.searchOwner")}
                                 className="w-full px-4 py-3 pr-12 focus:ring-0 outline-none border border-[#0000001A] rounded-[14px] bg-white"
                                 value={searchText}
                                 onChange={(e) => {
@@ -204,7 +206,7 @@ const AgentCards = () => {
                     <div className="relative w-full">
                         <input
                             type="text"
-                            placeholder="Search by agent name..."
+                            placeholder={t("dashboardUser.searchAgentName")}
                             className="w-full px-4 py-3 pr-12 focus:ring-0 outline-none border border-[#0000001A] rounded-[14px] bg-white"
                             value={agentSearchText}
                             onChange={(e) => {
@@ -225,7 +227,7 @@ const AgentCards = () => {
                     <div className="">
                         {getFilteredAgents(searchResults).length === 0 ? (
                             <p className="text-center text-[#3d4b52] mt-10 text-xl font-semibold">
-                                No Agents Found
+                                {t("dashboardAdmin.noAgentsFound")}
                             </p>
                         ) : (
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-10">
@@ -271,12 +273,12 @@ const AgentCards = () => {
                                         </div>
 
                                         <p className="mt-3 font-medium">{agent.owner_name} {" "}
-                                            <span className="text-sm text-gray-500">(owner name)</span>
+                                            <span className="text-sm text-gray-500">({t("dashboardAdmin.ownerName")})</span>
                                         </p>
 
                                         <p className="mt-2 text-sm line-clamp-2">
                                             {agent.system_prompt ||
-                                                "This agent is highly experienced and dedicated to providing the best service possible."}
+                                                t("dashboardAdmin.agentDefaultPrompt")}
                                         </p>
 
                                         <button
@@ -286,7 +288,7 @@ const AgentCards = () => {
                                                 navigate(`/agent/${agent.id}`);
                                             }}
                                         >
-                                            See More
+                                            {t("dashboardAdmin.seeMore")}
                                         </button>
                                     </div>
                                 ))}
@@ -304,7 +306,7 @@ const AgentCards = () => {
                                     <div className="w-12 h-12 border-4 border-t-[#3d4b52] border-gray-200 rounded-full animate-spin"></div>
                                 </div>
                             ) : getFilteredAgents(apiAgents).length === 0 ? (
-                                <p className="text-center col-span-3 mt-10">No agents found</p>
+                                <p className="text-center col-span-3 mt-10">{t("dashboardAdmin.noAgentsFound")}</p>
                             ) : (
                                 getFilteredAgents(apiAgents).map((agent) => (
                                     <div
@@ -359,12 +361,12 @@ const AgentCards = () => {
                                         </div>
 
                                         <p className="mt-3 font-medium">{agent.owner_name} {" "}
-                                            <span className="text-sm text-gray-500">(owner name)</span>
+                                            <span className="text-sm text-gray-500">({t("dashboardAdmin.ownerName")})</span>
                                         </p>
 
                                         <p className="mt-2 text-sm line-clamp-2">
                                             {agent.system_prompt ||
-                                                "This agent is highly experienced and dedicated to providing the best service possible."}
+                                                t("dashboardAdmin.agentDefaultPrompt")}
                                         </p>
 
                                         <button
@@ -374,7 +376,7 @@ const AgentCards = () => {
                                                 navigate(`/agent/${agent.id}`);
                                             }}
                                         >
-                                            See More
+                                            {t("dashboardAdmin.seeMore")}
                                         </button>
                                     </div>
                                 ))
@@ -387,17 +389,17 @@ const AgentCards = () => {
                                 onClick={handlePrevPage}
                                 disabled={page === 1}
                             >
-                                Prev
+                                {t("common.prev")}
                             </button>
                             <span className="px-3 py-2">
-                                Page {page} of {totalPages}
+                                {t("common.pageOf", { page, total: totalPages })}
                             </span>
                             <button
                                 className="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300 disabled:opacity-50"
                                 onClick={handleNextPage}
                                 disabled={page === totalPages}
                             >
-                                Next
+                                {t("common.next")}
                             </button>
                         </div>
                     </>

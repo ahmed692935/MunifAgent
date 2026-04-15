@@ -9,10 +9,12 @@ import { logout } from "../store/slices/authSlice";
 
 import { useNavigate } from "react-router-dom";
 import { FaRegUserCircle, FaChevronDown } from "react-icons/fa";
+import { useTranslation } from "react-i18next";
 
 const Navbar = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { t, i18n } = useTranslation();
 
   const [isScrolled, setIsScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -31,25 +33,25 @@ const Navbar = () => {
   const menuItems = (() => {
     // If not logged in, show default Home
     if (!user) {
-      return [{ key: "home", label: "Home", to: "/" }];
+      return [{ key: "home", label: t("appNav.home"), to: "/" }];
     }
 
     // If Admin
     if (user.is_admin) {
       return [
-        { key: "home", label: "Home", to: "/" },
-        { key: "dashboard", label: "Dashboard", to: "/dashboard" },
-        { key: "add-agent", label: "Add Agent", to: "/add-agent" },
-        { key: "users", label: "Users", to: "/users" },
+        { key: "home", label: t("appNav.home"), to: "/" },
+        { key: "dashboard", label: t("appNav.dashboard"), to: "/dashboard" },
+        { key: "add-agent", label: t("appNav.addAgent"), to: "/add-agent" },
+        { key: "users", label: t("appNav.users"), to: "/users" },
       ];
     }
 
     // If Standard User (user.is_admin is false or undefined)
     return [
-      { key: "dashboard", label: "Dashboard", to: "/dashboard" },
-      { key: "call-logs", label: "Call Logs", to: "/call-logs" },
+      { key: "dashboard", label: t("appNav.dashboard"), to: "/dashboard" },
+      { key: "call-logs", label: t("appNav.callLogs"), to: "/call-logs" },
       // { key: "agent", label: "Agent", to: "/agent" },
-      { key: "onboarding", label: "Onboarding", to: "/onboarding" },
+      { key: "onboarding", label: t("appNav.onboarding"), to: "/onboarding" },
     ];
   })();
 
@@ -110,7 +112,7 @@ const Navbar = () => {
                       onClick={() => setOpenDropdown(false)}
                       className="block w-full text-left px-4 py-2 hover:bg-gray-100 text-[#3d4b52] cursor-pointer border-b border-gray-100"
                     >
-                      Profile
+                      {t("appNav.profile")}
                     </Link>
                   )}
 
@@ -121,7 +123,7 @@ const Navbar = () => {
                     }}
                     className="w-full text-left px-4 py-2 hover:bg-gray-100 text-[#3d4b52] cursor-pointer"
                   >
-                    Logout
+                    {t("appNav.logout")}
                   </button>
                 </div>
               )}
@@ -129,10 +131,20 @@ const Navbar = () => {
           ) : (
             /* ===================== NOT LOGGED IN ===================== */
             <button className="bg-white border border-[#3d4b52] text-[#3d4b52] px-4 py-2 rounded-lg font-semibold hover:bg-[#3d4b52]/10 transition-all">
-              Login
+              {t("auth.login")}
             </button>
           )}
         </div>
+
+        {/* Desktop language switcher */}
+        <select
+          onChange={(e) => i18n.changeLanguage(e.target.value)}
+          value={i18n.language}
+          className="hidden md:block h-10 px-2 text-sm rounded-md bg-white text-[#3d4b52] border border-[#3d4b52] font-semibold cursor-pointer"
+        >
+          <option value="en">English</option>
+          <option value="de">German</option>
+        </select>
 
         {/* Mobile Hamburger */}
         <button
@@ -188,7 +200,7 @@ const Navbar = () => {
                     onClick={() => setMenuOpen(false)}
                     className="bg-white border border-[#3d4b52] text-[#3d4b52] py-2 rounded-md font-semibold text-center hover:bg-gray-50"
                   >
-                    Profile
+                  {t("appNav.profile")}
                   </Link>
                 )}
 
@@ -200,14 +212,25 @@ const Navbar = () => {
                   }}
                   className="bg-white border border-[#3d4b52] text-[#3d4b52] py-2 rounded-md font-semibold cursor-pointer"
                 >
-                  Logout
+                  {t("appNav.logout")}
                 </button>
               </>
             ) : (
               <button className="bg-white border border-[#3d4b52] text-[#3d4b52] py-2 rounded-md font-semibold">
-                Login
+                {t("auth.login")}
               </button>
             )}
+            <select
+              onChange={(e) => {
+                i18n.changeLanguage(e.target.value);
+                setMenuOpen(false);
+              }}
+              value={i18n.language}
+              className="h-10 px-2 text-base rounded-md border border-[#3d4b52] bg-white text-[#3d4b52] font-semibold cursor-pointer"
+            >
+              <option value="en">English</option>
+              <option value="de">German</option>
+            </select>
           </div>
         </div>
       </div>

@@ -5,6 +5,7 @@ import { Loader2, Search } from "lucide-react";
 import { FaPlus } from "react-icons/fa";
 
 import OnboardModal from "../components/OnboardModal";
+import { useTranslation } from "react-i18next";
 
 // User interface for TypeScript
 interface User {
@@ -20,6 +21,7 @@ interface User {
 }
 
 function Users() {
+    const { t } = useTranslation();
     const [users, setUsers] = useState<User[]>([]);
     const [tableLoading, setTableLoading] = useState<boolean>(true);
     const [searchTerm, setSearchTerm] = useState<string>(""); // Search state
@@ -123,9 +125,9 @@ function Users() {
                             className="flex items-center gap-2 bg-[#3d4b52] text-white font-semibold py-2 px-4 rounded-lg hover:bg-[#2d3b42] cursor-pointer mb-5"
                         >
                             <FaPlus />
-                            Onboard
+                            {t("users.onboard")}
                         </button>
-                        <h1 className="text-xl font-semibold text-[#101828]">Users</h1>
+                        <h1 className="text-xl font-semibold text-[#101828]">{t("users.title")}</h1>
 
                         {/* Filter Input */}
                         <div className="relative w-full mt-5">
@@ -134,7 +136,7 @@ function Users() {
                             </div>
                             <input
                                 type="text"
-                                placeholder="Search by username..."
+                                placeholder={t("users.searchByUsername")}
                                 className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg leading-5 bg-white placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-[#2E68FF] focus:border-[#2E68FF] sm:text-sm transition-all"
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
@@ -149,7 +151,7 @@ function Users() {
                                 <div className="absolute inset-0 z-10 bg-white/60 backdrop-blur-[1px] flex items-center justify-center">
                                     <div className="flex flex-col items-center gap-2">
                                         <Loader2 className="w-8 h-8 text-[#2E68FF] animate-spin" />
-                                        <span className="text-sm text-gray-500 font-medium">Loading users...</span>
+                                        <span className="text-sm text-gray-500 font-medium">{t("users.loadingUsers")}</span>
                                     </div>
                                 </div>
                             )}
@@ -157,17 +159,17 @@ function Users() {
                             <div className="min-w-[900px]">
                                 {/* Header */}
                                 <div className="grid grid-cols-12 px-6 py-3 text-xs font-semibold text-[#667085] uppercase bg-[#F9FAFB] border-b border-[#EAECF0]">
-                                    <div className="col-span-3">Name</div>
-                                    <div className="col-span-3">Email</div>
-                                    <div className="col-span-2">Agent Status</div>
-                                    <div className="col-span-3">Agent Name</div>
+                                    <div className="col-span-3">{t("users.columns.name")}</div>
+                                    <div className="col-span-3">{t("users.columns.email")}</div>
+                                    <div className="col-span-2">{t("users.columns.agentStatus")}</div>
+                                    <div className="col-span-3">{t("users.columns.agentName")}</div>
                                     {/* <div className="col-span-2 text-right">Admin</div> */}
                                 </div>
 
                                 {/* Body */}
                                 <div className="divide-y divide-[#EAECF0]">
                                     {!tableLoading && filteredUsers.length === 0 ? (
-                                        <div className="p-8 text-center text-gray-500">No users found.</div>
+                                        <div className="p-8 text-center text-gray-500">{t("users.noUsersFound")}</div>
                                     ) : (
                                         filteredUsers.map((user) => (
                                             <div key={user.id} className="grid grid-cols-12 px-6 py-4 items-center hover:bg-gray-50 transition-colors">
@@ -186,14 +188,14 @@ function Users() {
                                                 {/* Status */}
                                                 <div className="col-span-2">
                                                     <span className={`text-sm font-medium ${user.is_check ? 'text-green-600' : 'text-gray-500'}`}>
-                                                        {user.is_check ? "Assigned" : "Not Assigned"}
+                                                        {user.is_check ? t("users.assigned") : t("users.notAssigned")}
                                                     </span>
                                                 </div>
 
                                                 {/* agent name */}
                                                 <div className="col-span-3">
                                                     <span className="text-sm text-[#667085]">
-                                                        {user.agent_name || "N/A"}
+                                                        {user.agent_name || t("common.na")}
                                                     </span>
                                                 </div>
 
@@ -218,10 +220,10 @@ function Users() {
 
                         {/* Pagination Placeholder */}
                         <div className="mt-4 flex items-center justify-between px-2">
-                            <p className="text-sm text-gray-500">Showing {users.length} users</p>
+                            <p className="text-sm text-gray-500">{t("users.showingUsers", { count: users.length })}</p>
                             <div className="flex gap-2">
-                                <button className="px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium disabled:opacity-50" disabled>Previous</button>
-                                <button className="px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium disabled:opacity-50" disabled>Next</button>
+                                <button className="px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium disabled:opacity-50" disabled>{t("common.previous")}</button>
+                                <button className="px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium disabled:opacity-50" disabled>{t("common.next")}</button>
                             </div>
                         </div>
                     </div>

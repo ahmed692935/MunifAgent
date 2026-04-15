@@ -132,5 +132,161 @@
     "a3": "Ja. Datenschutz hat bei MrBot oberste Priorität. Alle Daten werden ausschließlich auf Servern innerhalb der EU verarbeitet, und Anrufaufzeichnungen werden nicht dauerhaft gespeichert, es sei denn, Sie stimmen ausdrücklich zu. MrBot erfüllt die DSGVO vollständig, und auf Anfrage kann eine Datenverarbeitungsvereinbarung (DPA) bereitgestellt werden.",
     "q4": "Muss ich etwas installieren oder programmieren?",
     "a4": "Nein. MrBot ist eine No-Code-Lösung, die vollständig für Sie eingerichtet ist. Sie benötigen keine technischen Kenntnisse – wir kümmern uns um alles, von der Anbindung Ihres Telefonsystems bis zur Integration Ihres Kalenders."
+  },
+  "appNav": {
+    "home": "Startseite",
+    "dashboard": "Übersicht",
+    "addAgent": "Agent hinzufügen",
+    "users": "Benutzer",
+    "callLogs": "Anrufprotokolle",
+    "onboarding": "Einführung",
+    "profile": "Profil",
+    "logout": "Abmelden"
+  },
+  "common": {
+    "prev": "Zurück",
+    "previous": "Vorherige",
+    "next": "Weiter",
+    "na": "k. A.",
+    "pageOf": "Seite {{page}} von {{total}}"
+  },
+  "dashboardAdmin": {
+    "totalCallsReceived": "Gesamt eingegangene Anrufe",
+    "totalAgents": "Gesamtzahl Agenten",
+    "searchOwner": "Nach Inhabername suchen...",
+    "ownerName": "Inhabername",
+    "noBusinessOwner": "Kein Geschäftsinhaber gefunden",
+    "noAgentsFound": "Keine Agenten gefunden",
+    "agentDefaultPrompt": "Dieser Agent ist sehr erfahren und darauf ausgerichtet, den bestmöglichen Service zu bieten.",
+    "seeMore": "Mehr anzeigen",
+    "toast": {
+      "agentDeleted": "Agent erfolgreich gelöscht",
+      "agentDeleteFailed": "Agent konnte nicht gelöscht werden"
+    }
+  },
+  "dashboardUser": {
+    "todayActivity": "Heutige Aktivität",
+    "totalCalls": "Gesamtanrufe",
+    "missedCalls": "Verpasst",
+    "planUsage": "Tarifnutzung",
+    "used": "Verbraucht",
+    "loadingUsageDetails": "Nutzungsdetails werden geladen...",
+    "minutesUsed": "{{used}} / {{total}} Minuten",
+    "resetsInDays": "Zurücksetzung in {{days}} Tagen",
+    "connectCalendar": "Kalender verbinden",
+    "googleCalendar": "Google Kalender",
+    "outlookCalendar": "Outlook Kalender",
+    "connecting": "Verbinden...",
+    "searchAgentName": "Nach Agentennamen suchen...",
+    "toast": {
+      "missingAuthToken": "Authentifizierungs-Token fehlt",
+      "authorizationUrlNotFound": "Autorisierungs-URL nicht gefunden",
+      "somethingWentWrong": "Etwas ist schiefgelaufen",
+      "userDataNotFound": "Benutzerdaten nicht gefunden",
+      "invalidSessionData": "Ungültige Benutzerdaten in der Sitzung",
+      "userIdNotFound": "Benutzer-ID nicht gefunden"
+    }
+  },
+  "users": {
+    "title": "Benutzer",
+    "onboard": "Onboarden",
+    "searchByUsername": "Nach Benutzernamen suchen...",
+    "loadingUsers": "Benutzer werden geladen...",
+    "noUsersFound": "Keine Benutzer gefunden.",
+    "assigned": "Zugewiesen",
+    "notAssigned": "Nicht zugewiesen",
+    "showingUsers": "{{count}} Benutzer werden angezeigt",
+    "columns": {
+      "name": "Name",
+      "email": "E-Mail",
+      "agentStatus": "Agent-Status",
+      "agentName": "Agentname"
+    },
+    "onboardModal": {
+      "title": "Neuen Benutzer onboarden",
+      "username": "Benutzername",
+      "usernamePlaceholder": "Benutzernamen eingeben",
+      "email": "E-Mail-Adresse",
+      "emailPlaceholder": "user@example.com",
+      "firstName": "Vorname",
+      "lastName": "Nachname",
+      "submit": "Senden",
+      "submitting": "Wird gesendet...",
+      "userCreated": "Benutzer erfolgreich erstellt!",
+      "userCreateFailed": "Benutzer konnte nicht erstellt werden"
+    }
+  },
+  "callLogs": {
+    "title": "Anrufprotokoll & Verlauf",
+    "columns": {
+      "callerDetail": "Anrufer",
+      "agentName": "Agentname",
+      "status": "Status",
+      "dateTime": "Datum & Uhrzeit",
+      "duration": "Dauer",
+      "action": "Aktion"
+    },
+    "noLogs": "Keine Einträge gefunden",
+    "view": "Ansehen",
+    "invalidDate": "Ungültiges Datum",
+    "showingRange": "{{from}}–{{to}} von {{total}} werden angezeigt",
+    "showingNone": "0 von {{total}} werden angezeigt",
+    "durationFormat": "{{minutes}} Min. {{seconds}} s"
+  },
+  "onboarding": {
+    "title": "Erzählen Sie uns von Ihrem Unternehmen",
+    "fields": {
+      "agentName": "Agentenname",
+      "businessName": "Firmenname",
+      "businessEmail": "Geschäfts-E-Mail",
+      "phoneNumber": "Telefonnummer",
+      "industry": "Branche",
+      "language": "Sprache"
+    },
+    "placeholders": {
+      "agentName": "z. B. Sarah (Kundenservice-KI)",
+      "businessName": "z. B. Muster GmbH",
+      "businessEmail": "kontakt@firma.de",
+      "phoneNumber": "+49 123 456789",
+      "industry": "z. B. Gesundheitswesen"
+    },
+    "hints": {
+      "agentName": "Wie soll Ihr KI-Agent heißen?"
+    },
+    "selectLanguage": "Sprache wählen",
+    "languageOptionEnglish": "Englisch",
+    "languageOptionGerman": "Deutsch",
+    "submit": "Absenden",
+    "submitting": "Wird gesendet...",
+    "toast": {
+      "success": "Angaben erfolgreich übermittelt!",
+      "error": "Übermittlung fehlgeschlagen. Bitte erneut versuchen."
+    }
+  },
+  "callModal": {
+    "title": "Anrufdetails",
+    "subtitle": "Alle wichtigen Informationen zu diesem Anruf",
+    "callerInformation": "Anruferinformationen",
+    "labelCallerId": "Anrufer-ID",
+    "labelPhoneNumber": "Telefonnummer",
+    "labelDate": "Datum",
+    "labelTimeDuration": "Uhrzeit & Dauer",
+    "labelCallId": "Anruf-ID",
+    "tabTranscript": "Transkript",
+    "tabVoiceRecording": "Sprachaufnahme",
+    "tabAppointment": "Termin",
+    "callTranscript": "Gesprächstranskript",
+    "roleAi": "KI",
+    "roleCaller": "Anrufer",
+    "noTranscript": "Kein Transkript vorhanden.",
+    "voiceRecording": "Sprachaufnahme",
+    "audioNotSupported": "Ihr Browser unterstützt das Audio-Element nicht.",
+    "noRecording": "Für diesen Anruf liegt keine Aufnahme vor.",
+    "formatLabel": "Format:",
+    "download": "Herunterladen",
+    "recordingStarted": "Aufnahme gestartet",
+    "appointmentDetails": "Termindetails",
+    "callSummary": "Gesprächszusammenfassung",
+    "noAppointmentDetails": "Keine Termin- oder Zusammenfassungsdaten vorhanden."
   }
 }

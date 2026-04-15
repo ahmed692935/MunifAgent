@@ -6,6 +6,7 @@ import CallUsage from "../../components/user/CallUsage"
 import AgentCards from "../../components/user/AgentCards"
 import toast from "react-hot-toast"
 import { getGoogleAuth, outlookCalendar, calendarStatus } from "../../api/userDashboard"
+import { useTranslation } from "react-i18next";
 
 interface CalendarStatuses {
     google: { connected: boolean };
@@ -14,6 +15,7 @@ interface CalendarStatuses {
 
 
 function userDashboard() {
+    const { t } = useTranslation();
 
     const [googleLoading, setGoogleLoading] = useState(false);
     const [outlookLoading, setOutlookLoading] = useState(false);
@@ -54,7 +56,7 @@ function userDashboard() {
     // Handle Google Calendar click
     const handleCalendarClick = async () => {
         if (!token) {
-            toast.error("Missing authentication token");
+            toast.error(t("dashboardUser.toast.missingAuthToken"));
             return;
         }
 
@@ -67,11 +69,11 @@ function userDashboard() {
                 // Redirect in same tab
                 window.location.href = data.authorization_url;
             } else {
-                toast.error("Authorization URL not found");
+                toast.error(t("dashboardUser.toast.authorizationUrlNotFound"));
             }
         } catch (error: any) {
             console.error("Google Auth Error:", error);
-            toast.error(error?.message || "Something went wrong");
+            toast.error(error?.message || t("dashboardUser.toast.somethingWentWrong"));
         } finally {
             setGoogleLoading(false);
         }
@@ -80,13 +82,13 @@ function userDashboard() {
     // Handle Outlook Calendar click
     const handleOutlookClick = async () => {
         if (!token) {
-            toast.error("Missing authentication token");
+            toast.error(t("dashboardUser.toast.missingAuthToken"));
             return;
         }
 
         const userData = localStorage.getItem("user");
         if (!userData) {
-            toast.error("User data not found");
+            toast.error(t("dashboardUser.toast.userDataNotFound"));
             return;
         }
 
@@ -95,12 +97,12 @@ function userDashboard() {
             const user = JSON.parse(userData);
             userId = user.id;
         } catch (e) {
-            toast.error("Invalid user data in session");
+            toast.error(t("dashboardUser.toast.invalidSessionData"));
             return;
         }
 
         if (!userId) {
-            toast.error("User ID not found");
+            toast.error(t("dashboardUser.toast.userIdNotFound"));
             return;
         }
 
@@ -113,11 +115,11 @@ function userDashboard() {
                 // Redirect in same tab
                 window.location.href = data.auth_url;
             } else {
-                toast.error("Authorization URL not found");
+                toast.error(t("dashboardUser.toast.authorizationUrlNotFound"));
             }
         } catch (error: any) {
             console.error("Outlook Auth Error:", error);
-            toast.error(error?.message || "Something went wrong");
+            toast.error(error?.message || t("dashboardUser.toast.somethingWentWrong"));
         } finally {
             setOutlookLoading(false);
         }
@@ -138,7 +140,7 @@ function userDashboard() {
                             {(googleLoading || outlookLoading) && (
                                 <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
                             )}
-                            Connect Calendar
+                            {t("dashboardUser.connectCalendar")}
                             <svg className={`w-4 h-4 transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
                             </svg>
@@ -159,7 +161,7 @@ function userDashboard() {
                                                 <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
                                             </span>
                                         )}
-                                        Google Calendar
+                                        {t("dashboardUser.googleCalendar")}
                                     </button>
                                     <button
                                         onClick={handleOutlookClick}
@@ -172,7 +174,7 @@ function userDashboard() {
                                                 <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
                                             </span>
                                         )}
-                                        {outlookLoading ? "Connecting..." : "Outlook Calendar"}
+                                        {outlookLoading ? t("dashboardUser.connecting") : t("dashboardUser.outlookCalendar")}
                                     </button>
                                 </div>
                             </div>

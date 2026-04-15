@@ -134,5 +134,161 @@
     "a3": "Yes. Data protection is a top priority at MrBot. All data is processed exclusively on servers located within the EU, and no call recordings are stored permanently unless you explicitly agree. MrBot fully complies with GDPR regulations, and a Data Processing Agreement (DPA) can be provided upon request.",
     "q4": "Do I need to install or program anything?",
     "a4": "No. MrBot is a no-code solution that’s fully set up for you. You don’t need any technical experience — we handle everything, from connecting your phone system to integrating your calendar."
+  },
+  "appNav": {
+    "home": "Home",
+    "dashboard": "Dashboard",
+    "addAgent": "Add Agent",
+    "users": "Users",
+    "callLogs": "Call Logs",
+    "onboarding": "Onboarding",
+    "profile": "Profile",
+    "logout": "Logout"
+  },
+  "common": {
+    "prev": "Prev",
+    "previous": "Previous",
+    "next": "Next",
+    "na": "N/A",
+    "pageOf": "Page {{page}} of {{total}}"
+  },
+  "dashboardAdmin": {
+    "totalCallsReceived": "Total Calls Received",
+    "totalAgents": "Total Agents",
+    "searchOwner": "Search by owner name...",
+    "ownerName": "owner name",
+    "noBusinessOwner": "No Business Owner Found",
+    "noAgentsFound": "No agents found",
+    "agentDefaultPrompt": "This agent is highly experienced and dedicated to providing the best service possible.",
+    "seeMore": "See More",
+    "toast": {
+      "agentDeleted": "Agent deleted successfully",
+      "agentDeleteFailed": "Failed to delete agent"
+    }
+  },
+  "dashboardUser": {
+    "todayActivity": "Today's Activity",
+    "totalCalls": "Total Calls",
+    "missedCalls": "Missed",
+    "planUsage": "Plan Usage",
+    "used": "Used",
+    "loadingUsageDetails": "Loading usage details...",
+    "minutesUsed": "{{used}} / {{total}} Minutes",
+    "resetsInDays": "Resets in {{days}} days",
+    "connectCalendar": "Connect Calendar",
+    "googleCalendar": "Google Calendar",
+    "outlookCalendar": "Outlook Calendar",
+    "connecting": "Connecting...",
+    "searchAgentName": "Search by agent name...",
+    "toast": {
+      "missingAuthToken": "Missing authentication token",
+      "authorizationUrlNotFound": "Authorization URL not found",
+      "somethingWentWrong": "Something went wrong",
+      "userDataNotFound": "User data not found",
+      "invalidSessionData": "Invalid user data in session",
+      "userIdNotFound": "User ID not found"
+    }
+  },
+  "users": {
+    "title": "Users",
+    "onboard": "Onboard",
+    "searchByUsername": "Search by username...",
+    "loadingUsers": "Loading users...",
+    "noUsersFound": "No users found.",
+    "assigned": "Assigned",
+    "notAssigned": "Not Assigned",
+    "showingUsers": "Showing {{count}} users",
+    "columns": {
+      "name": "Name",
+      "email": "Email",
+      "agentStatus": "Agent Status",
+      "agentName": "Agent Name"
+    },
+    "onboardModal": {
+      "title": "Onboard New User",
+      "username": "Username",
+      "usernamePlaceholder": "Enter username",
+      "email": "Email Address",
+      "emailPlaceholder": "user@example.com",
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "submit": "Submit",
+      "submitting": "Submitting...",
+      "userCreated": "User created successfully!",
+      "userCreateFailed": "Failed to create user"
+    }
+  },
+  "callLogs": {
+    "title": "Call Logs & History",
+    "columns": {
+      "callerDetail": "Caller Detail",
+      "agentName": "Agent Name",
+      "status": "Status",
+      "dateTime": "Date & Time",
+      "duration": "Duration",
+      "action": "Action"
+    },
+    "noLogs": "No logs found",
+    "view": "View",
+    "invalidDate": "Invalid date",
+    "showingRange": "Showing {{from}}–{{to}} of {{total}}",
+    "showingNone": "Showing 0 of {{total}}",
+    "durationFormat": "{{minutes}}m {{seconds}}s"
+  },
+  "onboarding": {
+    "title": "Tell us about your business",
+    "fields": {
+      "agentName": "Agent Name",
+      "businessName": "Business Name",
+      "businessEmail": "Business Email",
+      "phoneNumber": "Phone Number",
+      "industry": "Industry",
+      "language": "Language"
+    },
+    "placeholders": {
+      "agentName": "e.g., Sarah (Customer Support AI)",
+      "businessName": "e.g., Acme Corporation",
+      "businessEmail": "contact@acme.com",
+      "phoneNumber": "+1 234 567 890",
+      "industry": "e.g., Healthcare"
+    },
+    "hints": {
+      "agentName": "What should your AI agent be called?"
+    },
+    "selectLanguage": "Select Language",
+    "languageOptionEnglish": "English",
+    "languageOptionGerman": "German",
+    "submit": "Submit",
+    "submitting": "Submitting...",
+    "toast": {
+      "success": "Details submitted successfully!",
+      "error": "Failed to submit details. Please try again."
+    }
+  },
+  "callModal": {
+    "title": "Call Details",
+    "subtitle": "Comprehensive information about this call",
+    "callerInformation": "Caller Information",
+    "labelCallerId": "Caller ID",
+    "labelPhoneNumber": "Phone Number",
+    "labelDate": "Date",
+    "labelTimeDuration": "Time & Duration",
+    "labelCallId": "Call ID",
+    "tabTranscript": "Transcript",
+    "tabVoiceRecording": "Voice Recording",
+    "tabAppointment": "Appointment",
+    "callTranscript": "Call Transcript",
+    "roleAi": "AI",
+    "roleCaller": "Caller",
+    "noTranscript": "No transcript available.",
+    "voiceRecording": "Voice Recording",
+    "audioNotSupported": "Your browser does not support the audio element.",
+    "noRecording": "No recording available for this call.",
+    "formatLabel": "Format:",
+    "download": "Download",
+    "recordingStarted": "Recording Started",
+    "appointmentDetails": "Appointment Details",
+    "callSummary": "Call Summary",
+    "noAppointmentDetails": "No appointment details or summary available."
   }
 }
