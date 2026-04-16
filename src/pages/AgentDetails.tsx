@@ -8,8 +8,10 @@ import AgentImg from "../assets/Images/Agent.png";
 import { getAgentById, resetAgentMinutes } from "../api/api";
 import toast from "react-hot-toast";
 import { FiRotateCw } from "react-icons/fi";
+import { useTranslation } from "react-i18next";
 
 const AgentDetails = () => {
+  const { t, i18n } = useTranslation();
   const { id } = useParams();
   const { user } = useSelector((state: RootState) => state.auth);
 
@@ -60,29 +62,30 @@ const AgentDetails = () => {
       <div className="flex flex-col items-center justify-center mt-40">
         <div className="w-10 h-10 border-4 border-gray-300 border-t-[#3d4b52] rounded-full animate-spin"></div>
         <p className="text-center mt-4 text-[#3d4b52] font-medium">
-          Loading Agent Details...
+          {t("agentDetails.loading")}
         </p>
       </div>
     );
   }
 
   if (!agent) {
-    return <p className="text-center mt-40 text-red-500">Agent not found.</p>;
+    return <p className="text-center mt-40 text-red-500">{t("agentDetails.notFound")}</p>;
   }
 
   const formatDate = (dateString: string | null) => {
-    if (!dateString) return "N/A";
+    if (!dateString) return t("common.na");
 
     const d = new Date(dateString);
-    const datePart = d.toLocaleDateString("en-GB", {
+    const locale = i18n.language?.startsWith("de") ? "de-DE" : "en-GB";
+    const datePart = d.toLocaleDateString(locale, {
       day: "2-digit",
       month: "short",
       year: "numeric",
     });
-    const timePart = d.toLocaleTimeString("en-GB", {
+    const timePart = d.toLocaleTimeString(locale, {
       hour: "2-digit",
       minute: "2-digit",
-      hour12: false, // 24-hour format
+      hour12: false,
     });
 
     return `${datePart} • ${timePart}`;
@@ -95,14 +98,14 @@ const AgentDetails = () => {
         <div className="md:flex justify-between items-end">
           {/* Agent Header */}
           <h1 className="text-3xl font-semibold text-[#3d4b52] mb-6 mt-24">
-            Agent Details —{" "}
+            {t("agentDetails.titlePrefix")}{" "}
             <span className="font-normal text-2xl">{agent?.agent_name}</span>
           </h1>
           <div>
             <img
               // src={AgentImg}
               src={agent?.avatar_presigned_url || AgentImg}
-              alt="Agent Image"
+              alt={t("agentDetails.alt.agentImage")}
               className="h-20 w-20 rounded-full"
             />
           </div>
@@ -110,42 +113,45 @@ const AgentDetails = () => {
 
         {/* Agent Info Card */}
         <div className="bg-white shadow-lg rounded-xl p-6 mb-8 hover:shadow-xl">
-          <h2 className="text-lg font-bold mb-4 text-[#3d4b52]">Agent Info</h2>
+          <h2 className="text-lg font-bold mb-4 text-[#3d4b52]">{t("agentDetails.agentInfo")}</h2>
           <div className="grid sm:grid-cols-2 gap-4 text-[#3d4b52]">
             <p>
-              <strong>Name:</strong> {agent?.agent_name}
+              <strong>{t("agentDetails.labels.name")}</strong> {agent?.agent_name}
             </p>
             <p>
-              <strong>Phone:</strong> {agent?.phone_number}
+              <strong>{t("agentDetails.labels.phone")}</strong> {agent?.phone_number}
             </p>
             <p>
-              <strong>Language:</strong> {agent?.language}
+              <strong>{t("agentDetails.labels.language")}</strong> {agent?.language}
             </p>
             <p>
-              <strong>Voice Type:</strong> {agent?.voice_type}
+              <strong>{t("agentDetails.labels.voiceType")}</strong> {agent?.voice_type}
             </p>
             <p>
-              <strong>Industry:</strong> {agent?.industry}
+              <strong>{t("agentDetails.labels.industry")}</strong> {agent?.industry}
             </p>
             <p>
-              <strong>Owner:</strong> {agent?.owner_name}
+              <strong>{t("agentDetails.labels.owner")}</strong> {agent?.owner_name}
             </p>
             <p>
-              <strong>Allowed Minutes:</strong> {agent?.allowed_minutes} min
+              <strong>{t("agentDetails.labels.allowedMinutes")}</strong>{" "}
+              {t("agentDetails.minutesShort", {
+                count: Number(agent?.allowed_minutes ?? 0) || 0,
+              })}
             </p>
             <p>
-              <strong>Owner Email:</strong> {agent?.owner_email}
+              <strong>{t("agentDetails.labels.ownerEmail")}</strong> {agent?.owner_email}
             </p>
             <p>
-              <strong>Business Hours (Start):</strong>{" "}
+              <strong>{t("agentDetails.labels.businessHoursStart")}</strong>{" "}
               {agent?.business_hours_start}
             </p>
             <p>
-              <strong>Business Hours (End):</strong> {agent?.business_hours_end}
+              <strong>{t("agentDetails.labels.businessHoursEnd")}</strong> {agent?.business_hours_end}
             </p>
           </div>
           <div className="mt-4">
-            <strong className="text-[#3d4b52] text-lg">System Prompt:</strong>
+            <strong className="text-[#3d4b52] text-lg">{t("agentDetails.systemPrompt")}</strong>
             <p className="mt-1 text-gray-600 whitespace-pre-line">
               {agent?.system_prompt}
             </p>
@@ -158,33 +164,35 @@ const AgentDetails = () => {
             <p className="text-2xl font-bold">
               {agent?.call_stats?.total_calls}
             </p>
-            <p className="text-gray-600 text-sm">Total Calls</p>
+            <p className="text-gray-600 text-sm">{t("agentDetails.stats.totalCalls")}</p>
           </div>
           <div className="bg-white p-4 rounded-lg shadow text-center hover:shadow-xl border hover:scale-102">
             <p className="text-2xl font-bold">
               {agent?.call_stats?.completed_calls}
             </p>
-            <p className="text-gray-600 text-sm">Completed</p>
+            <p className="text-gray-600 text-sm">{t("agentDetails.stats.completed")}</p>
           </div>
           <div className="bg-white p-4 rounded-lg shadow text-center hover:shadow-xl border hover:scale-102">
             <p className="text-2xl font-bold">
               {agent?.call_stats?.unanswered_calls}
             </p>
-            <p className="text-gray-600 text-sm">Unanswered</p>
+            <p className="text-gray-600 text-sm">{t("agentDetails.stats.unanswered")}</p>
           </div>
           <div className="bg-white p-4 rounded-lg shadow text-center hover:shadow-xl border hover:scale-102">
             <p className="text-2xl font-bold">
-              {/* {agent?.call_stats?.avg_duration} */}
-              {Math.floor((agent?.call_stats?.avg_duration ?? 0) / 60)} min
+              {t("agentDetails.minutesShort", {
+                count: Math.floor((agent?.call_stats?.avg_duration ?? 0) / 60),
+              })}
             </p>
-            <p className="text-gray-600 text-sm">Avg Duration</p>
+            <p className="text-gray-600 text-sm">{t("agentDetails.stats.avgDuration")}</p>
           </div>
           <div className="bg-white p-4 rounded-lg shadow text-center hover:shadow-xl border hover:scale-102">
             <p className="text-2xl font-bold">
-              {/* {agent?.call_stats?.total_duration} */}
-              {Math.floor((agent?.call_stats?.total_duration ?? 0) / 60)} min
+              {t("agentDetails.minutesShort", {
+                count: Math.floor((agent?.call_stats?.total_duration ?? 0) / 60),
+              })}
             </p>
-            <p className="text-gray-600 text-sm">Total Duration</p>
+            <p className="text-gray-600 text-sm">{t("agentDetails.stats.totalDuration")}</p>
           </div>
         </div>
 
@@ -192,10 +200,10 @@ const AgentDetails = () => {
           <div className="bg-white p-4 rounded-lg shadow flex items-center justify-center text-center hover:shadow-xl border hover:scale-102">
             <div className="text-gray-700 text-sm space-y-1">
               <p>
-                <strong>First Call:</strong>{" "}
+                <strong>{t("agentDetails.stats.firstCall")}</strong>{" "}
                 {agent?.call_stats?.first_call_at
                   ? new Date(agent.call_stats.first_call_at).toLocaleString(
-                    "en-GB",
+                    i18n.language?.startsWith("de") ? "de-DE" : "en-GB",
                     {
                       day: "2-digit",
                       month: "short",
@@ -205,13 +213,13 @@ const AgentDetails = () => {
                       hour12: false,
                     }
                   )
-                  : "N/A"}
+                  : t("common.na")}
               </p>
               <p>
-                <strong>Last Call:</strong>{" "}
+                <strong>{t("agentDetails.stats.lastCall")}</strong>{" "}
                 {agent?.call_stats?.last_call_at
                   ? new Date(agent.call_stats.last_call_at).toLocaleString(
-                    "en-GB",
+                    i18n.language?.startsWith("de") ? "de-DE" : "en-GB",
                     {
                       day: "2-digit",
                       month: "short",
@@ -221,7 +229,7 @@ const AgentDetails = () => {
                       hour12: false,
                     }
                   )
-                  : "N/A"}
+                  : t("common.na")}
               </p>
             </div>
           </div>
@@ -234,18 +242,20 @@ const AgentDetails = () => {
           </div> */}
           <div className="bg-white p-4 rounded-lg shadow text-center hover:shadow-xl border hover:scale-102">
             <p className="text-2xl font-bold">{agent?.allowed_minutes}</p>
-            <p className="text-gray-600 text-sm">Allowed Minutes</p>
+            <p className="text-gray-600 text-sm">{t("agentDetails.stats.allowedMinutesCard")}</p>
           </div>
 
           <div className="bg-white p-4 rounded-lg shadow flex items-center justify-center hover:shadow-xl border hover:scale-102">
             <div className="text-gray-700 text-sm space-y-1">
               <p>
-                <strong>Percentage Used:</strong>{" "}
+                <strong>{t("agentDetails.stats.percentageUsed")}</strong>{" "}
                 {agent?.minutes_info?.percentage_used ?? 0}%
               </p>
               <p>
-                <strong>Used Mins:</strong>{" "}
-                {agent?.minutes_info?.used_minutes ?? 0} min
+                <strong>{t("agentDetails.stats.usedMins")}</strong>{" "}
+                {t("agentDetails.minutesShort", {
+                  count: Number(agent?.minutes_info?.used_minutes ?? 0) || 0,
+                })}
               </p>
             </div>
           </div>
@@ -262,12 +272,12 @@ const AgentDetails = () => {
 
                   try {
                     await resetAgentMinutes(token, agent.id);
-                    toast.success("Agent Minutes reset successfully!");
+                    toast.success(t("agentDetails.toast.minutesReset"));
                     // Refetch agent to update minutes
                     fetchData(currentPage);
                   } catch (err) {
                     console.error(err);
-                    toast.error("Failed to reset minutes.");
+                    toast.error(t("agentDetails.toast.minutesResetFailed"));
                   }
                 }}
               >
@@ -276,9 +286,11 @@ const AgentDetails = () => {
             )}
 
             <p className="text-2xl font-bold">
-              {agent?.minutes_info?.used_minutes ?? 0} min
+              {t("agentDetails.minutesShort", {
+                count: Number(agent?.minutes_info?.used_minutes ?? 0) || 0,
+              })}
             </p>
-            <p className="text-gray-600 text-sm">Used Minutes</p>
+            <p className="text-gray-600 text-sm">{t("agentDetails.stats.usedMinutes")}</p>
           </div>
         </div>
 
@@ -286,7 +298,7 @@ const AgentDetails = () => {
         {/* Calls Table */}
         <div className="bg-white shadow-lg rounded-xl p-6 hover:shadow-xl">
           <h2 className="text-xl font-semibold mb-4 text-gray-700">
-            Call History
+            {t("agentDetails.callHistory")}
           </h2>
 
           {/* Scrollable wrapper */}
@@ -294,11 +306,11 @@ const AgentDetails = () => {
             <table className="min-w-full">
               <thead>
                 <tr className="bg-[#3d4b52] text-white text-left">
-                  <th className="p-3">Caller Number</th>
-                  <th className="p-3">Date</th>
-                  <th className="p-3">Ended At</th>
-                  <th className="p-3">Transcript</th>
-                  <th className="p-3">Recording</th>
+                  <th className="p-3">{t("agentDetails.table.callerNumber")}</th>
+                  <th className="p-3">{t("agentDetails.table.date")}</th>
+                  <th className="p-3">{t("agentDetails.table.endedAt")}</th>
+                  <th className="p-3">{t("agentDetails.table.transcript")}</th>
+                  <th className="p-3">{t("agentDetails.table.recording")}</th>
                 </tr>
               </thead>
               <tbody>
@@ -333,7 +345,9 @@ const AgentDetails = () => {
                               .map((i: TranscriptItem) => {
                                 if (i.type === "message") {
                                   const role =
-                                    i.role === "assistant" ? "Agent" : "User";
+                                    i.role === "assistant"
+                                      ? t("agentDetails.transcriptRoles.agent")
+                                      : t("agentDetails.transcriptRoles.user");
                                   return `${role}: ${i.content.join(" ")}`;
                                 }
                                 return "";
@@ -344,7 +358,7 @@ const AgentDetails = () => {
                             setOpenTranscript(call.id.toString());
                           }}
                         >
-                          View Transcript
+                          {t("agentDetails.viewTranscript")}
                         </button>
                       </td>
 
@@ -356,15 +370,15 @@ const AgentDetails = () => {
                           }
                           className="text-white bg-[#3d4b52] hover:bg-[#2d3b42] px-5 py-1 rounded-lg cursor-pointer"
                         >
-                          Play
+                          {t("agentDetails.play")}
                         </button>
                       </td>
                     </tr>
                   ))
                 ) : (
                   <tr>
-                    <td colSpan={4} className="text-center p-3 text-gray-500">
-                      No call history found.
+                    <td colSpan={5} className="text-center p-3 text-gray-500">
+                      {t("agentDetails.noCallHistory")}
                     </td>
                   </tr>
                 )}
@@ -380,11 +394,11 @@ const AgentDetails = () => {
                   : "bg-[#3d4b52] text-white hover:bg-[#2d3b42]"
                   }`}
               >
-                Prev
+                {t("common.prev")}
               </button>
 
               <span className="px-4 py-2 rounded bg-gray-200">
-                Page {currentPage} of {totalPages}
+                {t("common.pageOf", { page: currentPage, total: totalPages })}
               </span>
 
               <button
@@ -395,7 +409,7 @@ const AgentDetails = () => {
                   : "bg-[#3d4b52] text-white hover:bg-[#2d3b42]"
                   }`}
               >
-                Next
+                {t("common.next")}
               </button>
             </div>
           </div>
@@ -405,13 +419,13 @@ const AgentDetails = () => {
         {openTranscript && transcriptData && (
           <div className="fixed inset-0 bg-[#3d4b52] bg-opacity-50 flex items-center justify-center top-20 p-4">
             <div className="bg-white p-6 rounded-lg max-w-3xl w-full max-h-[80vh] overflow-y-auto">
-              <h3 className="text-lg font-bold mb-4 text-center">Transcript</h3>
+              <h3 className="text-lg font-bold mb-4 text-center">{t("agentDetails.transcriptModalTitle")}</h3>
               <pre className="whitespace-pre-wrap">{transcriptData}</pre>
               <button
                 className="w-full mt-10 bg-[#3d4b52] hover:bg-[#2d3b42] text-white py-2 rounded-lg cursor-pointer"
                 onClick={() => setOpenTranscript(null)}
               >
-                Close
+                {t("agentDetails.close")}
               </button>
             </div>
           </div>
@@ -447,7 +461,7 @@ const AgentDetails = () => {
         {openRecording && (
           <div className="fixed inset-0 bg-[#3d4b52] bg-opacity-50 flex items-center justify-center">
             <div className="bg-white p-6 rounded-xl w-96 shadow-xl ">
-              <h3 className="text-lg font-semibold mb-2">Recording</h3>
+              <h3 className="text-lg font-semibold mb-2">{t("agentDetails.recordingModalTitle")}</h3>
               <audio controls autoPlay className="w-full">
                 <source src={openRecording} type="audio/ogg" />
               </audio>
@@ -455,7 +469,7 @@ const AgentDetails = () => {
                 onClick={() => setOpenRecording(null)}
                 className="mt-4 w-full bg-[#3d4b52] hover:bg-[#2d3b42] text-white py-2 rounded-lg cursor-pointer"
               >
-                Close
+                {t("agentDetails.close")}
               </button>
             </div>
           </div>

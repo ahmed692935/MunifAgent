@@ -5,6 +5,7 @@ import { RiUserAddFill } from "react-icons/ri";
 import { getLanguage, updateAgent } from "../api/api";
 import toast from "react-hot-toast";
 import type { AxiosError } from "axios";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   open: boolean;
@@ -14,6 +15,7 @@ interface Props {
 }
 
 const EditAgentModal = ({ open, onClose, data, onSave }: Props) => {
+  const { t } = useTranslation();
   const [preview, setPreview] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -97,13 +99,13 @@ const EditAgentModal = ({ open, onClose, data, onSave }: Props) => {
       const res = await updateAgent(token, data.id, formData);
 
       // Notify user
-      toast.success(res?.message || "Agent updated successfully");
+      toast.success(res?.message || t("editAgent.toast.updated"));
 
       onSave(res?.data || form);
       onClose();
     } catch (err: unknown) {
       const error = err as AxiosError<{ error: string }>;
-      toast.error(error?.response?.data?.error || "Failed to update agent");
+      toast.error(error?.response?.data?.error || t("editAgent.toast.updateFailed"));
     } finally {
       setIsLoading(false);
     }
@@ -123,7 +125,7 @@ const EditAgentModal = ({ open, onClose, data, onSave }: Props) => {
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-xl font-bold text-[#3d4b52] flex items-center gap-2">
               <RiUserAddFill />
-              Edit Agent
+              {t("editAgent.title")}
             </h2>
             <button
               onClick={onClose}
@@ -137,7 +139,7 @@ const EditAgentModal = ({ open, onClose, data, onSave }: Props) => {
             {/* Agent Image */}
             <div className="flex flex-col items-center">
               <label className="block text-sm font-semibold mb-2">
-                Agent Image
+                {t("addAgent.fields.agentImage")}
               </label>
 
               <label className="relative w-32 h-32 rounded-full border-2 border-dashed flex items-center justify-center cursor-pointer overflow-hidden hover:border-[#3d4b52]">
@@ -145,7 +147,7 @@ const EditAgentModal = ({ open, onClose, data, onSave }: Props) => {
                   <img src={preview} className="w-full h-full object-cover" />
                 ) : (
                   <span className="text-gray-500 text-sm text-[#3d4b52]">
-                    Upload +
+                    {t("editAgent.uploadShort")}
                   </span>
                 )}
 
@@ -166,11 +168,11 @@ const EditAgentModal = ({ open, onClose, data, onSave }: Props) => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label className="text-sm font-semibold text-[#3d4b52]">
-                  Agent Name
+                  {t("addAgent.fields.agentName")}
                 </label>
                 <input
                   {...register("agent_name", {
-                    required: "Agent name is required",
+                    required: t("addAgent.validation.agentNameRequired"),
                   })}
                   className="w-full border-2 mt-1 px-3 py-2 rounded-lg border-gray-300 focus:outline-none focus:border-[#3d4b52]"
                 />
@@ -183,12 +185,12 @@ const EditAgentModal = ({ open, onClose, data, onSave }: Props) => {
 
               <div>
                 <label className="text-sm font-semibold text-[#3d4b52]">
-                  Phone Number
+                  {t("addAgent.fields.phoneNumber")}
                 </label>
                 <input
                   // disabled={true}
                   {...register("phone_number", {
-                    required: "Phone number is required",
+                    required: t("addAgent.validation.phoneRequired"),
                   })}
                   className="w-full border-2 mt-1 px-3 py-2 rounded-lg border-gray-300 focus:outline-none focus:border-[#3d4b52]"
                 />
@@ -204,7 +206,7 @@ const EditAgentModal = ({ open, onClose, data, onSave }: Props) => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label className="text-sm font-semibold text-[#3d4b52]">
-                  Business Name
+                  {t("addAgent.fields.businessName")}
                 </label>
                 <input
                   {...register("business_name")}
@@ -214,7 +216,7 @@ const EditAgentModal = ({ open, onClose, data, onSave }: Props) => {
 
               <div>
                 <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  Business Email
+                  {t("addAgent.fields.businessEmail")}
                 </label>
                 <input
                   // disabled
@@ -222,7 +224,7 @@ const EditAgentModal = ({ open, onClose, data, onSave }: Props) => {
                   {...register("owner_email", {})}
                   className="w-full px-4 py-2 border-2 border-gray-200 rounded-lg 
         focus:border-[#3d4b52] focus:ring-0 outline-none transition-colors"
-                  placeholder="Enter owner email"
+                  placeholder={t("addAgent.placeholders.ownerEmail")}
                 />
               </div>
 
@@ -230,7 +232,7 @@ const EditAgentModal = ({ open, onClose, data, onSave }: Props) => {
 
             <div>
               <label className="text-sm font-semibold text-[#3d4b52]">
-                Industry
+                {t("addAgent.fields.industry")}
               </label>
               <input
                 {...register("industry")}
@@ -250,7 +252,7 @@ const EditAgentModal = ({ open, onClose, data, onSave }: Props) => {
             </div> */}
               <div>
                 <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  Language
+                  {t("addAgent.fields.language")}
                 </label>
 
                 <select
@@ -258,13 +260,13 @@ const EditAgentModal = ({ open, onClose, data, onSave }: Props) => {
                   className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg 
       focus:border-[#3d4b52] focus:ring-0 outline-none transition-colors bg-white"
                 >
-                  <option value="">Select Language</option>
-                  <option value="en">English</option>
-                  <option value="de">German</option>
-                  <option value="fr">French</option>
-                  <option value="it">Italian</option>
-                  <option value="es">Spanish</option>
-                  <option value="nl">Dutch</option>
+                  <option value="">{t("editAgent.selectLanguage")}</option>
+                  <option value="en">{t("addAgent.languageOptions.en")}</option>
+                  <option value="de">{t("addAgent.languageOptions.de")}</option>
+                  <option value="fr">{t("addAgent.languageOptions.fr")}</option>
+                  <option value="it">{t("addAgent.languageOptions.it")}</option>
+                  <option value="es">{t("addAgent.languageOptions.es")}</option>
+                  <option value="nl">{t("addAgent.languageOptions.nl")}</option>
                 </select>
               </div>
 
@@ -283,7 +285,7 @@ const EditAgentModal = ({ open, onClose, data, onSave }: Props) => {
             </div> */}
               <div>
                 <label className="text-sm font-semibold text-[#3d4b52]">
-                  Voice Type
+                  {t("addAgent.fields.voiceType")}
                 </label>
 
                 <input
@@ -295,7 +297,7 @@ const EditAgentModal = ({ open, onClose, data, onSave }: Props) => {
                     const lang = watch("language");
 
                     if (!lang) {
-                      toast.error("Please select a language first!");
+                      toast.error(t("addAgent.toast.selectLanguageFirst"));
                       return;
                     }
 
@@ -308,14 +310,14 @@ const EditAgentModal = ({ open, onClose, data, onSave }: Props) => {
 
                       setVoiceSamples(res.grouped_by_language?.[lang] || []);
                     } catch {
-                      toast.error("Failed to load voices");
+                      toast.error(t("addAgent.toast.voiceSamplesFailed"));
                     } finally {
                       setLoadingVoiceSamples(false); // Stop loader
                     }
                   }}
                   className="w-full border-2 mt-1 px-3 py-2 rounded-lg border-gray-300 
     focus:outline-none focus:border-[#3d4b52] cursor-pointer bg-white"
-                  placeholder="Select a voice"
+                  placeholder={t("editAgent.voicePlaceholder")}
                 />
               </div>
             </div>
@@ -323,11 +325,11 @@ const EditAgentModal = ({ open, onClose, data, onSave }: Props) => {
             {/* System Prompt */}
             <div>
               <label className="text-sm font-semibold text-[#3d4b52]">
-                System Prompt
+                {t("addAgent.fields.systemPrompt")}
               </label>
               <textarea
                 {...register("system_prompt", {
-                  required: "System prompt is required",
+                  required: t("addAgent.validation.systemPromptRequired"),
                 })}
                 rows={5}
                 className="w-full border-2 px-3 py-2 rounded-lg border-gray-300 focus:outline-none focus:border-[#3d4b52]"
@@ -367,10 +369,10 @@ const EditAgentModal = ({ open, onClose, data, onSave }: Props) => {
                       d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
                     ></path>
                   </svg>
-                  Updating...
+                  {t("editAgent.saving")}
                 </span>
               ) : (
-                "Save Changes"
+                t("editAgent.saveChanges")
               )}
             </button>
 
@@ -387,7 +389,7 @@ const EditAgentModal = ({ open, onClose, data, onSave }: Props) => {
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-[999]">
           <div className="bg-white w-[90%] md:w-[500px] p-6 rounded-xl shadow-xl">
             <h3 className="text-lg font-bold mb-3 text-[#3d4b52]">
-              Select Voice
+              {t("editAgent.voiceModal.title")}
             </h3>
 
             {/* <div className="grid grid-cols-1 gap-4 max-h-80 overflow-y-auto">
@@ -456,7 +458,7 @@ const EditAgentModal = ({ open, onClose, data, onSave }: Props) => {
                   </div>
                 ))
               ) : (
-                <p className="text-gray-600">No voices available</p>
+                <p className="text-gray-600">{t("editAgent.voiceModal.noVoices")}</p>
               )}
             </div>
 
@@ -464,7 +466,7 @@ const EditAgentModal = ({ open, onClose, data, onSave }: Props) => {
               onClick={() => setOpenVoicePopup(false)}
               className="mt-4 bg-[#3d4b52] hover:bg-[#2d3b42] cursor-pointer text-white px-4 py-2 rounded-lg w-full"
             >
-              Close
+              {t("addAgent.voiceModal.close")}
             </button>
           </div>
         </div>

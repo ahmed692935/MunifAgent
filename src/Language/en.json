@@ -8,6 +8,131 @@
     "signup": "Sign Up",
     "login": "Login"
   },
+  "authPages": {
+    "brandAlt": "Mr. Bot",
+    "signin": {
+      "title": "Welcome Back",
+      "subtitle": "Sign in to your account",
+      "submit": "Sign In",
+      "submitting": "Signing in...",
+      "forgotPassword": "Forgot password",
+      "noAccount": "Do not have an account?",
+      "createAccountCta": "Sign up"
+    },
+    "signup": {
+      "title": "Create Account",
+      "subtitle": "Sign up to get started",
+      "submit": "Sign Up",
+      "submitting": "Creating Account...",
+      "haveAccount": "Already have an account?",
+      "signInCta": "Sign in"
+    },
+    "forgotPassword": {
+      "title": "Forgot Password",
+      "subtitle": "Enter your email and we will send your password reset link",
+      "submit": "Send Password",
+      "submitting": "Sending...",
+      "backToSignIn": "Back to Sign In",
+      "noAccount": "Do not have an account?",
+      "createAccountCta": "Sign up"
+    },
+    "resetPassword": {
+      "title": "Reset Password",
+      "subtitle": "Set your new password",
+      "newPasswordLabel": "New Password",
+      "confirmPasswordLabel": "Confirm New Password",
+      "placeholders": {
+        "new": "Enter new password",
+        "confirm": "Re-enter new password"
+      },
+      "validation": {
+        "newRequired": "New password is required",
+        "newMin": "Password must be at least 6 characters",
+        "confirmRequired": "Please confirm your password",
+        "mismatch": "Passwords do not match"
+      },
+      "submit": "Reset Password",
+      "submitting": "Resetting...",
+      "backToSignIn": "Back to Sign In"
+    },
+    "fields": {
+      "username": "Username",
+      "email": "Email",
+      "password": "Password"
+    },
+    "placeholders": {
+      "username": "Enter your username",
+      "email": "Enter your email",
+      "password": "Enter your password"
+    },
+    "validation": {
+      "emailRequired": "Email is required",
+      "passwordRequired": "Password is required",
+      "passwordMin": "Password must be at least 8 characters",
+      "usernameRequired": "Username is required",
+      "usernameMin": "Username must be at least 3 characters",
+      "usernamePattern": "Username can only contain letters, numbers and underscores",
+      "invalidEmail": "Invalid email address",
+      "passwordPattern": "Password must contain uppercase, lowercase and number"
+    },
+    "toast": {
+      "signInSuccess": "Sign-in successful!",
+      "fallbackError": "Oops an error occurred",
+      "signUpSuccess": "Sign-up successful! Please sign in",
+      "resetLinkSent": "A password reset link has been sent to your email!",
+      "resetLinkFailed": "Failed to send reset link",
+      "invalidResetToken": "Invalid or missing token",
+      "passwordResetSuccess": "Password reset successfully! Please sign in.",
+      "passwordResetFailed": "Failed to reset password"
+    }
+  },
+  "profile": {
+    "fallbackName": "User",
+    "profileInfo": "Profile Information",
+    "profileInfoDesc": "Your personal information and contact details",
+    "fullName": "Full Name",
+    "emailAddress": "Email Address",
+    "subscriptionTitle": "Active Subscription Plan",
+    "subscriptionDesc": "Your current plan details",
+    "planName": "Professional Plan",
+    "planPrice": "$299/month",
+    "statusActive": "Active"
+  },
+  "userAgent": {
+    "titleEdit": "Edit Agent Details",
+    "titleView": "Agent Profile",
+    "selectAgent": "Select Agent to Edit",
+    "phoneReadOnly": "Phone Number (read-only)",
+    "editAgent": "Edit Agent",
+    "updateAgent": "Update Agent",
+    "updating": "Updating...",
+    "cancel": "Cancel",
+    "loadingOption": "---",
+    "toast": {
+      "noAgents": "No agents found.",
+      "loadFailed": "Failed to load agents data",
+      "noneSelected": "No agent selected to update.",
+      "tokenMissing": "User token missing!",
+      "updateSuccess": "Agent updated successfully!",
+      "updateFailed": "Update failed!",
+      "updateError": "Error updating agent!"
+    }
+  },
+  "recentActions": {
+    "title": "Recent Actions",
+    "viewAll": "View All",
+    "empty": "No recent actions found."
+  },
+  "agentControl": {
+    "title": "Main Control",
+    "subtitle": "Toggle your AI agent on or off",
+    "agentOn": "AI Agent is ON",
+    "agentOff": "AI Agent is OFF",
+    "statusHandling": "Currently handling inbound calls",
+    "statusPaused": "Agent is currently paused",
+    "badgeActive": "Active",
+    "badgeInactive": "Inactive"
+  },
   "hero": {
     "title": "Maximum efficiency for your company"
   },
@@ -115,6 +240,10 @@
     "messagePlaceholder": "Message...",
     "submit": "Send",
     "sending": "sending",
+    "toast": {
+      "messageSent": "Message sent successfully!",
+      "genericError": "Something went wrong!"
+    },
     "validation": {
       "emailRequired": "Email is required",
       "invalidEmail": "Invalid email format"
@@ -144,6 +273,155 @@
     "onboarding": "Onboarding",
     "profile": "Profile",
     "logout": "Logout"
+  },
+  "languageSwitcher": {
+    "en": "English",
+    "de": "German"
+  },
+  "addAgent": {
+    "title": "Add New Agent",
+    "subtitle": "Create and configure your AI agent",
+    "fields": {
+      "agentImage": "Agent Image",
+      "selectUser": "Select User (Linked Account)",
+      "agentName": "Agent Name",
+      "phoneNumber": "Phone Number",
+      "businessName": "Business Name",
+      "businessEmail": "Business Email",
+      "industry": "Industry",
+      "allowedMinutes": "Allowed Minutes",
+      "businessHoursStart": "Business Hours Start",
+      "businessHoursEnd": "Business Hours End",
+      "language": "Language",
+      "voiceType": "Select Voice Type",
+      "systemPrompt": "System Prompt"
+    },
+    "placeholders": {
+      "uploadImage": "Upload Image +",
+      "selectUser": "Select a user",
+      "agentName": "Enter agent name",
+      "phoneNumber": "+1 (555) 000-0000",
+      "businessName": "Enter business name",
+      "ownerEmail": "Enter owner email",
+      "industry": "e.g., Healthcare, Finance, Retail",
+      "allowedMinutes": "e.g. 30",
+      "voiceType": "Click to choose a voice",
+      "systemPrompt": "Define the agent's behavior, personality, and guidelines..."
+    },
+    "loadingUsers": "Loading users...",
+    "selectLanguageHint": "Select language",
+    "languageOptions": {
+      "de": "German",
+      "en": "English",
+      "fr": "French",
+      "it": "Italian",
+      "es": "Spanish",
+      "nl": "Dutch"
+    },
+    "validation": {
+      "agentImageRequired": "Agent image is required",
+      "selectUser": "Please select a user",
+      "agentNameRequired": "Agent name is required",
+      "phoneRequired": "Phone number is required",
+      "invalidPhone": "Invalid phone number",
+      "minMinutes": "Minimum 1 minute",
+      "startTimeRequired": "Start time is required",
+      "endTimeRequired": "End time is required",
+      "systemPromptRequired": "System prompt is required"
+    },
+    "submit": "Create Agent",
+    "submitting": "Creating Agent...",
+    "info": "Configure your AI agent with specific instructions and characteristics. The system prompt defines how the agent will interact with users.",
+    "voiceModal": {
+      "title": "Select Voice Sample",
+      "close": "Close"
+    },
+    "alt": {
+      "preview": "Preview"
+    },
+    "toast": {
+      "tokenMissing": "User token missing!",
+      "agentCreated": "Agent created successfully!",
+      "createFailed": "Failed to create agent!",
+      "loadUsersFailed": "Failed to load users list",
+      "selectLanguageFirst": "Please select a language first!",
+      "authTokenMissing": "Token missing!",
+      "voiceSamplesFailed": "Error fetching voice samples"
+    }
+  },
+  "editAgent": {
+    "title": "Edit Agent",
+    "uploadShort": "Upload +",
+    "selectLanguage": "Select Language",
+    "voicePlaceholder": "Select a voice",
+    "saveChanges": "Save Changes",
+    "saving": "Updating...",
+    "voiceModal": {
+      "title": "Select Voice",
+      "noVoices": "No voices available"
+    },
+    "toast": {
+      "updated": "Agent updated successfully",
+      "updateFailed": "Failed to update agent"
+    }
+  },
+  "agentDetails": {
+    "loading": "Loading Agent Details...",
+    "notFound": "Agent not found.",
+    "titlePrefix": "Agent Details —",
+    "alt": {
+      "agentImage": "Agent image"
+    },
+    "agentInfo": "Agent Info",
+    "labels": {
+      "name": "Name:",
+      "phone": "Phone:",
+      "language": "Language:",
+      "voiceType": "Voice Type:",
+      "industry": "Industry:",
+      "owner": "Owner:",
+      "allowedMinutes": "Allowed Minutes:",
+      "ownerEmail": "Owner Email:",
+      "businessHoursStart": "Business Hours (Start):",
+      "businessHoursEnd": "Business Hours (End):"
+    },
+    "systemPrompt": "System Prompt:",
+    "stats": {
+      "totalCalls": "Total Calls",
+      "completed": "Completed",
+      "unanswered": "Unanswered",
+      "avgDuration": "Avg Duration",
+      "totalDuration": "Total Duration",
+      "firstCall": "First Call:",
+      "lastCall": "Last Call:",
+      "allowedMinutesCard": "Allowed Minutes",
+      "percentageUsed": "Percentage Used:",
+      "usedMins": "Used Mins:",
+      "usedMinutes": "Used Minutes"
+    },
+    "minutesShort": "{{count}} min",
+    "callHistory": "Call History",
+    "table": {
+      "callerNumber": "Caller Number",
+      "date": "Date",
+      "endedAt": "Ended At",
+      "transcript": "Transcript",
+      "recording": "Recording"
+    },
+    "viewTranscript": "View Transcript",
+    "play": "Play",
+    "noCallHistory": "No call history found.",
+    "transcriptModalTitle": "Transcript",
+    "recordingModalTitle": "Recording",
+    "close": "Close",
+    "transcriptRoles": {
+      "agent": "Agent",
+      "user": "User"
+    },
+    "toast": {
+      "minutesReset": "Agent minutes reset successfully!",
+      "minutesResetFailed": "Failed to reset minutes."
+    }
   },
   "common": {
     "prev": "Prev",

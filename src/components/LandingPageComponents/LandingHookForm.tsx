@@ -33,11 +33,11 @@ function LandingHookForm() {
       };
 
       const res = await contactForm(token, body);
-      toast.success(res.message || "Message sent successfully!");
+      toast.success(res.message || t("form.toast.messageSent"));
       reset();
     } catch (error) {
       console.log("Error:", error);
-      toast.error("Something went wrong!");
+      toast.error(t("form.toast.genericError"));
     } finally {
       setLoading(false);
     }

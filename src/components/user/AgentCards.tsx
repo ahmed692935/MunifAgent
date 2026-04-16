@@ -240,7 +240,7 @@ const AgentCards = () => {
                                             <div className="flex items-center gap-4">
                                                 <img
                                                     src={agent.avatar_presigned_url || Agent}
-                                                    alt="Agent Image"
+                                                    alt={t("agentDetails.alt.agentImage")}
                                                     className="w-16 h-16 rounded-full object-cover border-2 border-white"
                                                 />
                                                 <div>
@@ -318,7 +318,7 @@ const AgentCards = () => {
                                             <div className="flex items-center gap-4">
                                                 <img
                                                     src={agent.avatar_presigned_url || Agent}
-                                                    alt="Agent Image"
+                                                    alt={t("agentDetails.alt.agentImage")}
                                                     className="w-16 h-16 rounded-full object-cover border-2 border-white"
                                                 />
                                                 <div>

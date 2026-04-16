@@ -142,8 +142,8 @@ const Navbar = () => {
           value={i18n.language}
           className="hidden md:block h-10 px-2 text-sm rounded-md bg-white text-[#3d4b52] border border-[#3d4b52] font-semibold cursor-pointer"
         >
-          <option value="en">English</option>
-          <option value="de">German</option>
+          <option value="en">{t("languageSwitcher.en")}</option>
+          <option value="de">{t("languageSwitcher.de")}</option>
         </select>
 
         {/* Mobile Hamburger */}
@@ -228,8 +228,8 @@ const Navbar = () => {
               value={i18n.language}
               className="h-10 px-2 text-base rounded-md border border-[#3d4b52] bg-white text-[#3d4b52] font-semibold cursor-pointer"
             >
-              <option value="en">English</option>
-              <option value="de">German</option>
+              <option value="en">{t("languageSwitcher.en")}</option>
+              <option value="de">{t("languageSwitcher.de")}</option>
             </select>
           </div>
         </div>

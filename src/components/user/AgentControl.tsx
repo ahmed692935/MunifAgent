@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react"
 import { dashboardOverview } from "../../api/userDashboard"
 import type { UserDashboardData } from "../../Interface/UserDashboard"
+import { useTranslation } from "react-i18next"
 
 function agentControl() {
+    const { t } = useTranslation();
 
     const [isActive, setIsActive] = useState<boolean>(false);
     const [data, setData] = useState<UserDashboardData | null>(null);
@@ -39,9 +41,9 @@ function agentControl() {
 
                 {/* Left Side: Content and Toggle */}
                 <div className="w-full">
-                    <h3 className="text-gray-900 font-medium text-base">Main Control</h3>
+                    <h3 className="text-gray-900 font-medium text-base">{t("agentControl.title")}</h3>
                     <p className="text-gray-500 text-base mt-3">
-                        Toggle your AI agent on or off
+                        {t("agentControl.subtitle")}
                     </p>
                 </div>
 
@@ -63,10 +65,10 @@ function agentControl() {
                         {/* Status Text */}
                         <div className="">
                             <p className="text-gray-900 font-semibold text-sm">
-                                AI Agent is {isActive ? 'ON' : 'OFF'}
+                                {isActive ? t("agentControl.agentOn") : t("agentControl.agentOff")}
                             </p>
                             <span className="text-gray-400 text-xs">
-                                {data?.agent_status.status_text || (isActive ? 'Currently handling inbound calls' : 'Agent is currently paused')}
+                                {data?.agent_status.status_text || (isActive ? t("agentControl.statusHandling") : t("agentControl.statusPaused"))}
                             </span>
                         </div>
                     </div>
@@ -79,7 +81,7 @@ function agentControl() {
                                     : 'bg-gray-100 text-gray-500'
                                 }`}
                         >
-                            {isActive ? 'Active' : 'Inactive'}
+                            {isActive ? t("agentControl.badgeActive") : t("agentControl.badgeInactive")}
                         </span>
                     </div>
                 </div>

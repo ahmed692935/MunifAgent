@@ -13,8 +13,10 @@ import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "../../store/store";
 import type { AxiosError } from "axios";
 import toast from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 
 const SignUp = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const handleNavigate = () => {
     navigate("/signin");
@@ -39,12 +41,12 @@ const SignUp = () => {
       const response = await signupUser(data);
       // console.log(response, "RESPONSE");
       dispatch(signupSuccess(response));
-      toast.success("Sign-up successful! Please Sign in");
+      toast.success(t("authPages.toast.signUpSuccess"));
       reset();
       navigate("/signin");
     } catch (err: unknown) {
       const error = err as AxiosError<{ error: string }>;
-      toast.error(error?.response?.data?.error || "Oops an error occurred");
+      toast.error(error?.response?.data?.error || t("authPages.toast.fallbackError"));
       dispatch(signupFailure(error.message));
 
       // console.log("Form data:", data);
@@ -60,13 +62,13 @@ const SignUp = () => {
           {/* Logo Section */}
           <div className="text-center mb-8">
             <div className="w-30 h-24 mx-auto mb-4 bg-[#3d4b52] rounded-full flex items-center justify-center">
-              <img src={Bot} alt="Mr. Bot" />
+              <img src={Bot} alt={t("authPages.brandAlt")} />
             </div>
 
             <h1 className="text-3xl font-bold text-[#3d4b52] mb-2">
-              Create Account
+              {t("authPages.signup.title")}
             </h1>
-            <p className="text-gray-600">Sign up to get started</p>
+            <p className="text-gray-600">{t("authPages.signup.subtitle")}</p>
           </div>
 
           {/* Form Fields */}
@@ -77,25 +79,24 @@ const SignUp = () => {
                 htmlFor="username"
                 className="block text-sm font-medium text-[#3d4b52] mb-2"
               >
-                Username
+                {t("authPages.fields.username")}
               </label>
               <input
                 id="username"
                 type="text"
                 {...register("username", {
-                  required: "Username is required",
+                  required: t("authPages.validation.usernameRequired"),
                   minLength: {
                     value: 3,
-                    message: "Username must be at least 3 characters",
+                    message: t("authPages.validation.usernameMin"),
                   },
                   pattern: {
                     value: /^[a-zA-Z0-9_]+$/,
-                    message:
-                      "Username can only contain letters, numbers and underscores",
+                    message: t("authPages.validation.usernamePattern"),
                   },
                 })}
                 className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-[#3d4b52] transition-colors"
-                placeholder="Enter your username"
+                placeholder={t("authPages.placeholders.username")}
               />
               {errors.username && (
                 <p className="mt-1 text-sm text-red-600">
@@ -110,20 +111,20 @@ const SignUp = () => {
                 htmlFor="email"
                 className="block text-sm font-medium text-[#3d4b52] mb-2"
               >
-                Email
+                {t("authPages.fields.email")}
               </label>
               <input
                 id="email"
                 type="email"
                 {...register("email", {
-                  required: "Email is required",
+                  required: t("authPages.validation.emailRequired"),
                   pattern: {
                     value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                    message: "Invalid email address",
+                    message: t("authPages.validation.invalidEmail"),
                   },
                 })}
                 className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-[#3d4b52] transition-colors"
-                placeholder="Enter your email"
+                placeholder={t("authPages.placeholders.email")}
               />
               {errors.email && (
                 <p className="mt-1 text-sm text-red-600">
@@ -138,26 +139,25 @@ const SignUp = () => {
                 htmlFor="password"
                 className="block text-sm font-medium text-[#3d4b52] mb-2"
               >
-                Password
+                {t("authPages.fields.password")}
               </label>
               <input
                 id="password"
                 type="password"
                 {...register("password", {
-                  required: "Password is required",
+                  required: t("authPages.validation.passwordRequired"),
                   minLength: {
                     // value: 8,
                     value: 4,
-                    message: "Password must be at least 8 characters",
+                    message: t("authPages.validation.passwordMin"),
                   },
                   pattern: {
                     value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
-                    message:
-                      "Password must contain uppercase, lowercase and number",
+                    message: t("authPages.validation.passwordPattern"),
                   },
                 })}
                 className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-[#3d4b52] transition-colors"
-                placeholder="Enter your password"
+                placeholder={t("authPages.placeholders.password")}
               />
               {errors.password && (
                 <p className="mt-1 text-sm text-red-600">
@@ -173,22 +173,19 @@ const SignUp = () => {
               disabled={signupLoading}
               className="w-full bg-[#3d4b52] cursor-pointer text-white py-3 rounded-lg font-semibold hover:bg-[#2d3b42] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {isSubmitting ? "Creating Account..." : "Sign Up"}
+              {isSubmitting ? t("authPages.signup.submitting") : t("authPages.signup.submit")}
             </button>
           </div>
 
           {/* Footer */}
           <div className="mt-6 text-center">
             <p className="text-sm text-gray-600">
-              Already have an account?{" "}
-              {/* <Link to="/signin" onClick={handleNavigate} className="text-[#3d4b52] hover:underline">
-                Signin
-              </Link> */}
+              {t("authPages.signup.haveAccount")}{" "}
               <button
                 onClick={handleNavigate}
                 className="text-[#3d4b52] hover:underline cursor-pointer"
               >
-                Signin
+                {t("authPages.signup.signInCta")}
               </button>
             </p>
           </div>

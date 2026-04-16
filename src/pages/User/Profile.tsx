@@ -3,8 +3,10 @@ import Navbar from '../../components/Navbar'
 import { MdOutlineEmail, MdOutlineCreditCard } from "react-icons/md";
 import { LuUser } from "react-icons/lu";
 import { userProfile } from '../../api/userDashboard';
+import { useTranslation } from 'react-i18next';
 
 function Profile() {
+    const { t } = useTranslation();
     const [userData, setUserData] = useState<any>(null);
     const [loading, setLoading] = useState(true);
 
@@ -55,7 +57,7 @@ function Profile() {
                             ) : (
                                 <>
                                     <h1 className="text-2xl md:text-3xl font-bold text-[#111827]">
-                                        {userData?.username || "User"}
+                                        {userData?.username || t("profile.fallbackName")}
                                     </h1>
                                     <p className="text-gray-500 text-sm md:text-base">
                                         {userData?.email || ""}
@@ -69,15 +71,15 @@ function Profile() {
                     <div className="bg-white border border-gray-200 rounded-xl p-6 md:p-8 shadow-sm">
                         <div className="flex items-center gap-2 mb-1">
                             <LuUser className="text-gray-700 text-xl" />
-                            <h2 className="text-xl font-medium text-[#111827]">Profile Information</h2>
+                            <h2 className="text-xl font-medium text-[#111827]">{t("profile.profileInfo")}</h2>
                         </div>
-                        <p className="text-sm text-gray-500 mb-6">Your personal information and contact details</p>
+                        <p className="text-sm text-gray-500 mb-6">{t("profile.profileInfoDesc")}</p>
 
                         <div className="space-y-5">
                             {/* Full Name Field */}
                             <div className="space-y-1.5">
                                 <label className="flex items-center gap-2 text-xs font-medium text-gray-400 uppercase tracking-wider">
-                                    <LuUser size={16} /> Full Name
+                                    <LuUser size={16} /> {t("profile.fullName")}
                                 </label>
                                 <input
                                     type="text"
@@ -90,7 +92,7 @@ function Profile() {
                             {/* Email Field */}
                             <div className="space-y-1.5">
                                 <label className="flex items-center gap-2 text-xs font-medium text-gray-400 uppercase tracking-wider">
-                                    <MdOutlineEmail size={16} /> Email Address
+                                    <MdOutlineEmail size={16} /> {t("profile.emailAddress")}
                                 </label>
                                 <input
                                     type="email"
@@ -119,23 +121,23 @@ function Profile() {
                     <div className="bg-white border border-gray-200 rounded-xl p-6 md:p-8 shadow-sm">
                         <div className="flex items-center gap-2 mb-1">
                             <MdOutlineCreditCard className="text-gray-700 text-xl" />
-                            <h2 className="text-lg font-semibold text-[#111827]">Active Subscription Plan</h2>
+                            <h2 className="text-lg font-semibold text-[#111827]">{t("profile.subscriptionTitle")}</h2>
                         </div>
-                        <p className="text-sm text-gray-500 mb-6">Your current plan details</p>
+                        <p className="text-sm text-gray-500 mb-6">{t("profile.subscriptionDesc")}</p>
 
                         <div className={`bg-[#eff6ff] border border-blue-100 rounded-xl p-6 transition-all ${loading ? 'opacity-50 animate-pulse' : ''}`}>
                             <div className="flex items-center gap-3 mb-2">
                                 <span className="font-bold text-[#111827] text-lg">
-                                    {loading ? "---" : "Professional Plan"}
+                                    {loading ? "---" : t("profile.planName")}
                                 </span>
                                 {!loading && (
                                     <span className="bg-[#dcfce7] text-[#15803d] text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">
-                                        Active
+                                        {t("profile.statusActive")}
                                     </span>
                                 )}
                             </div>
                             <div className="text-[#2563eb] text-2xl md:text-3xl font-bold">
-                                {loading ? "---" : "$299/month"}
+                                {loading ? "---" : t("profile.planPrice")}
                             </div>
                         </div>
                     </div>

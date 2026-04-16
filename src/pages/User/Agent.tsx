@@ -512,6 +512,7 @@ import { getMyAgent, putMyAgent } from "../../api/userDashboard";
 import toast from "react-hot-toast";
 import type { AxiosError } from "axios";
 import { ChevronDown } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 import Uk from "../../assets/Images/uk.png";
 import German from "../../assets/Images/germany.png";
@@ -521,6 +522,7 @@ import Spainsh from "../../assets/Images/spanish.png";
 import France from "../../assets/Images/france.png";
 
 function Agent() {
+    const { t } = useTranslation();
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
     const [preview, setPreview] = useState<string | null>(null);
@@ -557,18 +559,18 @@ function Agent() {
                     // Default select the first agent
                     setSelectedAgentId(response.data.agents[0].id);
                 } else {
-                    toast.error("No agents found.");
+                    toast.error(t("userAgent.toast.noAgents"));
                 }
             } catch (error) {
                 console.error("Error fetching agents:", error);
-                toast.error("Failed to load agents data");
+                toast.error(t("userAgent.toast.loadFailed"));
             } finally {
                 setIsLoadingData(false);
             }
         };
 
         fetchAgents();
-    }, []);
+    }, [t]);
 
     // Update form when selected agent changes
     useEffect(() => {
@@ -605,7 +607,7 @@ function Agent() {
 
     const onSubmit = async (data: AgentFormData) => {
         if (!selectedAgentId) {
-            toast.error("No agent selected to update.");
+            toast.error(t("userAgent.toast.noneSelected"));
             return;
         }
 
@@ -613,7 +615,7 @@ function Agent() {
         try {
             const token = localStorage.getItem("token");
             if (!token) {
-                toast.error("User token missing!");
+                toast.error(t("userAgent.toast.tokenMissing"));
                 return;
             }
 
@@ -637,7 +639,7 @@ function Agent() {
             const response = await putMyAgent(token, selectedAgentId, formData);
 
             if (response.success) {
-                toast.success("Agent updated successfully!");
+                toast.success(t("userAgent.toast.updateSuccess"));
                 setIsEditing(false);
 
                 // Update local state to reflect changes immediately
@@ -658,12 +660,12 @@ function Agent() {
                 }
 
             } else {
-                toast.error(response.message || "Update failed!");
+                toast.error(response.message || t("userAgent.toast.updateFailed"));
             }
 
         } catch (error: unknown) {
             const axiosError = error as AxiosError<{ error: string }>;
-            toast.error(axiosError?.response?.data?.error || "Error updating agent!");
+            toast.error(axiosError?.response?.data?.error || t("userAgent.toast.updateError"));
             console.error("Update Error:", error);
         } finally {
             setIsSubmitting(false);
@@ -683,7 +685,7 @@ function Agent() {
                         <div className="p-3 flex mb-4 justify-center mt-16!">
                             <RiUserAddFill size={30} className="mt-2 mx-5" color="#3d4b52" />
                             <h1 className="text-4xl font-bold text-[#3d4b52]">
-                                {isEditing ? "Edit Agent Details" : "Agent Profile"}
+                                {isEditing ? t("userAgent.titleEdit") : t("userAgent.titleView")}
                             </h1>
                         </div>
                     </div>
@@ -694,7 +696,7 @@ function Agent() {
 
                             {/* Agent Selection Dropdown */}
                             <div className="mb-8">
-                                <label className="block text-sm font-semibold text-gray-700 mb-2">Select Agent to Edit</label>
+                                <label className="block text-sm font-semibold text-gray-700 mb-2">{t("userAgent.selectAgent")}</label>
                                 <div className="relative">
                                     <select
                                         value={selectedAgentId || ""}
@@ -706,7 +708,7 @@ function Agent() {
                                         disabled={isLoadingData}
                                         className="w-full px-4 py-3 pr-10 border-2 border-gray-200 rounded-lg appearance-none bg-white focus:border-[#3d4b52] outline-none cursor-pointer"
                                     >
-                                        {isLoadingData ? <option>---</option> : agents.map((agent) => (
+                                        {isLoadingData ? <option>{t("userAgent.loadingOption")}</option> : agents.map((agent) => (
                                             <option key={agent.id} value={agent.id}>
                                                 {agent.agent_name} {/*({agent.phone_number})*/}
                                             </option>
@@ -719,12 +721,12 @@ function Agent() {
                             <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                                 {/* Image Upload - Disabled if not editing */}
                                 <div className="flex flex-col items-center">
-                                    <label className="block text-sm font-semibold text-gray-700 mb-3">Agent Image</label>
+                                    <label className="block text-sm font-semibold text-gray-700 mb-3">{t("addAgent.fields.agentImage")}</label>
                                     <label className={`w-32 h-32 rounded-full border-dashed border-2 flex items-center justify-center overflow-hidden relative transition ${isEditing ? 'border-gray-300 cursor-pointer hover:border-[#3d4b52]' : 'border-gray-100 cursor-not-allowed'}`}>
                                         {preview ? (
-                                            <img src={preview} alt="Preview" className="w-full h-full object-cover" />
+                                            <img src={preview} alt={t("addAgent.alt.preview")} className="w-full h-full object-cover" />
                                         ) : (
-                                            <span className="text-gray-500 text-sm text-center px-2">Upload Image +</span>
+                                            <span className="text-gray-500 text-sm text-center px-2">{t("addAgent.placeholders.uploadImage")}</span>
                                         )}
                                         <input
                                             type="file"
@@ -742,94 +744,94 @@ function Agent() {
 
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div>
-                                        <label className="block text-sm font-semibold text-gray-700 mb-2">Agent Name</label>
+                                        <label className="block text-sm font-semibold text-gray-700 mb-2">{t("addAgent.fields.agentName")}</label>
                                         <input
                                             type="text"
                                             disabled={isLoadingData || !isEditing}
-                                            {...register("agent_name", { required: "Agent name is required" })}
+                                            {...register("agent_name", { required: t("addAgent.validation.agentNameRequired") })}
                                             className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-[#3d4b52] outline-none disabled:bg-gray-50 disabled:text-gray-500"
-                                            placeholder={isLoadingData ? "---" : "Enter agent name"}
+                                            placeholder={isLoadingData ? t("userAgent.loadingOption") : t("addAgent.placeholders.agentName")}
                                         />
                                     </div>
 
                                     <div>
-                                        <label className="block text-sm font-semibold text-gray-700 mb-2">Phone Number (Read-only)</label>
+                                        <label className="block text-sm font-semibold text-gray-700 mb-2">{t("userAgent.phoneReadOnly")}</label>
                                         <input
                                             type="tel"
                                             disabled={true} // Hamesha disabled rahega
                                             {...register("phone_number")}
                                             className="w-full px-4 py-3 border-2 border-gray-100 bg-gray-50 text-gray-400 rounded-lg outline-none cursor-not-allowed"
-                                            placeholder={isLoadingData ? "---" : "+1 (555) 000-0000"}
+                                            placeholder={isLoadingData ? t("userAgent.loadingOption") : t("addAgent.placeholders.phoneNumber")}
                                         />
                                     </div>
                                 </div>
 
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div>
-                                        <label className="block text-sm font-semibold text-gray-700 mb-2">Business Name</label>
+                                        <label className="block text-sm font-semibold text-gray-700 mb-2">{t("addAgent.fields.businessName")}</label>
                                         <input
                                             type="text"
                                             disabled={isLoadingData || !isEditing}
                                             {...register("business_name")}
                                             className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-[#3d4b52] outline-none disabled:bg-gray-50"
-                                            placeholder={isLoadingData ? "---" : ""}
+                                            placeholder={isLoadingData ? t("userAgent.loadingOption") : ""}
                                         />
                                     </div>
 
                                     <div>
-                                        <label className="block text-sm font-semibold text-gray-700 mb-2">Business Email</label>
+                                        <label className="block text-sm font-semibold text-gray-700 mb-2">{t("addAgent.fields.businessEmail")}</label>
                                         <input
                                             type="email"
                                             disabled={isLoadingData || !isEditing}
                                             {...register("owner_email")}
                                             className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-[#3d4b52] outline-none disabled:bg-gray-50"
-                                            placeholder={isLoadingData ? "---" : ""}
+                                            placeholder={isLoadingData ? t("userAgent.loadingOption") : ""}
                                         />
                                     </div>
                                 </div>
 
                                 <div className="w-full">
-                                    <label className="block text-sm font-semibold text-gray-700 mb-2">Industry</label>
+                                    <label className="block text-sm font-semibold text-gray-700 mb-2">{t("addAgent.fields.industry")}</label>
                                     <input
                                         type="text"
                                         disabled={isLoadingData || !isEditing}
                                         {...register("industry")}
                                         className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-[#3d4b52] outline-none disabled:bg-gray-50"
-                                        placeholder={isLoadingData ? "---" : ""}
+                                        placeholder={isLoadingData ? t("userAgent.loadingOption") : ""}
                                     />
                                 </div>
 
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div>
-                                        <label className="block text-sm font-semibold text-gray-700 mb-2">Language</label>
+                                        <label className="block text-sm font-semibold text-gray-700 mb-2">{t("addAgent.fields.language")}</label>
                                         <select
                                             disabled={isLoadingData || !isEditing}
                                             {...register("language")}
                                             className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-[#3d4b52] outline-none bg-white disabled:bg-gray-50"
                                         >
-                                            {isLoadingData ? <option>---</option> : null}
-                                            <option value="de">German</option>
-                                            <option value="en">English</option>
-                                            <option value="fr">French</option>
-                                            <option value="it">Italian</option>
-                                            <option value="es">Spanish</option>
-                                            <option value="nl">Dutch</option>
+                                            {isLoadingData ? <option>{t("userAgent.loadingOption")}</option> : null}
+                                            <option value="de">{t("addAgent.languageOptions.de")}</option>
+                                            <option value="en">{t("addAgent.languageOptions.en")}</option>
+                                            <option value="fr">{t("addAgent.languageOptions.fr")}</option>
+                                            <option value="it">{t("addAgent.languageOptions.it")}</option>
+                                            <option value="es">{t("addAgent.languageOptions.es")}</option>
+                                            <option value="nl">{t("addAgent.languageOptions.nl")}</option>
                                         </select>
                                     </div>
 
                                     <div>
-                                        <label className="block text-sm font-semibold text-gray-700 mb-2">Select Voice Type</label>
+                                        <label className="block text-sm font-semibold text-gray-700 mb-2">{t("addAgent.fields.voiceType")}</label>
                                         <input
                                             type="text"
                                             readOnly
                                             disabled={isLoadingData}
                                             value={selectedVoice?.voice_name || ""}
-                                            placeholder={isLoadingData ? "---" : "Click to choose a voice"}
+                                            placeholder={isLoadingData ? t("userAgent.loadingOption") : t("addAgent.placeholders.voiceType")}
                                             onFocus={async () => {
                                                 const lang = watch("language");
 
                                                 if (!lang) {
-                                                    toast.error("Please select a language first!");
+                                                    toast.error(t("addAgent.toast.selectLanguageFirst"));
                                                     return;
                                                 }
 
@@ -839,7 +841,7 @@ function Agent() {
                                                 try {
                                                     const token = localStorage.getItem("token");
                                                     if (!token) {
-                                                        toast.error("Token missing!");
+                                                        toast.error(t("addAgent.toast.authTokenMissing"));
                                                         return;
                                                     }
 
@@ -853,7 +855,7 @@ function Agent() {
                                                     );
                                                 } catch (error) {
                                                     console.error(error);
-                                                    toast.error("Error fetching voice samples");
+                                                    toast.error(t("addAgent.toast.voiceSamplesFailed"));
                                                 } finally {
                                                     setLoadingVoiceSamples(false);
                                                 }
@@ -865,13 +867,13 @@ function Agent() {
                                 </div>
 
                                 <div>
-                                    <label className="block text-sm font-semibold text-gray-700 mb-2">System Prompt</label>
+                                    <label className="block text-sm font-semibold text-gray-700 mb-2">{t("addAgent.fields.systemPrompt")}</label>
                                     <textarea
                                         disabled={isLoadingData || !isEditing}
-                                        {...register("system_prompt", { required: "System prompt is required" })}
+                                        {...register("system_prompt", { required: t("addAgent.validation.systemPromptRequired") })}
                                         rows={5}
                                         className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-[#3d4b52] outline-none resize-none disabled:bg-gray-50"
-                                        placeholder={isLoadingData ? "---" : ""}
+                                        placeholder={isLoadingData ? t("userAgent.loadingOption") : t("addAgent.placeholders.systemPrompt")}
                                     />
                                 </div>
 
@@ -883,7 +885,7 @@ function Agent() {
                                             onClick={() => setIsEditing(true)}
                                             className="w-full py-4 px-6 text-white font-semibold rounded-lg shadow-lg bg-[#3d4b52] hover:bg-[#2d3b42] transition-all cursor-pointer"
                                         >
-                                            Edit Agent
+                                            {t("userAgent.editAgent")}
                                         </button>
                                     ) : (
                                         // Update Button (Submit type)
@@ -893,14 +895,14 @@ function Agent() {
                                                 disabled={isSubmitting}
                                                 className="flex-1 py-4 px-6 text-white font-semibold rounded-lg shadow-lg bg-[#3d4b52] hover:bg-[#2d3b42] transition-all disabled:opacity-50 cursor-pointer"
                                             >
-                                                {isSubmitting ? "Updating..." : "Update Agent"}
+                                                {isSubmitting ? t("userAgent.updating") : t("userAgent.updateAgent")}
                                             </button>
                                             <button
                                                 type="button"
                                                 onClick={() => setIsEditing(false)}
                                                 className="py-4 px-6 text-gray-600 font-semibold rounded-lg border-2 border-gray-200 hover:bg-gray-50 transition-all cursor-pointer"
                                             >
-                                                Cancel
+                                                {t("userAgent.cancel")}
                                             </button>
                                         </div>
                                     )}
@@ -918,7 +920,7 @@ function Agent() {
                 <div className="fixed inset-0 bg-[#3d4b52] bg-opacity-40 flex justify-center items-center z-50">
                     <div className="bg-white w-full flex flex-col max-w-full mx-2 lg:mx-30 p-6 rounded-xl shadow-xl">
                         <h2 className="text-xl font-bold text-[#3d4b52] mb-4">
-                            Select Voice Sample
+                            {t("addAgent.voiceModal.title")}
                         </h2>
 
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 max-h-90 overflow-y-auto">
@@ -986,7 +988,7 @@ function Agent() {
                             className="mt-8 w-72 mx-auto text-white py-3 bg-[#3d4b52] cursor-pointer hover:bg-[#2d3b42] rounded-lg"
                             onClick={() => setOpenVoicePopup(false)}
                         >
-                            Close
+                            {t("addAgent.voiceModal.close")}
                         </button>
                     </div>
                 </div>

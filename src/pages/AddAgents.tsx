@@ -5,6 +5,7 @@ import { RiUserAddFill } from "react-icons/ri";
 import Navbar from "../components/Navbar";
 
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { getLanguage, postAddAgent, getUsersAgent } from "../api/api";
 import toast from "react-hot-toast";
 
@@ -16,6 +17,7 @@ import Spainsh from "../assets/Images/spanish.png";
 import France from "../assets/Images/france.png";
 
 const AddAgents = () => {
+  const { t } = useTranslation();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [preview, setPreview] = useState<string | null>(null);
   const [openVoicePopup, setOpenVoicePopup] = useState(false);
@@ -40,7 +42,7 @@ const AddAgents = () => {
     try {
       const token = localStorage.getItem("token");
       if (!token) {
-        toast.error("User token missing!");
+        toast.error(t("addAgent.toast.tokenMissing"));
         return;
       }
 
@@ -67,7 +69,7 @@ const AddAgents = () => {
       }
 
       const res = await postAddAgent(token, formData);
-      toast.success(res?.data?.error || "Agent Created Successfully!");
+      toast.success(res?.data?.error || t("addAgent.toast.agentCreated"));
 
       reset();
       setPreview(null);
@@ -75,7 +77,7 @@ const AddAgents = () => {
 
     } catch (error: any) {
       // ... error handling
-      toast.error(error.res?.data?.error || "Failed to create agent!");
+      toast.error(error.res?.data?.error || t("addAgent.toast.createFailed"));
     } finally {
       setIsSubmitting(false);
     }
@@ -101,14 +103,14 @@ const AddAgents = () => {
         }
       } catch (error) {
         console.error("Error fetching users:", error);
-        toast.error("Failed to load users list");
+        toast.error(t("addAgent.toast.loadUsersFailed"));
       } finally {
         setLoadingUsers(false);
       }
     };
 
     fetchUsers();
-  }, []);
+  }, [t]);
 
   // --- Auto-fill Email Logic ---
   const selectedUserId = watch("user_id");
@@ -143,11 +145,11 @@ const AddAgents = () => {
             <div className="p-3 flex mb-4 justify-center mt-16!">
               <RiUserAddFill size={30} className="mt-2 mx-5" color="#3d4b52" />
               <h1 className="text-4xl font-bold text-[#3d4b52] mb-2">
-                Add New Agent
+                {t("addAgent.title")}
               </h1>
             </div>
 
-            <p className="text-gray-600">Create and configure your AI agent </p>
+            <p className="text-gray-600">{t("addAgent.subtitle")}</p>
           </div>
 
           {/* Form Card */}
@@ -156,7 +158,7 @@ const AddAgents = () => {
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                 <div className="flex flex-col items-center">
                   <label className="block text-sm font-semibold text-gray-700 mb-3">
-                    Agent Image
+                    {t("addAgent.fields.agentImage")}
                   </label>
 
                   {/* Circle Upload Container */}
@@ -165,12 +167,12 @@ const AddAgents = () => {
                     {preview ? (
                       <img
                         src={preview}
-                        alt="Preview"
+                        alt={t("addAgent.alt.preview")}
                         className="w-full h-full object-cover"
                       />
                     ) : (
                       <span className="text-gray-500 text-sm text-center px-2">
-                        Upload Image +
+                        {t("addAgent.placeholders.uploadImage")}
                       </span>
                     )}
 
@@ -179,7 +181,7 @@ const AddAgents = () => {
                       type="file"
                       accept="image/*"
                       {...register("agent_image", {
-                        required: "Agent image is required",
+                        required: t("addAgent.validation.agentImageRequired"),
                       })}
                       onChange={(e) => {
                         const file = e.target.files?.[0];
@@ -198,15 +200,17 @@ const AddAgents = () => {
 
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    Select User (Linked Account)
+                    {t("addAgent.fields.selectUser")}
                   </label>
                   <select
                     {...register("user_id", {
-                      required: "Please select a user",
+                      required: t("addAgent.validation.selectUser"),
                     })}
                     className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-[#3d4b52] focus:ring-0 outline-none transition-colors bg-white"
                   >
-                    <option value="">{loadingUsers ? "Loading users..." : "Select a user"}</option>
+                    <option value="">
+                      {loadingUsers ? t("addAgent.loadingUsers") : t("addAgent.placeholders.selectUser")}
+                    </option>
                     {usersList.map((user) => (
                       <option key={user.id} value={user.id}>
                         {user.username} ({user.email})
@@ -222,16 +226,16 @@ const AddAgents = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-2">
-                      Agent Name
+                      {t("addAgent.fields.agentName")}
                     </label>
                     <input
                       type="text"
                       {...register("agent_name", {
-                        required: "Agent name is required",
+                        required: t("addAgent.validation.agentNameRequired"),
                       })}
                       className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg 
            focus:border-[#3d4b52] focus:ring-0 outline-none transition-colors"
-                      placeholder="Enter agent name"
+                      placeholder={t("addAgent.placeholders.agentName")}
                     />
                     {errors.agent_name && (
                       <p className="mt-1 text-sm text-red-600">
@@ -242,20 +246,20 @@ const AddAgents = () => {
 
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-2">
-                      Phone Number
+                      {t("addAgent.fields.phoneNumber")}
                     </label>
                     <input
                       type="tel"
                       {...register("phone_number", {
-                        required: "Phone number is required",
+                        required: t("addAgent.validation.phoneRequired"),
                         pattern: {
                           value: /^[0-9+\-() ]+$/,
-                          message: "Invalid phone number",
+                          message: t("addAgent.validation.invalidPhone"),
                         },
                       })}
                       className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg 
            focus:border-[#3d4b52] focus:ring-0 outline-none transition-colors"
-                      placeholder="+1 (555) 000-0000"
+                      placeholder={t("addAgent.placeholders.phoneNumber")}
                     />
                     {errors.phone_number && (
                       <p className="mt-1 text-sm text-red-600">
@@ -268,65 +272,65 @@ const AddAgents = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-2">
-                      Business Name
+                      {t("addAgent.fields.businessName")}
                     </label>
                     <input
                       type="text"
                       {...register("business_name", {})}
                       className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg 
            focus:border-[#3d4b52] focus:ring-0 outline-none transition-colors"
-                      placeholder="Enter business name"
+                      placeholder={t("addAgent.placeholders.businessName")}
                     />
                   </div>
 
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-2">
-                      Business Email
+                      {t("addAgent.fields.businessEmail")}
                     </label>
                     <input
                       type="email"
                       {...register("owner_email", {})}
                       className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg 
         focus:border-[#3d4b52] focus:ring-0 outline-none transition-colors"
-                      placeholder="Enter owner email"
+                      placeholder={t("addAgent.placeholders.ownerEmail")}
                     />
                   </div>
 
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-2">
-                      Industry
+                      {t("addAgent.fields.industry")}
                     </label>
                     <input
                       type="text"
                       {...register("industry", {})}
                       className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg 
            focus:border-[#3d4b52] focus:ring-0 outline-none transition-colors"
-                      placeholder="e.g., Healthcare, Finance, Retail"
+                      placeholder={t("addAgent.placeholders.industry")}
                     />
                   </div>
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-2">
-                      Allowed Minutes
+                      {t("addAgent.fields.allowedMinutes")}
                     </label>
                     <input
                       type="number"
                       {...register("allowed_minutes", {
-                        min: { value: 1, message: "Minimum 1 minute" },
+                        min: { value: 1, message: t("addAgent.validation.minMinutes") },
                       })}
                       className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg 
         focus:border-[#3d4b52] focus:ring-0 outline-none transition-colors"
-                      placeholder="e.g. 30"
+                      placeholder={t("addAgent.placeholders.allowedMinutes")}
                     />
                   </div>
 
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-2">
-                      Business Hours Start
+                      {t("addAgent.fields.businessHoursStart")}
                     </label>
                     <input
                       type="time"
                       {...register("business_hours_start", {
-                        required: "Start time is required",
+                        required: t("addAgent.validation.startTimeRequired"),
                       })}
                       className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg 
         focus:border-[#3d4b52] focus:ring-0 outline-none transition-colors"
@@ -336,12 +340,12 @@ const AddAgents = () => {
                   {/* Business End Time */}
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-2">
-                      Business Hours End
+                      {t("addAgent.fields.businessHoursEnd")}
                     </label>
                     <input
                       type="time"
                       {...register("business_hours_end", {
-                        required: "End time is required",
+                        required: t("addAgent.validation.endTimeRequired"),
                       })}
                       className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg 
         focus:border-[#3d4b52] focus:ring-0 outline-none transition-colors"
@@ -351,7 +355,7 @@ const AddAgents = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-2">
-                      Language
+                      {t("addAgent.fields.language")}
                     </label>
 
                     <select
@@ -360,12 +364,12 @@ const AddAgents = () => {
                       className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg 
       focus:border-[#3d4b52] focus:ring-0 outline-none transition-colors bg-white"
                     >
-                      <option value="de">German</option>
-                      <option value="en">English</option>
-                      <option value="fr">French</option>
-                      <option value="it">Italian</option>
-                      <option value="es">Spanish</option>
-                      <option value="nl">Dutch</option>
+                      <option value="de">{t("addAgent.languageOptions.de")}</option>
+                      <option value="en">{t("addAgent.languageOptions.en")}</option>
+                      <option value="fr">{t("addAgent.languageOptions.fr")}</option>
+                      <option value="it">{t("addAgent.languageOptions.it")}</option>
+                      <option value="es">{t("addAgent.languageOptions.es")}</option>
+                      <option value="nl">{t("addAgent.languageOptions.nl")}</option>
                     </select>
                     <div className="flex items-center gap-2 mt-2">
                       {watch("language") && (
@@ -378,25 +382,25 @@ const AddAgents = () => {
                       <span className="text-gray-700 font-medium">
                         {watch("language")
                           ? watch("language").toUpperCase()
-                          : "Select language"}
+                          : t("addAgent.selectLanguageHint")}
                       </span>
                     </div>
                   </div>
 
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-2">
-                      Select Voice Type
+                      {t("addAgent.fields.voiceType")}
                     </label>
                     <input
                       type="text"
                       readOnly
                       value={selectedVoice?.voice_name || ""}
-                      placeholder="Click to choose a voice"
+                      placeholder={t("addAgent.placeholders.voiceType")}
                       onFocus={async () => {
                         const lang = watch("language");
 
                         if (!lang) {
-                          toast.error("Please select a language first!");
+                          toast.error(t("addAgent.toast.selectLanguageFirst"));
                           return;
                         }
 
@@ -406,7 +410,7 @@ const AddAgents = () => {
                         try {
                           const token = localStorage.getItem("token");
                           if (!token) {
-                            toast.error("Token missing!");
+                            toast.error(t("addAgent.toast.authTokenMissing"));
                             return;
                           }
 
@@ -420,7 +424,7 @@ const AddAgents = () => {
                           );
                         } catch (error) {
                           console.error(error);
-                          toast.error("Error fetching voice samples");
+                          toast.error(t("addAgent.toast.voiceSamplesFailed"));
                         } finally {
                           setLoadingVoiceSamples(false);
                         }
@@ -433,16 +437,16 @@ const AddAgents = () => {
                 {/* System Prompt */}
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    System Prompt
+                    {t("addAgent.fields.systemPrompt")}
                   </label>
                   <textarea
                     {...register("system_prompt", {
-                      required: "System prompt is required",
+                      required: t("addAgent.validation.systemPromptRequired"),
                     })}
                     rows={5}
                     className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg 
            focus:border-[#3d4b52] focus:ring-0 outline-none transition-colors resize-none"
-                    placeholder="Define the agent's behavior, personality, and guidelines..."
+                    placeholder={t("addAgent.placeholders.systemPrompt")}
                   />
                   {errors.system_prompt && (
                     <p className="mt-1 text-sm text-red-600">
@@ -480,10 +484,10 @@ const AddAgents = () => {
                             d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                           ></path>
                         </svg>
-                        Creating Agent...
+                        {t("addAgent.submitting")}
                       </span>
                     ) : (
-                      "Create Agent"
+                      t("addAgent.submit")
                     )}
                   </button>
                 </div>
@@ -506,11 +510,7 @@ const AddAgents = () => {
                   clipRule="evenodd"
                 />
               </svg>
-              <p className="text-sm text-gray-600">
-                Configure your AI agent with specific instructions and
-                characteristics. The system prompt defines how the agent will
-                interact with users.
-              </p>
+              <p className="text-sm text-gray-600">{t("addAgent.info")}</p>
             </div>
           </div>
         </div>
@@ -519,7 +519,7 @@ const AddAgents = () => {
         <div className="fixed inset-0 bg-[#3d4b52] bg-opacity-40 flex justify-center items-center z-50">
           <div className="bg-white w-full flex flex-col max-w-full mx-2 lg:mx-30 p-6 rounded-xl shadow-xl">
             <h2 className="text-xl font-bold text-[#3d4b52] mb-4">
-              Select Voice Sample
+              {t("addAgent.voiceModal.title")}
             </h2>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 max-h-90 overflow-y-auto">
@@ -587,7 +587,7 @@ const AddAgents = () => {
               className="mt-8 w-72 mx-auto text-white py-3 bg-[#3d4b52] cursor-pointer hover:bg-[#2d3b42] rounded-lg"
               onClick={() => setOpenVoicePopup(false)}
             >
-              Close
+              {t("addAgent.voiceModal.close")}
             </button>
           </div>
         </div>

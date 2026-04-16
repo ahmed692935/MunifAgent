@@ -4,9 +4,11 @@ import { FiCalendar, FiPhone, FiAlertTriangle, FiSettings, FiArrowRight } from '
 import { recentAction } from '../../api/userDashboard';
 import type { ActionItem } from '../../Interface/UserDashboard';
 import { Loader2 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 
 function RecentActions() {
+    const { t } = useTranslation();
 
     const [actions, setActions] = useState<ActionItem[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
@@ -113,10 +115,10 @@ function RecentActions() {
             {/* Header */}
             <div className="flex justify-between items-center mb-6">
                 <h2 className="text-base font-semibold text-gray-900 tracking-tight">
-                    Recent Actions
+                    {t("recentActions.title")}
                 </h2>
                 <button className="text-[#3B82F6] text-sm font-medium flex items-center gap-1 hover:opacity-80 transition-opacity">
-                    View All <FiArrowRight size={14} />
+                    {t("recentActions.viewAll")} <FiArrowRight size={14} />
                 </button>
             </div>
 
@@ -147,7 +149,7 @@ function RecentActions() {
                         );
                     })
                 ) : (
-                    <p className="text-sm text-gray-500 text-center py-10">No recent actions found.</p>
+                    <p className="text-sm text-gray-500 text-center py-10">{t("recentActions.empty")}</p>
                 )}
             </div>
         </div>
