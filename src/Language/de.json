@@ -223,7 +223,6 @@
 
         "retentionTitle": "Speicherdauer",
         "retentionContent": " Nur solange erforderlich oder gesetzlich vorgeschrieben."
-
       }
     }
   },
@@ -263,6 +262,43 @@
     "q4": "Muss ich etwas installieren oder programmieren?",
     "a4": "Nein. MrBot ist eine No-Code-Lösung, die vollständig für Sie eingerichtet ist. Sie benötigen keine technischen Kenntnisse – wir kümmern uns um alles, von der Anbindung Ihres Telefonsystems bis zur Integration Ihres Kalenders."
   },
+  "plan": {
+    "title": "Neuen Plan hinzufügen",
+    "subtitle": "Erstellen und konfigurieren Sie Ihren Plan",
+    "fields": {
+      "name": "Name",
+      "price": "Preis",
+      "features": "Besonderheit",
+      "desc": "Beschreibung",
+      "user": "Benutzer",
+      "minutes": "Minuten",
+      "isActive": "Planstatus"
+    },
+    "placeholders": {
+      "name": "Name eingeben",
+      "price": "Unternehmen",
+      "features": "Funktion aufrufen",
+      "desc": "Beschreibung eingeben",
+      "selectUser": "Benutzer auswählen",
+      "minutes": "Minuten eingeben, z. B. 500",
+      "isActive": "Planstatus auswählen"
+    },
+    "validate": {
+      "user": "Bitte wählen Sie einen Benutzer aus.",
+      "planName": "Geben Sie Ihren Plannamen ein",
+      "planPrice": "Schreiben Sie Ihren Planpreis",
+      "features": "Schreiben Sie Ihren Artikel",
+      "desc": "Schreiben Sie Ihre Beschreibung",
+      "minutes": "Schreiben Sie Ihr Protokoll",
+      "isActive": "Wählen Sie Ihren Tarifstatus"
+    },
+    "toast": {
+      "agentCreated": "Agent erfolgreich erstellt!",
+      "createFailed": "Agent konnte nicht erstellt werden!",
+      "loadUsersFailed": "Benutzerliste konnte nicht geladen werden"
+    },
+    "btn": "Einreichen"
+  },
   "appNav": {
     "home": "Startseite",
     "dashboard": "Übersicht",
@@ -271,7 +307,8 @@
     "callLogs": "Anrufprotokolle",
     "onboarding": "Einführung",
     "profile": "Profil",
-    "logout": "Abmelden"
+    "logout": "Abmelden",
+    "plan": "Planen"
   },
   "languageSwitcher": {
     "en": "Englisch",

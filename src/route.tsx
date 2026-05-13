@@ -25,6 +25,7 @@ import Profile from "./pages/User/Profile";
 import { useSelector } from "react-redux";
 import type { RootState } from "./store/store";
 import Onboarding from "./pages/User/Onboarding";
+import Plan from "./pages/Plan";
 
 const RoleBasedDashboard = () => {
   const { user } = useSelector((state: RootState) => state.auth);
@@ -34,7 +35,6 @@ const RoleBasedDashboard = () => {
   }
   return <UserDashboard />;
 };
-
 
 const router = createBrowserRouter([
   // PUBLIC ROUTES
@@ -93,6 +93,14 @@ const router = createBrowserRouter([
     ),
   },
   {
+    path: "/plan",
+    element: (
+      <Private>
+        <Plan />
+      </Private>
+    ),
+  },
+  {
     path: "/agent/:id",
     element: (
       <Private>
@@ -131,7 +139,7 @@ const router = createBrowserRouter([
         <Onboarding />
       </Private>
     ),
-  }
+  },
 ]);
 
 export default router;

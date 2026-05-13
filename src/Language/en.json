@@ -224,7 +224,6 @@
 
         "retentionTitle": "Retention",
         "retentionContent": "Data is stored only as long as necessary or legally required."
-
       }
     }
   },
@@ -264,6 +263,43 @@
     "q4": "Do I need to install or program anything?",
     "a4": "No. MrBot is a no-code solution that’s fully set up for you. You don’t need any technical experience — we handle everything, from connecting your phone system to integrating your calendar."
   },
+  "plan": {
+    "title": "Add New Plan",
+    "subtitle": "Create and configure your plan",
+    "fields": {
+      "name": "Name",
+      "price": "Price",
+      "features": "Feature",
+      "desc": "Description",
+      "user": "User",
+      "minutes": "Minutes",
+      "isActive": "Plan Status"
+    },
+    "placeholders": {
+      "name": "Enter Name",
+      "price": "Enter Price",
+      "features": "Enter Feature",
+      "desc": "Enter Description",
+      "selectUser": "Select User",
+      "minutes": "Enter Minutes e.g. 500",
+      "isActive": "Select Plan Status"
+    },
+    "validate": {
+      "user": "Please Select A User",
+      "planName": "Write Your Plan Name",
+      "planPrice": "Write Your Plan Price",
+      "features": "Write Your Feature",
+      "desc": "Write Your Description",
+      "minutes": "Write Your Minutes",
+      "isActive": "Select Your Plan Status"
+    },
+    "toast": {
+      "agentCreated": "Agent created successfully!",
+      "createFailed": "Failed to create agent!",
+      "loadUsersFailed": "Failed to load users list"
+    },
+    "btn": "Submit"
+  },
   "appNav": {
     "home": "Home",
     "dashboard": "Dashboard",
@@ -272,7 +308,8 @@
     "callLogs": "Call Logs",
     "onboarding": "Onboarding",
     "profile": "Profile",
-    "logout": "Logout"
+    "logout": "Logout",
+    "plan": "Plan"
   },
   "languageSwitcher": {
     "en": "English",

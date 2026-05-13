@@ -28,8 +28,6 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-
-
   const menuItems = (() => {
     // If not logged in, show default Home
     if (!user) {
@@ -43,6 +41,7 @@ const Navbar = () => {
         { key: "dashboard", label: t("appNav.dashboard"), to: "/dashboard" },
         { key: "add-agent", label: t("appNav.addAgent"), to: "/add-agent" },
         { key: "users", label: t("appNav.users"), to: "/users" },
+        { key: "plan", label: t("appNav.plan"), to: "/plan" },
       ];
     }
 
@@ -57,8 +56,9 @@ const Navbar = () => {
 
   return (
     <header
-      className={`fixed top-0 left-0 w-full h-16 sm:h-20 z-50 transition-all duration-300 px-4 md:px-8 ${isScrolled ? "bg-white shadow-md" : "bg-white shadow-lg"
-        }`}
+      className={`fixed top-0 left-0 w-full h-16 sm:h-20 z-50 transition-all duration-300 px-4 md:px-8 ${
+        isScrolled ? "bg-white shadow-md" : "bg-white shadow-lg"
+      }`}
     >
       <div className="max-w-7xl mx-auto w-full h-full flex items-center justify-between">
         {/* Logo */}
@@ -157,8 +157,9 @@ const Navbar = () => {
 
       {/* Mobile Slide Menu */}
       <div
-        className={`fixed top-0 right-0 h-full w-3/4 sm:w-2/3 bg-white shadow-lg z-50 transform transition-transform duration-500 ${menuOpen ? "translate-x-0" : "translate-x-full"
-          }`}
+        className={`fixed top-0 right-0 h-full w-3/4 sm:w-2/3 bg-white shadow-lg z-50 transform transition-transform duration-500 ${
+          menuOpen ? "translate-x-0" : "translate-x-full"
+        }`}
       >
         <button
           onClick={() => setMenuOpen(false)}
@@ -200,7 +201,7 @@ const Navbar = () => {
                     onClick={() => setMenuOpen(false)}
                     className="bg-white border border-[#3d4b52] text-[#3d4b52] py-2 rounded-md font-semibold text-center hover:bg-gray-50"
                   >
-                  {t("appNav.profile")}
+                    {t("appNav.profile")}
                   </Link>
                 )}
 
