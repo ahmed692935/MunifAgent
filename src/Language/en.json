@@ -96,7 +96,16 @@
     "subscriptionDesc": "Your current plan details",
     "planName": "Professional Plan",
     "planPrice": "$299/month",
-    "statusActive": "Active"
+    "statusActive": "Active",
+    "noSc": "No Subscription Found",
+    "noAp": "You don’t have an active plan yet.",
+    "loading": "Loading...",
+    "sp": "Subscription Plan",
+    "active": "Active",
+    "inActive": "Inactive",
+    "im": "Included Minutes",
+    "feature": "Features",
+    "loadingFeature": "Loading features..."
   },
   "userAgent": {
     "titleEdit": "Edit Agent Details",
@@ -267,7 +276,7 @@
     "title": "Add New Plan",
     "subtitle": "Create and configure your plan",
     "fields": {
-      "name": "Name",
+      "name": "Plan Name",
       "price": "Price",
       "features": "Feature",
       "desc": "Description",
@@ -298,7 +307,13 @@
       "createFailed": "Failed to create agent!",
       "loadUsersFailed": "Failed to load users list"
     },
-    "btn": "Submit"
+    "btn": "Submit",
+    "bting": "Submiting",
+    "loadingUsers": "Loading User...",
+    "checkUserPlan": "Checking user plan...",
+    "updateBtn": "Update Plan",
+    "deleting": "Deleting...",
+    "delete": "Delete Plan"
   },
   "appNav": {
     "home": "Home",

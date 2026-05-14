@@ -38,7 +38,7 @@ const Plan = () => {
       features: "",
       included_minutes: "",
       is_active: "false",
-      currency: "USD",
+      currency: "EUR",
     },
   });
 
@@ -50,7 +50,7 @@ const Plan = () => {
     setValue("features", "");
     setValue("included_minutes", "");
     setValue("is_active", "false");
-    setValue("currency", "USD");
+    setValue("currency", "EUR");
   };
 
   const onSubmit = async (data: PlanFormData) => {
@@ -218,7 +218,7 @@ const Plan = () => {
 
                   <select
                     {...register("user_id", {
-                      required: t("addAgent.validate.user"),
+                      required: t("plan.validate.user"),
                     })}
                     onChange={(e) => {
                       const selectedId = e.target.value;
@@ -233,8 +233,8 @@ const Plan = () => {
                   >
                     <option value="">
                       {loadingUsers
-                        ? t("addAgent.loadingUsers")
-                        : t("addAgent.placeholders.selectUser")}
+                        ? t("plan.loadingUsers")
+                        : t("plan.validate.user")}
                     </option>
 
                     {usersList.map((user) => (
@@ -252,7 +252,7 @@ const Plan = () => {
 
                   {loadingPlan && (
                     <p className="mt-2 text-sm text-gray-500">
-                      Checking user plan...
+                      {t("plan.checkUserPlan")}
                     </p>
                   )}
                 </div>
@@ -390,9 +390,9 @@ const Plan = () => {
                     className="w-full py-4 px-6 cursor-pointer text-white font-semibold rounded-lg shadow-lg bg-[#3d4b52] hover:bg-[#2d3b42] transition-all duration-200 disabled:opacity-60 disabled:cursor-not-allowed"
                   >
                     {isSubmitting
-                      ? "Submitting..."
+                      ? t("plan.bting")
                       : hasPlan
-                        ? "Update Plan"
+                        ? t("plan.updateBtn")
                         : t("plan.btn")}
                   </button>
 
@@ -403,7 +403,7 @@ const Plan = () => {
                       onClick={handleDeletePlan}
                       className="w-full py-4 px-6 cursor-pointer text-white font-semibold rounded-lg shadow-lg bg-red-600 hover:bg-red-700 transition-all duration-200 disabled:opacity-60 disabled:cursor-not-allowed"
                     >
-                      {isDeleting ? "Deleting..." : "Delete Plan"}
+                      {isDeleting ? t("plan.deleting") : t("plan.delete")}
                     </button>
                   )}
                 </div>

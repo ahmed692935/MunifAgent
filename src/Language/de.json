@@ -96,7 +96,16 @@
     "subscriptionDesc": "Details zu Ihrem aktuellen Tarif",
     "planName": "Professional-Tarif",
     "planPrice": "299 $/Monat",
-    "statusActive": "Aktiv"
+    "statusActive": "Aktiv",
+    "noSc": "Kein Abonnement gefunden",
+    "noAp": "Sie haben noch keinen aktiven Tarif.",
+    "loading": "Laden...",
+    "sp": "Abonnementplan",
+    "active": "Aktiv",
+    "inActive": "Inaktiv",
+    "im": "Inklusive Minuten",
+    "feature": "Merkmale",
+    "loadingFeature": "Funktionen werden geladen..."
   },
   "userAgent": {
     "titleEdit": "Agentendetails bearbeiten",
@@ -266,7 +275,7 @@
     "title": "Neuen Plan hinzufügen",
     "subtitle": "Erstellen und konfigurieren Sie Ihren Plan",
     "fields": {
-      "name": "Name",
+      "name": "Planname",
       "price": "Preis",
       "features": "Besonderheit",
       "desc": "Beschreibung",
@@ -297,7 +306,13 @@
       "createFailed": "Agent konnte nicht erstellt werden!",
       "loadUsersFailed": "Benutzerliste konnte nicht geladen werden"
     },
-    "btn": "Einreichen"
+    "btn": "Einreichen",
+    "bting": "Wird übermittelt...",
+    "loadingUsers": "Benutzer wird geladen...",
+    "checkUserPlan": "Benutzerplan wird geprüft...",
+    "updateBtn": "Aktualisierungsplan",
+    "deleting": "Löschen...",
+    "delete": "Plan löschen"
   },
   "appNav": {
     "home": "Startseite",

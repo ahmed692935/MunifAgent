@@ -166,11 +166,11 @@ function Profile() {
                 </div>
 
                 <h3 className="text-lg font-semibold text-gray-800">
-                  No Subscription Found
+                  {t("profile.noSc")}
                 </h3>
 
                 <p className="text-sm text-gray-500 mt-1">
-                  You don’t have an active plan yet.
+                  {t("profile.noAp")}
                 </p>
               </div>
             ) : (
@@ -184,9 +184,9 @@ function Profile() {
 
                     <div>
                       <h2 className="text-xl font-bold text-gray-900">
-                        {planLoading ? "Loading..." : plan?.name}
+                        {planLoading ? t("profile.loading") : plan?.name}
                       </h2>
-                      <p className="text-sm text-gray-500">Subscription Plan</p>
+                      <p className="text-sm text-gray-500">{t("profile.sp")}</p>
                     </div>
                   </div>
 
@@ -198,7 +198,9 @@ function Profile() {
                           : "bg-red-100 text-red-700"
                       }`}
                     >
-                      {plan.is_active ? "Active" : "Inactive"}
+                      {plan.is_active
+                        ? t("profile.active")
+                        : t("profile.inActive")}
                     </span>
                   )}
                 </div>
@@ -218,7 +220,7 @@ function Profile() {
                   <MdAccessTime className="text-blue-600 text-2xl" />
 
                   <div>
-                    <p className="text-sm text-gray-500">Included Minutes</p>
+                    <p className="text-sm text-gray-500">{t("profile.im")}</p>
                     <p className="text-lg font-bold text-gray-900">
                       {planLoading ? "---" : plan?.included_minutes}
                     </p>
@@ -227,11 +229,15 @@ function Profile() {
 
                 {/* features */}
                 <div className="relative z-10">
-                  <h3 className="font-semibold text-gray-900 mb-3">Features</h3>
+                  <h3 className="font-semibold text-gray-900 mb-3">
+                    {t("profile.feature")}
+                  </h3>
 
                   <div className="flex items-start gap-2">
                     <p className="text-gray-600 text-sm">
-                      {planLoading ? "Loading features..." : plan?.features}
+                      {planLoading
+                        ? t("profile.loadingFeature")
+                        : plan?.features}
                     </p>
                   </div>
                 </div>
