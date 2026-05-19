@@ -208,10 +208,12 @@ function Profile() {
                 {/* price */}
                 <div className="mb-6 relative z-10">
                   <h1 className="text-4xl font-extrabold text-gray-900">
-                    {planLoading ? "---" : `${plan?.currency} ${plan?.price}`}
+                    {planLoading
+                      ? "---"
+                      : `${Number(plan?.price || 0).toFixed(2)} ${plan?.currency}`}
                   </h1>
                   <p className="text-sm text-gray-500 mt-1">
-                    Monthly Subscription
+                    {t("profile.subscription")}
                   </p>
                 </div>
 

@@ -88,6 +88,7 @@
   },
   "profile": {
     "fallbackName": "Benutzer",
+    "subscription": "Monatsabonnement",
     "profileInfo": "Profilinformationen",
     "profileInfoDesc": "Ihre persönlichen Daten und Kontaktinformationen",
     "fullName": "Vollständiger Name",
