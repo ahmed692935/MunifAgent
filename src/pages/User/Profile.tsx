@@ -210,7 +210,7 @@ function Profile() {
                   <h1 className="text-4xl font-extrabold text-gray-900">
                     {planLoading
                       ? "---"
-                      : `${Number(plan?.price || 0).toFixed(2)} ${plan?.currency}`}
+                      : `${Number(plan?.price || 0).toFixed(2)} €`}
                   </h1>
                   <p className="text-sm text-gray-500 mt-1">
                     {t("profile.subscription")}
