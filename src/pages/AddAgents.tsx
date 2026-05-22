@@ -54,6 +54,7 @@ const AddAgents = () => {
       // --------------------------------------------------
 
       formData.append("phone_number", data.phone_number);
+      formData.append("transfer_number", data.transfer_number);
       formData.append("owner_name", data.business_name || "");
       formData.append("industry", data.industry || "");
       formData.append("language", data.language || "");
@@ -268,6 +269,19 @@ const AddAgents = () => {
                     )}
                   </div>
                 </div>
+
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    {t("addAgent.fields.transferNumber") || "Transfer Number"}
+                  </label>
+                  <input
+                    type="tel"
+                    {...register("transfer_number")}
+                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-[#3d4b52] focus:ring-0 outline-none transition-colors"
+                    placeholder="+49123456789"
+                  />
+                </div>
+
                 {/* Business Name & Industry Row */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>

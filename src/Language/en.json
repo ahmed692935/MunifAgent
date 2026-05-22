@@ -339,6 +339,7 @@
       "selectUser": "Select User (Linked Account)",
       "agentName": "Agent Name",
       "phoneNumber": "Phone Number",
+      "transferNumber": "Transfer Number",
       "businessName": "Business Name",
       "businessEmail": "Business Email",
       "industry": "Industry",
@@ -429,6 +430,7 @@
     "labels": {
       "name": "Name:",
       "phone": "Phone:",
+      "transferNumber": "Transfer Number:",
       "language": "Language:",
       "voiceType": "Voice Type:",
       "industry": "Industry:",

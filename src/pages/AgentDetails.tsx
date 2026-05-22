@@ -122,6 +122,9 @@ const AgentDetails = () => {
               <strong>{t("agentDetails.labels.phone")}</strong> {agent?.phone_number}
             </p>
             <p>
+              <strong>{t("agentDetails.labels.transferNumber")}</strong> {(agent as any)?.transfer_number || t("common.na")}
+            </p>
+            <p>
               <strong>{t("agentDetails.labels.language")}</strong> {agent?.language}
             </p>
             <p>

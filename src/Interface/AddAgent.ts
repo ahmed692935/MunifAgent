@@ -3,6 +3,7 @@ export interface AgentFormData {
   agent_image?: FileList | string;
   agent_name: string;
   phone_number: string;
+  transfer_number: string;
   system_prompt: string;
   industry: string;
   language: string;
@@ -21,6 +22,7 @@ export interface AgentType {
   avatar_presigned_url: string;
   agent_name: string;
   phone_number: string;
+  transfer_number: string;
   owner_name: string;
   system_prompt: string;
   language: string;

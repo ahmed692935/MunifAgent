@@ -43,6 +43,7 @@ const EditAgentModal = ({ open, onClose, data, onSave }: Props) => {
       reset({
         agent_name: data.agent_name || "",
         phone_number: data.phone_number || "",
+        transfer_number: data.transfer_number || "",
         business_name: data.owner_name || "",
         industry: data.industry || "",
         language: data.language || "",
@@ -71,6 +72,7 @@ const EditAgentModal = ({ open, onClose, data, onSave }: Props) => {
       const formData = new FormData();
       formData.append("agent_name", form.agent_name);
       formData.append("phone_number", form.phone_number);
+      formData.append("transfer_number", form.transfer_number);
       formData.append("owner_name", form.business_name);
       formData.append("industry", form.industry);
       formData.append("language", form.language);
@@ -200,6 +202,25 @@ const EditAgentModal = ({ open, onClose, data, onSave }: Props) => {
                   </p>
                 )}
               </div>
+            </div>
+
+            {/* Transfer Number */}
+            <div>
+              <label className="text-sm font-semibold text-[#3d4b52]">
+                {t("addAgent.fields.transferNumber")}
+              </label>
+              <input
+                {...register("transfer_number", {
+                  required: t("addAgent.validation.transferNumberRequired"),
+                })}
+                className="w-full border-2 mt-1 px-3 py-2 rounded-lg border-gray-300 focus:outline-none focus:border-[#3d4b52]"
+                />
+                {errors.transfer_number && (
+                  <p className="text-sm text-red-600">
+                    {errors.transfer_number.message}
+                  </p>
+                )}
+
             </div>
 
             {/* Business & Industry */}
