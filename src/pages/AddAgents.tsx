@@ -79,7 +79,6 @@ const AddAgents = () => {
     } catch (error: any) {
       // ... error handling
       toast.error(error.res?.data?.error || t("addAgent.toast.createFailed"));
-      toast.error(error.response?.data?.error || t("addAgent.toast.createFailed"));
     } finally {
       setIsSubmitting(false);
     }
@@ -225,7 +224,7 @@ const AddAgents = () => {
                 </div>
 
                 {/* Agent Name & Phone Number Row */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-0">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-2">
                       {t("addAgent.fields.agentName")}
@@ -271,8 +270,6 @@ const AddAgents = () => {
                   </div>
                 </div>
 
-<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-2">
                     {t("addAgent.fields.transferNumber") || "Transfer Number"}
@@ -284,6 +281,9 @@ const AddAgents = () => {
                     placeholder="+49123456789"
                   />
                 </div>
+
+                {/* Business Name & Industry Row */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-2">
                       {t("addAgent.fields.businessName")}
@@ -296,10 +296,6 @@ const AddAgents = () => {
                       placeholder={t("addAgent.placeholders.businessName")}
                     />
                   </div>
-</div>
-
-                {/* Business Name & Industry Row */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-2">
@@ -312,8 +308,8 @@ const AddAgents = () => {
         focus:border-[#3d4b52] focus:ring-0 outline-none transition-colors"
                       placeholder={t("addAgent.placeholders.ownerEmail")}
                     />
-                    </div>
-                  <div>
+                  </div>
+
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-2">
                       {t("addAgent.fields.industry")}
@@ -326,8 +322,6 @@ const AddAgents = () => {
                       placeholder={t("addAgent.placeholders.industry")}
                     />
                   </div>
-                  </div>
-
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-2">
                       {t("addAgent.fields.allowedMinutes")}
@@ -342,8 +336,6 @@ const AddAgents = () => {
                       placeholder={t("addAgent.placeholders.allowedMinutes")}
                     />
                   </div>
-
-
 
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-2">
@@ -373,6 +365,8 @@ const AddAgents = () => {
         focus:border-[#3d4b52] focus:ring-0 outline-none transition-colors"
                     />
                   </div>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-2">
                       {t("addAgent.fields.language")}
@@ -406,7 +400,6 @@ const AddAgents = () => {
                       </span>
                     </div>
                   </div>
-                </div>
 
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-2">
@@ -454,6 +447,8 @@ const AddAgents = () => {
        focus:border-[#3d4b52] focus:ring-0 outline-none transition-colors bg-white cursor-pointer"
                     />
                   </div>
+                </div>
+                {/* System Prompt */}
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-2">
                     {t("addAgent.fields.systemPrompt")}
@@ -473,7 +468,6 @@ const AddAgents = () => {
                     </p>
                   )}
                 </div>
-                {/* System Prompt */}
                 {/* Submit Button */}
                 <div className="pt-4">
                   <button
