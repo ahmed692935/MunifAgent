@@ -338,6 +338,7 @@
       "selectUser": "Benutzer auswählen (verknüpftes Konto)",
       "agentName": "Name des Agenten",
       "phoneNumber": "Telefonnummer",
+      "transferNumber": "Übertragungsnummer",
       "businessName": "Firmenname",
       "businessEmail": "Geschäftliche E-Mail",
       "industry": "Branche",
@@ -428,6 +429,7 @@
     "labels": {
       "name": "Name:",
       "phone": "Telefon:",
+      "transferNumber": "Übertragungsnummer:",
       "language": "Sprache:",
       "voiceType": "Stimme:",
       "industry": "Branche:",
